@@ -1,7 +1,7 @@
-﻿using Almagu.FileWatcher.Logic.Entities;
+﻿using SubtitlesLearn.Logic.Dal;
 using System.Collections.Generic;
 
-namespace SubtitlesLearn.Models
+namespace SubtitlesLearn.Logic.Entities
 {
 	/// <summary>
 	/// Represents one word from the DB (personal for Customer).

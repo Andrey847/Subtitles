@@ -1,12 +1,10 @@
-﻿using Almagu.FileWatcher.Logic;
+﻿using SubtitlesLearn.Logic.Dal;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
-namespace SubtitlesLearn.Manager
+namespace SubtitlesLearn.Logic.Manager
 {
 	/// <summary>
 	/// Controls sound (play, get , store etc).

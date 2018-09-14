@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Almagu.FileWatcher.Logic.Entities
+namespace SubtitlesLearn.Logic.Dal
 {
 	/// <summary>
 	/// Object with identity field.

@@ -1,14 +1,11 @@
-﻿using Almagu.FileWatcher.Logic.Entities;
-using SubtitlesLearn.Models;
+﻿using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Manager;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Globalization;
-using System.Threading;
 using System.Linq;
-using SubtitlesLearn.Manager;
 
-namespace Almagu.FileWatcher.Logic
+namespace SubtitlesLearn.Logic.Dal
 {
 	/// <summary>
 	/// Main DAL class.

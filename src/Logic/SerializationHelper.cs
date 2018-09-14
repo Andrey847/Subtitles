@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Linq;
 
-namespace SubtitlesLearn.Manager
+namespace SubtitlesLearn.Logic.Manager
 {
 	/// <summary>
 	/// Вспомогательный класс для упрощения сериализации/десериализации объектов.

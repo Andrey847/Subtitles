@@ -1,4 +1,4 @@
-﻿namespace SubtitlesLearn.Models
+﻿namespace SubtitlesLearn.Logic.Entities
 {
 	/// <summary>
 	/// Initial phrase from subtitles.

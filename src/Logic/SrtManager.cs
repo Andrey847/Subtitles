@@ -1,11 +1,10 @@
-﻿using SubtitlesLearn.Models;
+﻿using SubtitlesLearn.Logic.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace SubtitlesLearn.Manager
+namespace SubtitlesLearn.Logic.Manager
 {
 	/// <summary>
 	/// Processes srt file to produce words and other stuff.
@@ -113,6 +112,5 @@ namespace SubtitlesLearn.Manager
 		}
 
 		#endregion Methods
-
 	}
 }

@@ -1,20 +1,17 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using SubtitlesLearn.Logic.Dal;
+using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Manager;
+using SubtitlesLearn.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using Almagu.FileWatcher.Logic;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SubtitlesLearn.Manager;
-using SubtitlesLearn.Models;
 
-namespace SubtitlesLearn.Controllers
+namespace SubtitlesLearn.Site.Controllers
 {
 	public class HomeController : Controller
 	{

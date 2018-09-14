@@ -1,0 +1,30 @@
+﻿.srt-english {
+	text-align: right;
+}
+
+.srt-play-btn {
+	background: url(../images/Pixeden/play.svg);
+}
+
+.srt-wait-btn {
+	background: url(../images/loading.gif);
+}
+
+.srt-wait-btn,
+.srt-play-btn {
+	width: 24px;
+	height: 24px;
+	/*display: block;*/
+	background-size: 24px 24px;
+	box-sizing: border-box;
+	float: left;
+	cursor: pointer;
+}
+
+.srt-selected-row {
+	background-color: lightgoldenrodyellow;
+}
+
+.srt-text {
+	line-height: 24px;
+}

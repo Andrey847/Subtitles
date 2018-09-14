@@ -6,8 +6,15 @@ using SubtitlesLearn.Logic.Dal;
 
 namespace SubtitlesLearn.Site
 {
+	/// <summary>
+	/// Initial file of the site.
+	/// </summary>
 	public class Startup
 	{
+		/// <summary>
+		/// Main construction.
+		/// </summary>
+		/// <param name="configuration"></param>
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;

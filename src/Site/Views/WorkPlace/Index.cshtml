@@ -1,0 +1,22 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+
+<link rel="stylesheet" href="~/css/MainPage.css" />
+
+
+
+<input id="file-upload" type="file" />
+<button id="btnUpload" onclick="uploadSrt();">Upload!</button>
+
+<br />
+<hr />
+<div class="container" id="dvWords">
+	
+</div>
+
+<audio id="wordPlayer">
+	<source id="srcWordWav" type="audio/wav">
+</audio>
+
+<script src="~/js/MainPage.js" asp-append-version="true"></script>

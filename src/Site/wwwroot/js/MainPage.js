@@ -4,7 +4,7 @@ $(document).ready(function ()
 {
 	$.ajax({
 		type: "GET",
-		url: "/Home/AllWords",
+		url: "/WorkPlace/AllWords",
 		success: function (message)
 		{
 			generateTable(message);
@@ -45,7 +45,7 @@ function uploadSrt()
 
 	$.ajax({
 		type: "POST",
-		url: "/Home/UploadSrt",
+		url: "/WorkPlace/UploadSrt",
 		contentType: false,
 		processData: false,
 		data: data,
@@ -98,7 +98,7 @@ function playWord(sender, word)
 		player.currentTime = 0;
 	}
 
-	player.src = `/Home/WordSound/${encodeURIComponent(word)}`;
+	player.src = `/WorkPlace/WordSound/${encodeURIComponent(word)}`;
 	player.load();
 }
 
@@ -111,7 +111,7 @@ function save(english, sender)
 	// simple async save
 	$.ajax({
 		type: 'POST',
-		url: '/Home/SaveTranslation',
+		url: '/WorkPlace/SaveTranslation',
 		contentType: 'application/json',
 		data: JSON.stringify(
 			{
@@ -126,7 +126,7 @@ function markLearned(english, sender)
 	// simple async save
 	$.ajax({
 		type: 'POST',
-		url: '/Home/MarkLearned',
+		url: '/WorkPlace/MarkLearned',
 		contentType: 'application/json',
 		data: JSON.stringify(
 			{

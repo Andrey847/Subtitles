@@ -40,6 +40,11 @@ namespace SubtitlesLearn.Logic
 			throw new NotImplementedException();
 		}
 
+		public void ChangePassword(Customer user)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion Singleton
 	}
 }

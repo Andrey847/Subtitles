@@ -40,8 +40,7 @@ namespace SubtitlesLearn.Site.Services.Identity
 		{
 			user.PasswordHash = PasswordHasher.HashPassword(user, newPassword);
 
-#warning Place to reset the password.
-			//UserManager.Instance.ChangePassword(user);
+			UserManager.Instance.ChangePassword(user);
 
 			return Task.FromResult(new IdentityResult());
 		}

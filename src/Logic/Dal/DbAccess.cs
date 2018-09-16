@@ -24,7 +24,7 @@ namespace SubtitlesLearn.Logic.Dal
 		#region Helper methods
 
 		/// <summary>
-		/// Returns simple word from the DB.
+		/// Returns simple word from the DB. If it is not exists - adds to DB.
 		/// </summary>
 		/// <param name="english"></param>
 		/// <returns></returns>
@@ -32,7 +32,7 @@ namespace SubtitlesLearn.Logic.Dal
 		{
 			using (SqlConnection conn = new SqlConnection(ConnectionString))
 			{
-				SqlCommand procedure = new SqlCommand("usp_Word_Get", conn);
+				SqlCommand procedure = new SqlCommand("usp_Word_Merge", conn);
 				procedure.CommandType = System.Data.CommandType.StoredProcedure;
 				procedure.Parameters.Add("English", System.Data.SqlDbType.NVarChar).Value = word.English;
 				procedure.Parameters.Add("Frequency", System.Data.SqlDbType.Int).Value = word.Frequency;

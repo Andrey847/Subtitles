@@ -3,3 +3,18 @@
 	background-color: rgb(23, 68, 216);
 	border-color: rgb(23, 68, 216);
 }
+
+.st-center
+{
+	text-align: center;
+}
+
+.st-left
+{
+	text-align: left;
+}
+
+.st-right
+{
+	text-align: right;
+}

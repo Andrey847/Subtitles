@@ -1,0 +1,70 @@
+﻿@{
+	ViewData["Title"] = "Login";
+}
+
+@using SubtitlesLearn.Site.Models;
+@model LoginViewModel
+
+@section Css
+	{
+	<link rel="stylesheet" href="~/css/Account.css" asp-append-version="true">
+}
+
+@section Scripts {
+	<script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+	<script src="~/js/Account.js" asp-append-version="true"></script>
+}
+
+
+<img id="imgLogo" />
+
+<h1 class="st-center">Login</h1>
+
+<form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+
+	<div class="row">
+		<div class="col-sm-3 col-sm-offset-3">
+			Email:
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control" asp-for="Email" />
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-3 col-sm-offset-3">
+			Password:
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control" asp-for="Password" />
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-3 st-center">
+			"Recaptcha place holder"
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-3 st-right">
+			<button class="btn btn-primary" type="submit">Login</button>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-3">
+			<hr />
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-3 col-sm-offset-3 st-center">
+			<button class="btn btn-link" asp-controller="Account" asp-action="Register">Register</button>
+		</div>
+		<div class="col-sm-3 st-center">
+			<button class="btn btn-link" asp-controller="Account" asp-action="Restore">Restore password</button>
+		</div>
+	</div>
+</form>
+

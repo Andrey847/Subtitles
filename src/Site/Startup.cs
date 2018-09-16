@@ -23,6 +23,8 @@ namespace SubtitlesLearn.Site
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
+
+			DbAccess.ConnectionString = Configuration.GetConnectionString("Default");
 		}
 
 		public IConfiguration Configuration { get; }
@@ -60,8 +62,6 @@ namespace SubtitlesLearn.Site
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			DbAccess.ConnectionString = "Data Source=(local)\\SQLEXPRESS;Initial Catalog=SubtitlesLearn;Integrated Security=True";
-
 			if (env.IsDevelopment())
 			{
 				app.UseBrowserLink();

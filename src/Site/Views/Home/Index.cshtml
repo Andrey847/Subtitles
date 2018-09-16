@@ -1,3 +1,43 @@
 ﻿@{
 	ViewData["Title"] = "Home Page";
 }
+
+@section Css
+	{
+	<link rel="stylesheet" href="~/css/Home.css" asp-append-version="true">
+}
+
+
+<img id="imgLogo" />
+
+<h1>Welcome to Subtitles Learn service.</h1>
+<h2> It helps you to extend your dictionary with your favorite movies!</h2>
+
+<form>
+	<button asp-action="Login" asp-controller="Account" class="btn btn-primary s-account-buttons">Login</button>
+
+	<button asp-action="Register" asp-controller="Account" class="btn btn-primary s-account-buttons">Register</button>
+</form>
+
+<div class="row st-left">
+	<div class="col-sm-6 col-lg-offset-3">
+		<h4 class="h-link">
+			How does it work?
+		</h4>
+		<div style="display: none;">
+
+		</div>
+	</div>
+</div>
+
+<div class="row st-left">
+	<div class="col-sm-6 col-lg-offset-3">
+		<h4 class="h-link">
+			How much does it cost?
+		</h4>
+		<div style="display: none;">
+
+		</div>
+	</div>
+</div>
+

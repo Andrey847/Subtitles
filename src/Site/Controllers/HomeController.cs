@@ -9,7 +9,7 @@ namespace SubtitlesLearn.Site.Controllers
 	{
 		public IActionResult Index()
 		{
-			return RedirectToAction("Index", "WorkPlace");
+			return View();
 		}
 
 		public IActionResult Error()

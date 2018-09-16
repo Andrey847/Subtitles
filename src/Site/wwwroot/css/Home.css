@@ -1,0 +1,28 @@
+﻿#imgLogo
+{
+	content: url(/images/Pelican_grey1.svg);
+	width: 200px;
+}
+
+
+.body-content
+{
+	text-align: center;
+}
+
+.h-link
+{
+	color: rgb(23, 68, 216);
+	cursor: pointer;
+}
+
+.st-left
+{
+	text-align: left;
+}
+
+.s-account-buttons
+{
+	width: 100px;
+	margin: 1em 2em 1em 2em;
+}

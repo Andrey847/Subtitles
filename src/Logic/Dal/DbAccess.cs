@@ -2,8 +2,11 @@
 using SubtitlesLearn.Logic.Manager;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
+using static SubtitlesLearn.Logic.Dal.DbHelper;
 
 namespace SubtitlesLearn.Logic.Dal
 {
@@ -12,16 +15,7 @@ namespace SubtitlesLearn.Logic.Dal
 	/// </summary>
 	public static class DbAccess
 	{
-		#region Initialization part 
-
-		/// <summary>
-		/// Main application connection string.
-		/// </summary>
-		public static string ConnectionString { get; set; }
-
-		#endregion Initialization part
-
-		#region Helper methods
+		#region Helper methods		
 
 		/// <summary>
 		/// Returns simple word from the DB. If it is not exists - adds to DB.
@@ -30,7 +24,7 @@ namespace SubtitlesLearn.Logic.Dal
 		/// <returns></returns>
 		public static Word GetWord(Word word, string fileName)
 		{
-			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Merge", conn);
 				procedure.CommandType = System.Data.CommandType.StoredProcedure;
@@ -59,13 +53,43 @@ namespace SubtitlesLearn.Logic.Dal
 		}
 
 		/// <summary>
+		/// Logs data to the DB.
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="details"></param>
+		/// <param name="now"></param>
+		/// <param name="level"></param>
+		internal static void Log(string message, string details, DateTime now, LogLevel level)
+		{
+			ExecuteNonQuery("dbo.usp_Log_Add", message, details, now, level);
+		}
+
+		/// <summary>
+		/// Logs data to the DB.
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="details"></param>
+		/// <param name="now"></param>
+		/// <param name="level"></param>
+		internal static async Task LogAsync(string message, string details, DateTime now, LogLevel level)
+		{
+			await ExecuteNonQueryAsync("dbo.usp_Log_Add", (p) =>
+			{
+				p.Add("Message", SqlDbType.NVarChar).Value = message;
+				p.Add("Details", SqlDbType.NVarChar).Value = details;
+				p.Add("LogLevelId", SqlDbType.Int).Value = (int)level;
+				p.Add("Now", SqlDbType.DateTime).Value = now;
+			});
+		}
+
+		/// <summary>
 		/// Returns sound for the word.
 		/// </summary>
 		/// <param name="word"></param>
 		/// <returns></returns>
 		public static byte[] GetSound(string word)
 		{
-			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Sound_Get", conn);
 				procedure.CommandType = System.Data.CommandType.StoredProcedure;
@@ -88,7 +112,7 @@ namespace SubtitlesLearn.Logic.Dal
 		/// <param name="sound"></param>
 		public static void AddSound(string word, byte[] sound)
 		{
-			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Sound_Add", conn);
 				procedure.CommandType = System.Data.CommandType.StoredProcedure;
@@ -110,7 +134,7 @@ namespace SubtitlesLearn.Logic.Dal
 		/// <returns></returns>
 		public static List<Word> GetAllWords()
 		{
-			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_All_Get", conn);
 
@@ -140,7 +164,7 @@ namespace SubtitlesLearn.Logic.Dal
 
 		public static void SaveTranslation(Word word)
 		{
-			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Translation_Save", conn);
 				procedure.CommandType = System.Data.CommandType.StoredProcedure;
@@ -157,7 +181,7 @@ namespace SubtitlesLearn.Logic.Dal
 
 		public static void MarkLearned(Word word)
 		{
-			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Learned_Mark", conn);
 				procedure.CommandType = System.Data.CommandType.StoredProcedure;

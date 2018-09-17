@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Site.Services.Identity;
@@ -24,7 +25,9 @@ namespace SubtitlesLearn.Site
 		{
 			Configuration = configuration;
 
-			DbAccess.ConnectionString = Configuration.GetConnectionString("Default");
+			DbHelper.ConnectionString = Configuration.GetConnectionString("Default");
+
+			LogManager.Instance.LogInfo("Application started").GetAwaiter().GetResult();
 		}
 
 		public IConfiguration Configuration { get; }

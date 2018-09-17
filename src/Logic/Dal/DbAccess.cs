@@ -93,7 +93,7 @@ namespace SubtitlesLearn.Logic.Dal
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Sound_Get", conn);
 				procedure.CommandType = System.Data.CommandType.StoredProcedure;
-				procedure.Parameters.Add("English", System.Data.SqlDbType.NVarChar).Value = word;
+				procedure.Parameters.Add("English", SqlDbType.NVarChar).Value = word;
 
 				conn.Open();
 

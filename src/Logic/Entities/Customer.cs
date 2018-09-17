@@ -39,5 +39,10 @@
 		/// Role of the customer.
 		/// </summary>
 		public CustomerRole Role { get; set; }
+
+		/// <summary>
+		/// IS customer blocked?
+		/// </summary>
+		public bool IsBlocked { get; set; }
 	}
 }

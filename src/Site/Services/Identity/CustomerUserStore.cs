@@ -67,9 +67,9 @@ namespace SubtitlesLearn.Site.Services.Identity
 		/// <param name="userId"></param>
 		/// <param name="cancellationToken"></param>
 		/// <returns></returns>
-		public Task<Customer> FindByIdAsync(string userId, CancellationToken cancellationToken)
+		public async Task<Customer> FindByIdAsync(string userId, CancellationToken cancellationToken)
 		{
-			return Task.FromResult(UserManager.Instance.GetUser(int.Parse(userId)));
+			return await UserManager.Instance.GetUser(int.Parse(userId));
 		}
 
 		/// <summary>
@@ -78,9 +78,9 @@ namespace SubtitlesLearn.Site.Services.Identity
 		/// <param name="normalizedUserName"></param>
 		/// <param name="cancellationToken"></param>
 		/// <returns></returns>
-		public Task<Customer> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+		public async Task<Customer> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
 		{
-			return Task.FromResult(UserManager.Instance.GetUser(normalizedUserName));
+			return await UserManager.Instance.GetUser(normalizedUserName);
 		}
 
 		/// <summary>

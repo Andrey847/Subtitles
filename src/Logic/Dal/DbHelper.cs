@@ -116,5 +116,72 @@ namespace SubtitlesLearn.Logic.Dal
 				return result;
 			}
 		}
+
+		/// <summary>
+		/// Executes stored procedure ASYNC and returns mapped object.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="procedureName"></param>
+		/// <param name="createParameters"></param>
+		/// <param name="mapper"></param>
+		/// <returns></returns>
+		internal static async Task<T> ExecuteProcedureAsync<T>(string procedureName, Action<SqlParameterCollection> createParameters, Func<SqlDataReader, T> mapper)
+			where T : class, new()
+		{
+			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			{
+				SqlCommand procedure = new SqlCommand(procedureName, conn);
+				procedure.CommandType = System.Data.CommandType.StoredProcedure;
+				createParameters(procedure.Parameters);
+
+				await conn.OpenAsync();
+
+				SqlDataReader reader = await procedure.ExecuteReaderAsync();
+
+				await reader.ReadAsync();
+
+				T result = mapper(reader);
+
+				conn.Close();
+
+				return result;
+			}
+		}
+
+		/// <summary>
+		/// Aux method to execute SQL query directly.
+		/// It is used in unit test in most cases.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="query"></param>
+		/// <returns></returns>
+		internal static void ExecuteScalarQuery(string query)
+		{
+			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			{
+				SqlCommand sql = new SqlCommand(query, conn);
+				conn.Open();
+
+				sql.ExecuteNonQuery();
+			}
+		}
+
+		/// <summary>
+		/// Aux method to execute SQL query directly.
+		/// It is used in unit test in most cases.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="query"></param>
+		/// <returns></returns>
+		internal static T ExecuteScalarQuery<T>(string query)
+		{
+			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			{
+				SqlCommand sql = new SqlCommand(query, conn);
+				conn.Open();
+
+				return (T)sql.ExecuteScalar();				
+			}
+		}
 	}
 }

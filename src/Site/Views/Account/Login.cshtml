@@ -22,13 +22,22 @@
 
 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
 
+	
+
+	<div class="row">
+		<div class="col-sm-3 col-sm-offset-3">
+			<div asp-validation-summary="All" class="text-danger"></div>		
+		</div>		
+	</div>
+
 	<div class="row">
 		<div class="col-sm-3 col-sm-offset-3">
 			Email:
 		</div>
 		<div class="col-sm-3">
 			<input class="form-control" asp-for="Email" />
-		</div>
+			<span asp-validation-for="Email" class="text-danger"></span>
+		</div>v
 	</div>
 
 	<div class="row">
@@ -37,6 +46,7 @@
 		</div>
 		<div class="col-sm-3">
 			<input class="form-control" asp-for="Password" />
+			<span asp-validation-for="Password" class="text-danger"></span>
 		</div>
 	</div>
 

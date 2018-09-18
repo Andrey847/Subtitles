@@ -1,20 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Site.Models;
 using SubtitlesLearn.Site.Services.Identity;
+using System.Threading.Tasks;
 
 namespace SubtitlesLearn.Site.Controllers
 {
-    public class AccountController : Controller
-    {
+	/// <summary>
+	/// Main authentication controller.
+	/// </summary>
+	public class AccountController : Controller
+	{
 		#region Fields
 
 		private readonly ApplicationUserManager _userManager;
@@ -50,17 +52,17 @@ namespace SubtitlesLearn.Site.Controllers
 		#endregion Cosntruction
 
 		#region Methods
-		
-		public IActionResult Index()
-        {
-            return View();
-        }
 
-			   /// <summary>
-			   /// Show login page
-			   /// </summary>
-			   /// <param name="returnUrl"></param>
-			   /// <returns></returns>
+		public IActionResult Index()
+		{
+			return View();
+		}
+
+		/// <summary>
+		/// Show login page
+		/// </summary>
+		/// <param name="returnUrl"></param>
+		/// <returns></returns>
 		[HttpGet]
 		[AllowAnonymous]
 		public async Task<IActionResult> Login(string returnUrl = null)
@@ -75,6 +77,54 @@ namespace SubtitlesLearn.Site.Controllers
 			ViewBag.Customer = new Customer();
 
 			return View();
+		}
+
+		[HttpPost]
+		[AllowAnonymous]
+		public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+
+			if (ModelState.IsValid)
+			{
+				if (!string.IsNullOrEmpty(model.Email)
+				&& !string.IsNullOrEmpty(model.Password))
+				{
+					// This doesn't count login failures towards account lockout
+					// To enable password failures to trigger account lockout, set lockoutOnFailure: true
+					var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+					if (result.Succeeded)
+					{
+						if (string.IsNullOrEmpty(returnUrl))
+						{
+							return RedirectToAction(nameof(WorkPlaceController.Index), "WorkPlaceController");
+						}
+						else
+						{
+							return Redirect(returnUrl);
+						}
+					}
+					else
+					{
+						ModelState.AddModelError(string.Empty, "Login failed. Please try again.");
+					}
+				}
+				else
+				{
+					ModelState.AddModelError(string.Empty, "Login and passwords must be populated.");
+				}
+			}
+
+			if (!ModelState.IsValid)
+			{
+				await LogManager.Instance.LogInfo($"Failed login attempt", $"IP: {_accessor.HttpContext.Connection.RemoteIpAddress.ToString()}, login {model.Email}");
+			}
+
+			return View(model);
 		}
 
 		#endregion Methods

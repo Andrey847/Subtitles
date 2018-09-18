@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SubtitlesLearn.Logic.Dal;
@@ -13,6 +14,10 @@ using SubtitlesLearn.Logic.Manager;
 
 namespace SubtitlesLearn.Site.Controllers
 {
+	/// <summary>
+	/// Main work place.
+	/// </summary>
+	[Authorize]
     public class WorkPlaceController : Controller
     {
 		public IActionResult Index()

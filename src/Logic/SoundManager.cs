@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
-namespace SubtitlesLearn.Logic.Manager
+namespace SubtitlesLearn.Logic
 {
 	/// <summary>
 	/// Controls sound (play, get , store etc).
 	/// </summary>
-	public class SoundManager
+	public class SoundManager : ManagerBase
 	{
 		#region Fields
 

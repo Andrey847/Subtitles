@@ -21,11 +21,25 @@ namespace SubtitlesLearn.Site
 		/// Main construction.
 		/// </summary>
 		/// <param name="configuration"></param>
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IHostingEnvironment env)
 		{
 			Configuration = configuration;
 
 			DbHelper.ConnectionString = Configuration.GetConnectionString("Default");
+
+			// Setup cardcom settings.
+			EmailSettings emailSettings = new EmailSettings();
+			Configuration.GetSection("Email").Bind(emailSettings);
+			EmailManager.Instance.Settings = emailSettings;
+
+			EmailManager.Instance.GlobalSettings =
+				UserManager.Instance.GlobalSettings =
+				SrtManager.Instance.GlobalSettings =
+				SoundManager.Instance.GlobalSettings =
+					new GlobalSettings()
+					{
+						BasePath = env.ContentRootPath
+					};
 
 			LogManager.Instance.LogInfo("Application started").GetAwaiter().GetResult();
 		}

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SubtitlesLearn.Logic.Manager
+namespace SubtitlesLearn.Logic
 {
 	/// <summary>
 	/// Processes srt file to produce words and other stuff.
 	/// </summary>
-	public class SrtManager
+	public class SrtManager : ManagerBase
 	{
 		#region Singleton
 

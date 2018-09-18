@@ -17,6 +17,12 @@ namespace SubtitlesLearn.Site.Controllers
 	/// </summary>
 	public class AccountController : Controller
 	{
+		#region Constants
+
+		private const string MSG_GREETING = "greeting";
+
+		#endregion Constants
+
 		#region Fields
 
 		private readonly ApplicationUserManager _userManager;
@@ -63,10 +69,12 @@ namespace SubtitlesLearn.Site.Controllers
 		/// </summary>
 		/// <param name="returnUrl"></param>
 		/// <returns></returns>
-		[HttpGet]
+		[HttpGet("[controller]/[action]/{msg?}")]
 		[AllowAnonymous]
-		public async Task<IActionResult> Login(string returnUrl = null)
+		public async Task<IActionResult> Login(string msg, string returnUrl = null)
 		{
+			ViewBag.ShowGreeting = msg == MSG_GREETING;
+
 			// Clear the existing external cookie to ensure a clean login process			
 			await AuthenticationHttpContextExtensions.SignOutAsync(HttpContext);
 
@@ -125,6 +133,55 @@ namespace SubtitlesLearn.Site.Controllers
 			}
 
 			return View(model);
+		}
+
+		//
+		// GET: /Account/Register
+		[HttpGet]
+		[AllowAnonymous]
+		public IActionResult Register(string returnUrl = null)
+		{
+			ViewData["ReturnUrl"] = returnUrl;
+#warning Google auth.
+			//ViewBag.GoogleAuthUrl = GoogleAuthManager.Instance.GetAuthUrl();			
+
+			return View();
+		}
+
+		//
+		// POST: /Account/Register
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+		{
+			ViewData["ReturnUrl"] = returnUrl;
+
+			if (ModelState.IsValid)
+			{
+				Customer user = new Customer { Email = model.Email };
+				var result = await _userManager.CreateAsync(user, model.Password);
+				if (result.Succeeded)
+				{					
+					await LogManager.Instance.LogInfo($"User {model.Email} created a new account with password.");
+					
+					// Send him to login page with greeting message
+					return RedirectToAction(nameof(AccountController.Login), "AccountController", MSG_GREETING);
+				}				
+			}
+
+			// If we got this far, something failed, redisplay form
+			return View(model);
+		}
+
+		//
+		// POST: /Account/Logout     
+		public async Task<IActionResult> Logout()
+		{
+			await _signInManager.SignOutAsync();
+			await LogManager.Instance.LogInfo($"User logged out");
+
+			return RedirectToAction(nameof(HomeController.Index), "Home");
 		}
 
 		#endregion Methods

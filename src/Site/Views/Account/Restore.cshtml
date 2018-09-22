@@ -19,9 +19,9 @@
 
 <img id="imgLogo" />
 
-<h1 class="st-center">Register</h1>
+<h1 class="st-center">Restore password</h1>
 
-<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+<form asp-controller="Account" asp-action="Restore" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
 	<div class="row">
 		<div class="col-sm-3 col-sm-offset-3">
 			<div asp-validation-summary="All" class="text-danger"></div>
@@ -39,28 +39,8 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-3 col-sm-offset-3">
-			Password:
-		</div>
-		<div class="col-sm-3">
-			<input class="form-control" asp-for="Password" />
-			<span asp-validation-for="Password" class="text-danger"></span>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-3 col-sm-offset-3">
-			Password confirmation:
-		</div>
-		<div class="col-sm-3">
-			<input class="form-control" asp-for="ConfirmPassword" />
-			<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-		</div>
-	</div>
-
-	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3 st-center">
-			"Recaptcha place holder"
+			<div class="g-recaptcha" data-sitekey="@ViewData["RecaptchaSiteKey"]"></div>
 		</div>
 	</div>
 

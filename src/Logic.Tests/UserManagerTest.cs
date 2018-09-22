@@ -1,21 +1,23 @@
-using Moq;
 using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Tests;
 using System;
-using System.Configuration;
-using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Logic.Tests
 {
+	/// <summary>
+	/// Tests for user management.
+	/// </summary>
 	public class UserManagerTest : TestBase
 	{
+		/// <summary>
+		/// Default constructor (can be used for initialization).
+		/// </summary>
 		public UserManagerTest()
-		{
-			
+		{			
 		}
 
 		[Fact]
@@ -60,6 +62,8 @@ namespace Logic.Tests
 
 				customer.PasswordHash = "123123123123";
 				await UserManager.Instance.ChangePassword(customer);
+
+				Assert.True(await UserManager.Instance.RestorePassword(new RestorePasswordRequest(customer.Email)));				
 			}
 			finally
 			{

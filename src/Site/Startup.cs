@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Site.Services;
 using SubtitlesLearn.Site.Services.Identity;
 using System;
 
@@ -88,6 +89,8 @@ namespace SubtitlesLearn.Site
 				configureOptions.Password.RequireUppercase = false;
 				configureOptions.Password.RequireLowercase = false;
 			});
+
+			services.Configure<RecaptchaSettings>(Configuration.GetSection("Recaptcha"));
 
 			services.AddMvc();
 		}

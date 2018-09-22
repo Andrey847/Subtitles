@@ -19,6 +19,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Account\ChangeRestorePassword.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Account\ChangePassword.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Account\WrongRestorePasswordCode.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Account\RestoreLinkSent.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Account\Restore.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -87,6 +87,32 @@ namespace SubtitlesLearn.Logic.Dal
 		}
 
 		/// <summary>
+		/// Executes stored procedure and returns single scalar value.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="procedureName"></param>
+		/// <param name="createParameters"></param>
+		/// <param name="mapper"></param>
+		/// <returns></returns>
+		internal static async Task<T> ExecuteScalarAsync<T>(string procedureName, Action<SqlParameterCollection> createParameters)
+		{
+			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			{
+				SqlCommand procedure = new SqlCommand(procedureName, conn);
+				procedure.CommandType = System.Data.CommandType.StoredProcedure;
+				createParameters(procedure.Parameters);
+
+				await conn.OpenAsync();
+
+				T result = (T)await procedure.ExecuteScalarAsync();
+
+				conn.Close();
+
+				return result;
+			}
+		}
+
+		/// <summary>
 		/// Executes stored procedure and returns mapped object.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>

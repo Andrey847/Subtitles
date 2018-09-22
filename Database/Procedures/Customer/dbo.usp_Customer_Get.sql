@@ -37,7 +37,9 @@ BEGIN
 			[Name],
 			IsConfirmed,
 			IsBlocked,
-			PasswordHash
+			PasswordHash,
+			RestorePasswordCode,
+			ConfirmationCode
 		FROM dbo.Customer
 		WHERE Email = @Email OR CustomerId = @CustomerId
 	END

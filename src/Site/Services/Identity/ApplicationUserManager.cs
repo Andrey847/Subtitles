@@ -36,13 +36,13 @@ namespace SubtitlesLearn.Site.Services.Identity
 		/// <param name="token"></param>
 		/// <param name="newPassword"></param>
 		/// <returns></returns>
-		public override Task<IdentityResult> ResetPasswordAsync(Customer user, string token, string newPassword)
+		public override async Task<IdentityResult> ResetPasswordAsync(Customer user, string token, string newPassword)
 		{
 			user.PasswordHash = PasswordHasher.HashPassword(user, newPassword);
 
-			UserManager.Instance.ChangePassword(user);
+			await UserManager.Instance.ChangePassword(user);
 
-			return Task.FromResult(new IdentityResult());
+			return await Task.FromResult(new IdentityResult());
 		}
 	}
 }

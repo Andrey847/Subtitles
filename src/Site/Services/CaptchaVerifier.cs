@@ -4,22 +4,22 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SubtitlesLearn.Site.Services.Identity
+namespace SubtitlesLearn.Site.Services
 {
 	/// <summary>
-	/// Aux captcha class.
+	/// Aux class for captcha verifying.
 	/// </summary>
 	public class CaptchaVerifier
 	{
 		/// <summary>
-		/// Captcha settings.
+		/// Recaptcha settings.
 		/// </summary>
 		private readonly RecaptchaSettings _settings;
 
 		/// <summary>
-		/// The main constructor.
+		/// Construction.
 		/// </summary>
-		/// <param name="settings">Captcha settings.</param>
+		/// <param name="settings">Settings.</param>
 		public CaptchaVerifier(RecaptchaSettings settings)
 		{
 			_settings = settings;
@@ -38,9 +38,9 @@ namespace SubtitlesLearn.Site.Services.Identity
 		}
 
 		/// <summary>
-		/// Verifies captcha.
+		/// Verifies recaptcha.
 		/// </summary>
-		/// <returns>True - ok, False - failed.</returns>
+		/// <returns>True - success, false if failed.</returns>
 		public async Task<bool> VerifyAsync(HttpRequest request)
 		{
 			string captchaImage = request.Form["g-recaptcha-response"].ToString();

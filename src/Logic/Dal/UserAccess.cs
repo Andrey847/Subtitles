@@ -60,9 +60,21 @@ namespace SubtitlesLearn.Logic.Dal
 						Name = (string)m["Name"],
 						IsBlocked = Convert.ToBoolean(m["IsBlocked"]),
 						IsConfirmed = Convert.ToBoolean(m["IsConfirmed"]),
-						Id = (int)m["CustomerId"]
+						Id = (int)m["CustomerId"],
+						RestorePasswordCode = (string)m["RestorePasswordCode"]
 					};
 				});
+		}
+
+		/// <summary>
+		/// Returns restore code.
+		/// </summary>
+		/// <param name="email"></param>
+		/// <returns></returns>
+		internal static async Task<string> GetRestoreCode(string email)
+		{
+			return await ExecuteScalarAsync<string>("dbo.usp_Customer_RestoreCode_Get",
+														p => p.Add("Email", SqlDbType.NVarChar).Value = email);
 		}
 	}
 }

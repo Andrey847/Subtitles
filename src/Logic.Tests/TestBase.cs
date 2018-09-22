@@ -1,12 +1,10 @@
 ﻿using Moq;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
-using System;
-using System.Collections.Generic;
+using SubtitlesLearn.Logic.Interfaces;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace SubtitlesLearn.Logic.Tests
 {
@@ -29,7 +27,14 @@ namespace SubtitlesLearn.Logic.Tests
 			Configuration configuration = ConfigurationManager.OpenMappedMachineConfiguration(fileMap);
 			DbHelper.ConnectionString = configuration.ConnectionStrings.ConnectionStrings["Main"].ConnectionString;
 
+			// Mocking of some aux services.
 			UserManager.Instance.Log = new Mock<ILogging>(MockBehavior.Loose).Object;
+			UserManager.Instance.EmailNotifier = new Mock<IEmailNotifier>().Object;
+
+			Mock<IGlobalSettings> settingMock = new Mock<IGlobalSettings>();
+			settingMock.Setup(t => t.GetFullUrl).Returns(r => r);
+			UserManager.Instance.GlobalSettings = settingMock.Object;
+			
 		}
 	}
 }

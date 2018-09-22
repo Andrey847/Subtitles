@@ -49,5 +49,10 @@
 		/// Confirmation code (if account is not confirmed yet).
 		/// </summary>
 		public string ConfirmationCode { get; set; }
+
+		/// <summary>
+		/// Restore password code.
+		/// </summary>
+		public string RestorePasswordCode { get; set; }
 	}
 }

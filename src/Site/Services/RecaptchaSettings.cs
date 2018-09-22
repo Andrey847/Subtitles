@@ -1,4 +1,4 @@
-﻿namespace SubtitlesLearn.Site.Services.Identity
+﻿namespace SubtitlesLearn.Site.Services
 {
 	/// <summary>
 	/// Google recaptcha settings.

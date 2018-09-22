@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Threading.Tasks;
 
 namespace SubtitlesLearn.Logic.Interfaces
 {
@@ -9,5 +7,13 @@ namespace SubtitlesLearn.Logic.Interfaces
 	/// </summary>
 	public interface IEmailNotifier
 	{
+		/// <summary>
+		/// Sends simple email (body is html formatted).
+		/// </summary>
+		/// <param name="to"></param>
+		/// <param name="subject"></param>
+		/// <param name="body"></param>
+		/// <returns></returns>
+		Task<bool> SendSimpleText(string to, string subject, string body);
 	}
 }

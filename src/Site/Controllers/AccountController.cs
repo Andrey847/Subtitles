@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Site.Models;
+using SubtitlesLearn.Site.Services;
 using SubtitlesLearn.Site.Services.Identity;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace SubtitlesLearn.Site.Controllers
 		#region Constants
 
 		private const string MSG_GREETING = "greeting";
-
+		
 		#endregion Constants
 
 		#region Fields
@@ -55,13 +56,61 @@ namespace SubtitlesLearn.Site.Controllers
 			_accessor = accessor;
 		}
 
-		#endregion Cosntruction
+		#endregion Construction
 
 		#region Methods
 
 		public IActionResult Index()
 		{
 			return View();
+		}
+
+		/// <summary>
+		/// Restore password page.
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		[AllowAnonymous]
+		public IActionResult Restore()
+		{
+			ViewData["RecaptchaSiteKey"] = _recaptchaSettings.SiteKey;
+			return View(new RestorePasswordRequest());
+		}
+
+		/// <summary>
+		/// Creates restore password link and sends related email to the customer.
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		[HttpPost]
+		[AllowAnonymous]
+		public async Task<IActionResult> Restore(RestorePasswordRequest request)
+		{
+			ViewData["RecaptchaSiteKey"] = _recaptchaSettings.SiteKey;
+
+			bool verified = await CaptchaVerifier.VerifyAsync(_recaptchaSettings, Request);
+
+			if (!verified)
+			{
+				ModelState.AddModelError(string.Empty, "Captcha failed.");
+			}
+			else if (string.IsNullOrEmpty(request.Email))
+			{
+				ModelState.AddModelError(string.Empty, "Email missing.");
+			}
+			else if (!await UserManager.Instance.RestorePassword(request))
+			{
+				ModelState.AddModelError(string.Empty, "Unable to send restore code.");
+			}
+
+			if (ModelState.IsValid)
+			{
+				return View("RestoreLinkSent");
+			}
+			else
+			{
+				return View(request);
+			}
 		}
 
 		/// <summary>
@@ -146,6 +195,80 @@ namespace SubtitlesLearn.Site.Controllers
 			//ViewBag.GoogleAuthUrl = GoogleAuthManager.Instance.GetAuthUrl();			
 
 			return View();
+		}
+
+		/// <summary>
+		/// Changes password (after restore or simple password change).
+		/// </summary>
+		/// <param name="restorePasswordCode"></param>
+		/// <returns></returns>
+		[HttpGet("[controller]/[action]/{restorePasswordCode?}")]
+		[AllowAnonymous]
+		public async Task<IActionResult> ChangePassword(string restorePasswordCode)
+		{
+			Customer customer = await _userManager.GetUserAsync(User);
+
+			// First of all check restore code. if it is and differs from user's, - show related message and redirect to main login page.
+
+			if (!string.IsNullOrEmpty(restorePasswordCode) && customer.RestorePasswordCode != restorePasswordCode)
+			{
+				return View("WrongRestorePasswordCode");
+			}
+			else
+			{
+				ChangePasswordViewModel m = new ChangePasswordViewModel();
+				m.RestorePasswordCode = restorePasswordCode;
+				return View(m);
+			}
+		}
+
+		[HttpPost("[controller]/[action]/{restorePasswordCode?}")]
+		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+		{
+			Customer customer = await _userManager.GetUserAsync(User);
+
+			if (ModelState.IsValid)
+			{
+				if (model.Password != model.PasswordConfirmation)
+				{
+					ModelState.AddModelError(string.Empty, "Passwords do not match.");
+				}
+				else if (string.IsNullOrEmpty(model.RestorePasswordCode))
+				{
+					// Verify old password
+					if (_userManager.PasswordHasher.VerifyHashedPassword(customer, customer.PasswordHash, model.OldPassword) != PasswordVerificationResult.Success)
+					{
+						ModelState.AddModelError(string.Empty, "Entered wrong old password");
+					}
+				}
+				else
+				{
+					// Verify restore code
+					if (model.RestorePasswordCode != customer.RestorePasswordCode)
+					{
+						// it is very strange! immidiately redirect user to login page.
+						await LogManager.Instance.LogError("Wrong restore password code", $"Customer: {customer.Email} ({customer.Id})");
+						return RedirectToAction("Login", "Account");
+					}
+				}
+			}
+
+			if (ModelState.IsValid)
+			{
+				// Great! change the password 
+				await _userManager.ResetPasswordAsync(customer, string.Empty, model.Password);
+
+				var loginResult = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
+				await LogManager.Instance.LogInfo("Login after change the password", $"Login={model.Email}; State={loginResult.Succeeded}");
+
+				// and redirect to main page.
+				return RedirectToAction("Index", "WorkPlace");
+			}
+			else
+			{
+				// Here are errors, so show them.
+				return View(model);
+			}
 		}
 
 		//

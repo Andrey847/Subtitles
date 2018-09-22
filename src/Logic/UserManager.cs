@@ -56,7 +56,7 @@ namespace SubtitlesLearn.Logic
 				// Customner is not confirmed. do it!
 				string url = GlobalSettings.GetFullUrl($"/Account/Confirm/{user.ConfirmationCode}");
 
-				await EmailManager.Instance.SendSimpleText(user.Email, "Subtitles Learn: confirmation",
+				await EmailNotifier.SendSimpleText(user.Email, "Subtitles Learn: Confirmation",
 					@"
 					<h3>Please click on this link to activate your account</h3>
 					<a href='" + url + @"'>" + url + @"</a>
@@ -100,6 +100,43 @@ namespace SubtitlesLearn.Logic
 			await UserAccess.UpdatePassword(user);
 
 			await Log.LogInfo("Customer password changed", $"Customer: {user.Email}");
+		}
+
+		/// <summary>
+		/// Sends email notification to the Customer in order to restore the password.
+		/// 
+		/// returns true - email was sent. false - email was not found at all.
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		public async Task<bool> RestorePassword(RestorePasswordRequest request)
+		{
+			await Log.LogInfo("Restore password request", $"Email = {request.Email}");
+			
+			string code = await UserAccess.GetRestoreCode(request.Email);
+			bool result;
+
+			if (string.IsNullOrEmpty(code))
+			{
+				result = false;
+				await Log.LogInfo("Unable to create restore code", $"Email = {request.Email}");				
+			}
+			else
+			{
+				result = true;
+
+				string url = GlobalSettings.GetFullUrl($"/Account/ChangePassword/{code}");				
+
+				await EmailNotifier.SendSimpleText(request.Email, "Subtitles Learn: Restore password",
+					@"
+					<h3>Please click the link to change your password</h3>
+					<a href='" + url + @"'>" + url + @"</a>
+					");
+
+				await Log.LogInfo("Restore password code was sent", $"Email = {request.Email}");
+			}
+
+			return result;
 		}
 
 		#endregion Methods

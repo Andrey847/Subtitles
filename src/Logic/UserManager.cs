@@ -48,6 +48,23 @@ namespace SubtitlesLearn.Logic
 
 			await UserAccess.CreateUser(user);
 
+			if (!user.IsConfirmed)
+			{
+				// For non-google users send the confirmation notification to activate account.
+				user.ConfirmationCode = Guid.NewGuid().ToString();
+
+				// Customner is not confirmed. do it!
+				string url = GlobalSettings.GetFullUrl($"/Account/Confirm/{user.ConfirmationCode}");
+
+				await EmailManager.Instance.SendSimpleText(user.Email, "Subtitles Learn: confirmation",
+					@"
+					<h3>Please click on this link to activate your account</h3>
+					<a href='" + url + @"'>" + url + @"</a>
+					");
+
+				await Log.LogInfo("Account confirmation code was sent", $"Email = {user.Email}, code = {user.ConfirmationCode}");
+			}
+
 			await Log.LogInfo("User created", $"Email: {user.Email}");
 		}
 
@@ -82,7 +99,7 @@ namespace SubtitlesLearn.Logic
 
 			await UserAccess.UpdatePassword(user);
 
-			Log.LogInfo("Customer password changed", $"Customer: {user.Email}");
+			await Log.LogInfo("Customer password changed", $"Customer: {user.Email}");
 		}
 
 		#endregion Methods

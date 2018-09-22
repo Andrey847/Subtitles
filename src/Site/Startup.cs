@@ -9,6 +9,7 @@ using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Site.Services.Identity;
+using System;
 
 namespace SubtitlesLearn.Site
 {
@@ -21,9 +22,16 @@ namespace SubtitlesLearn.Site
 		/// Main construction.
 		/// </summary>
 		/// <param name="configuration"></param>
-		public Startup(IConfiguration configuration, IHostingEnvironment env)
+		public Startup(IHostingEnvironment env)
 		{
-			Configuration = configuration;
+			var builder = new ConfigurationBuilder()
+		   .SetBasePath(env.ContentRootPath)
+		   .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+		   .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+		   .AddJsonFile($"personal.json", optional: true, reloadOnChange: true)
+		   .AddEnvironmentVariables();
+
+			Configuration = builder.Build();
 
 			DbHelper.ConnectionString = Configuration.GetConnectionString("Default");
 
@@ -32,15 +40,23 @@ namespace SubtitlesLearn.Site
 			Configuration.GetSection("Email").Bind(emailSettings);
 			EmailManager.Instance.Settings = emailSettings;
 
-			EmailManager.Instance.GlobalSettings =
-				UserManager.Instance.GlobalSettings =
-				SrtManager.Instance.GlobalSettings =
-				SoundManager.Instance.GlobalSettings =
-					new GlobalSettings()
+			EmailManager.Instance.GlobalSettings
+				= UserManager.Instance.GlobalSettings
+				= SrtManager.Instance.GlobalSettings
+				= SoundManager.Instance.GlobalSettings
+					= new GlobalSettings()
 					{
-						BasePath = env.ContentRootPath
+						BasePath = env.ContentRootPath,
+						GetFullUrl = item => { return Configuration["DirectServerUrl"] + item; }
 					};
 
+			EmailManager.Instance.Log
+				= UserManager.Instance.Log
+				= SrtManager.Instance.Log
+				= SoundManager.Instance.Log
+				= LogManager.Instance;
+
+			UserManager.Instance.EmailNotifier = EmailManager.Instance;
 			LogManager.Instance.LogInfo("Application started").GetAwaiter().GetResult();
 		}
 

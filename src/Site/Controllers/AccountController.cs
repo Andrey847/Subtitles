@@ -159,7 +159,11 @@ namespace SubtitlesLearn.Site.Controllers
 
 			if (ModelState.IsValid)
 			{
-				Customer user = new Customer { Email = model.Email };
+				Customer user = new Customer
+				{
+					Email = model.Email,
+					IsConfirmed = false
+				};
 				var result = await _userManager.CreateAsync(user, model.Password);
 				if (result.Succeeded)
 				{					

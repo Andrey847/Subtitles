@@ -1,0 +1,78 @@
+﻿@{
+	ViewData["Title"] = "Login";
+}
+
+@using SubtitlesLearn.Site.Models;
+@model RegisterViewModel
+
+@section Css
+	{
+	<link rel="stylesheet" href="~/css/Account.css" asp-append-version="true">
+}
+
+@section Scripts {
+	<script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+	@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+	<script src="~/js/Account.js" asp-append-version="true"></script>
+}
+
+
+<img id="imgLogo" />
+
+<h1 class="st-center">Register</h1>
+
+<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+	<div class="row">
+		<div class="col-sm-3 col-sm-offset-3">
+			<div asp-validation-summary="All" class="text-danger"></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-3 col-sm-offset-3">
+			Email:
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control" asp-for="Email" />
+			<span asp-validation-for="Email" class="text-danger"></span>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-3 col-sm-offset-3">
+			Password:
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control" asp-for="Password" />
+			<span asp-validation-for="Password" class="text-danger"></span>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-3 col-sm-offset-3">
+			Password confirmation:
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control" asp-for="ConfirmPassword" />
+			<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-3 st-center">
+			"Recaptcha place holder"
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-3 st-right">
+			<button class="btn btn-primary" type="submit">Register</button>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-3">
+			<hr />
+		</div>
+	</div>
+</form>

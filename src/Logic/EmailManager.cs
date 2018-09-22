@@ -11,7 +11,7 @@ namespace SubtitlesLearn.Logic
 	/// <summary>
 	/// Email sending.
 	/// </summary>
-	public class EmailManager : ManagerBase
+	public class EmailManager : ManagerBase, IEmailNotifier
 	{
 		#region Properties
 

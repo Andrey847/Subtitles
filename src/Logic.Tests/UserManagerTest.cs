@@ -2,6 +2,7 @@ using Moq;
 using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Tests;
 using System;
 using System.Configuration;
 using System.Reflection;
@@ -10,18 +11,11 @@ using Xunit;
 
 namespace Logic.Tests
 {
-	public class UserManagerTest
+	public class UserManagerTest : TestBase
 	{
 		public UserManagerTest()
 		{
-			//	Unfortunately, standard invoke doesn't work. System.Configuration.ConfigurationManager.ConnectionStrings["Main"].ConnectionString;
-			// So do workaround.
-			Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-			ConfigurationFileMap fileMap = new ConfigurationFileMap($"{currentAssembly.ManifestModule.ToString()}.config"); //Path to your config file
-			Configuration configuration = ConfigurationManager.OpenMappedMachineConfiguration(fileMap);			
-			DbHelper.ConnectionString = configuration.ConnectionStrings.ConnectionStrings["Main"].ConnectionString;
-
-			UserManager.Instance.Log = new Mock<ILogging>(MockBehavior.Loose).Object;
+			
 		}
 
 		[Fact]

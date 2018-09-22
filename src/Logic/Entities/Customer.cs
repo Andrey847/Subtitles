@@ -44,5 +44,10 @@
 		/// IS customer blocked?
 		/// </summary>
 		public bool IsBlocked { get; set; }
+
+		/// <summary>
+		/// Confirmation code (if account is not confirmed yet).
+		/// </summary>
+		public string ConfirmationCode { get; set; }
 	}
 }

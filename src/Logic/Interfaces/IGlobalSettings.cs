@@ -1,4 +1,6 @@
-﻿namespace SubtitlesLearn.Logic.Interfaces
+﻿using System;
+
+namespace SubtitlesLearn.Logic.Interfaces
 {
 	/// <summary>
 	/// Represents global application settings.
@@ -9,5 +11,10 @@
 		/// Base (root) application path.
 		/// </summary>
 		string BasePath { get; set; }
-    }
+
+		/// <summary>
+		/// Reference to UI method for getting complete server url.
+		/// </summary>
+		Func<string, string> GetFullUrl { get; set; }
+	}
 }

@@ -76,5 +76,16 @@ namespace SubtitlesLearn.Logic.Dal
 			return await ExecuteScalarAsync<string>("dbo.usp_Customer_RestoreCode_Get",
 														p => p.Add("Email", SqlDbType.NVarChar).Value = email);
 		}
+
+		/// <summary>
+		/// Verifies restore password code.
+		/// </summary>
+		/// <param name="restorePasswordCode"></param>
+		/// <returns></returns>
+		internal static async Task<string> VerifyPasswordRestore(string restorePasswordCode)
+		{
+			return await ExecuteScalarAsync<string>("dbo.usp_Customer_RestoreCode_Verify",
+														p => p.Add("RestorePasswordCode", SqlDbType.NVarChar).Value = restorePasswordCode);
+		}
 	}
 }

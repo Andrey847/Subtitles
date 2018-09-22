@@ -53,7 +53,7 @@
 
 	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3 st-center">
-			"Recaptcha place holder"
+			<div class="g-recaptcha" data-sitekey="@ViewData["RecaptchaSiteKey"]"></div>
 		</div>
 	</div>
 
@@ -71,10 +71,10 @@
 
 	<div class="row">
 		<div class="col-sm-3 col-sm-offset-3 st-center">
-			<button class="btn btn-link" asp-controller="Account" asp-action="Register">Register</button>
+			<a class="btn btn-link" asp-controller="Account" asp-action="Register">Register</a>
 		</div>
 		<div class="col-sm-3 st-center">
-			<button class="btn btn-link" asp-controller="Account" asp-action="Restore">Restore password</button>
+			<a class="btn btn-link" asp-controller="Account" asp-action="Restore">Restore password</a>
 		</div>
 	</div>
 

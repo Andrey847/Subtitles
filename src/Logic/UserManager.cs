@@ -123,11 +123,9 @@ namespace SubtitlesLearn.Logic
 			}
 			else
 			{
-				result = true;
+				string url = GlobalSettings.GetFullUrl($"/Account/ChangePassword/{code}");
 
-				string url = GlobalSettings.GetFullUrl($"/Account/ChangePassword/{code}");				
-
-				await EmailNotifier.SendSimpleText(request.Email, "Subtitles Learn: Restore password",
+				result = await EmailNotifier.SendSimpleText(request.Email, "Subtitles Learn: Restore password",
 					@"
 					<h3>Please click the link to change your password</h3>
 					<a href='" + url + @"'>" + url + @"</a>
@@ -137,6 +135,19 @@ namespace SubtitlesLearn.Logic
 			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Verifies restore password code and returns related customer email if everything is ok.
+		/// </summary>
+		/// <param name="restorePasswordCode"></param>
+		/// <returns></returns>
+		public async Task<string> VerifyPasswordRestore(string restorePasswordCode)
+		{
+			if (string.IsNullOrEmpty(restorePasswordCode))
+				throw new ArgumentNullException();
+
+			return await UserAccess.VerifyPasswordRestore(restorePasswordCode);
 		}
 
 		#endregion Methods

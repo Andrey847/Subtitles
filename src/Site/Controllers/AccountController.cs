@@ -123,6 +123,7 @@ namespace SubtitlesLearn.Site.Controllers
 		public async Task<IActionResult> Login(string msg, string returnUrl = null)
 		{
 			ViewBag.ShowGreeting = msg == MSG_GREETING;
+			ViewData["RecaptchaSiteKey"] = _recaptchaSettings.SiteKey;
 
 			// Clear the existing external cookie to ensure a clean login process			
 			await AuthenticationHttpContextExtensions.SignOutAsync(HttpContext);
@@ -140,9 +141,12 @@ namespace SubtitlesLearn.Site.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
 		{
-			if (!ModelState.IsValid)
+			ViewData["RecaptchaSiteKey"] = _recaptchaSettings.SiteKey;
+			bool verified = await CaptchaVerifier.VerifyAsync(_recaptchaSettings, Request);
+
+			if (!verified)
 			{
-				return View(model);
+				ModelState.AddModelError(string.Empty, "Captcha failed");
 			}
 
 			if (ModelState.IsValid)
@@ -191,6 +195,8 @@ namespace SubtitlesLearn.Site.Controllers
 		public IActionResult Register(string returnUrl = null)
 		{
 			ViewData["ReturnUrl"] = returnUrl;
+			ViewData["RecaptchaSiteKey"] = _recaptchaSettings.SiteKey;
+
 #warning Google auth.
 			//ViewBag.GoogleAuthUrl = GoogleAuthManager.Instance.GetAuthUrl();			
 
@@ -207,18 +213,35 @@ namespace SubtitlesLearn.Site.Controllers
 		public async Task<IActionResult> ChangePassword(string restorePasswordCode)
 		{
 			Customer customer = await _userManager.GetUserAsync(User);
+			bool failed = false;
+			ChangePasswordViewModel model = new ChangePasswordViewModel();
 
-			// First of all check restore code. if it is and differs from user's, - show related message and redirect to main login page.
+			if (!string.IsNullOrEmpty(restorePasswordCode))
+			{
+				string email = await UserManager.Instance.VerifyPasswordRestore(restorePasswordCode);
+				if (string.IsNullOrEmpty(email))
+				{
+					failed = true;
+				}
+				else
+				{
+					model.Email = email;
+				}
+			}
+			else if (customer == null)
+			{
+				// no restore code and no registered customer. Show error page. (unreal case).
+				failed = true;				
+			}
 
-			if (!string.IsNullOrEmpty(restorePasswordCode) && customer.RestorePasswordCode != restorePasswordCode)
+			if (failed)
 			{
 				return View("WrongRestorePasswordCode");
 			}
 			else
 			{
-				ChangePasswordViewModel m = new ChangePasswordViewModel();
-				m.RestorePasswordCode = restorePasswordCode;
-				return View(m);
+				model.RestorePasswordCode = restorePasswordCode;
+				return View(model);
 			}
 		}
 
@@ -279,6 +302,14 @@ namespace SubtitlesLearn.Site.Controllers
 		public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
 		{
 			ViewData["ReturnUrl"] = returnUrl;
+			ViewData["RecaptchaSiteKey"] = _recaptchaSettings.SiteKey;
+
+			bool verified = await CaptchaVerifier.VerifyAsync(_recaptchaSettings, Request);
+
+			if (!verified)
+			{
+				ModelState.AddModelError(string.Empty, "Captcha failed");
+			}
 
 			if (ModelState.IsValid)
 			{

@@ -252,6 +252,12 @@ namespace SubtitlesLearn.Site.Controllers
 
 			if (ModelState.IsValid)
 			{
+				// there are 2 cases possible. Current user changes the password or it is restoring password options. So we have to restore user from password restore code.
+				if (customer == null)
+				{
+					customer = await UserManager.Instance.GetUser(model.Email);
+				}
+
 				if (model.Password != model.PasswordConfirmation)
 				{
 					ModelState.AddModelError(string.Empty, "Passwords do not match.");

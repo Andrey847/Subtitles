@@ -32,7 +32,9 @@ BEGIN
 	ELSE
 	BEGIN
 		UPDATE dbo.Customer
-		SET PasswordHash = @PasswordHash
+		SET PasswordHash = @PasswordHash,
+			RestorePasswordCode = NULL,
+			RestoreDateTime = NULL
 		WHERE Email = @Email;
 	END
 END

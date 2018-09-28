@@ -103,8 +103,8 @@ namespace SubtitlesLearn.Logic.Dal
 				createParameters(procedure.Parameters);
 
 				await conn.OpenAsync();
-
-				T result = (T)await procedure.ExecuteScalarAsync();
+				object value = await procedure.ExecuteScalarAsync();
+				T result = (T)(value == DBNull.Value ? null : value);
 
 				conn.Close();
 

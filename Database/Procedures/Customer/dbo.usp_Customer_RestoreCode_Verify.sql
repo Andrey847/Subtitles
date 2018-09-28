@@ -21,26 +21,13 @@ BEGIN
 	DECLARE @LoginEmail nvarchar(255);
 	DECLARE @Border datetime = DATEADD(day, -1, getdate());
 
-	SET XACT_ABORT ON;
-	BEGIN TRAN
-		SET @LoginEmail = 
-		(
-			SELECT Email
-			FROM Customer 
-			WHERE RestorePasswordCode = @RestorePasswordCode
-				AND RestoreDateTime >= @Border
-		);
-
-		IF @LoginEmail IS NOT NULL
-		BEGIN
-			-- Reset in order to do not accept the same code twice.
-			UPDATE Customer
-			SET RestorePasswordCode = NULL,
-				RestoreDateTime = NULL
-			WHERE Email = @LoginEmail;
-		END		
-
-	COMMIT TRAN
+	SET @LoginEmail = 
+	(
+		SELECT Email
+		FROM Customer 
+		WHERE RestorePasswordCode = @RestorePasswordCode
+			AND RestoreDateTime >= @Border
+	);
 
 	SELECT @LoginEmail AS LoginEmail;
 END

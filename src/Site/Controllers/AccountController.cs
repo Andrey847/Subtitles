@@ -162,7 +162,7 @@ namespace SubtitlesLearn.Site.Controllers
 					{
 						if (string.IsNullOrEmpty(returnUrl))
 						{
-							return RedirectToAction(nameof(WorkPlaceController.Index), "WorkPlaceController");
+							return RedirectToAction(nameof(WorkPlaceController.Index), "WorkPlace");
 						}
 						else
 						{

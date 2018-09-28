@@ -66,6 +66,19 @@ namespace SubtitlesLearn.Site
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddCors(options =>
+			{
+				options.AddPolicy("AllowSpecificOrigin",
+					builder => builder.WithOrigins("*")
+						.AllowCredentials()
+						.AllowAnyMethod()
+						.AllowAnyHeader()
+					);
+			});
+
+			services.AddOptions();
+			services.Configure<RecaptchaSettings>(Configuration.GetSection("Recaptcha"));
+
 			services
 				.AddIdentity<Customer, CustomerRole>()
 				.AddUserManager<ApplicationUserManager>()
@@ -90,8 +103,18 @@ namespace SubtitlesLearn.Site
 				configureOptions.Password.RequireLowercase = false;
 			});
 
-			services.Configure<RecaptchaSettings>(Configuration.GetSection("Recaptcha"));
+			services.ConfigureApplicationCookie(options =>
+			{
+				options.ExpireTimeSpan = TimeSpan.FromMinutes(15); // 15 minutes timeout of inactivity.
+				options.SlidingExpiration = true;
+			});
 
+			services.Configure<SecurityStampValidatorOptions>(options =>
+			{
+				// one year for security validation.
+				options.ValidationInterval = TimeSpan.FromDays(365);
+			});
+			
 			services.AddMvc();
 		}
 
@@ -107,6 +130,11 @@ namespace SubtitlesLearn.Site
 			{
 				app.UseExceptionHandler("/Home/Error");
 			}
+
+			app.UseStatusCodePagesWithRedirects("/");
+			app.UseAuthentication();
+
+			app.UseCors("AllowSpecificOrigin");
 
 			app.UseStaticFiles();
 

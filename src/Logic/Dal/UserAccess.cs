@@ -53,7 +53,7 @@ namespace SubtitlesLearn.Logic.Dal
 				},
 				(m) =>
 				{
-					return new Customer()
+					Customer c = new Customer()
 					{
 						Email = (string)m["Email"],
 						PasswordHash = (string)m["PasswordHash"],
@@ -61,8 +61,12 @@ namespace SubtitlesLearn.Logic.Dal
 						IsBlocked = Convert.ToBoolean(m["IsBlocked"]),
 						IsConfirmed = Convert.ToBoolean(m["IsConfirmed"]),
 						Id = (int)m["CustomerId"],
-						RestorePasswordCode = (string)m["RestorePasswordCode"]
+						RestorePasswordCode = m["RestorePasswordCode"] as string						
 					};
+
+					c.Role.Id = (int)m["CustomerRoleId"];
+
+					return c;
 				});
 		}
 

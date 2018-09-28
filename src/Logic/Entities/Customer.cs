@@ -38,7 +38,12 @@
 		/// <summary>
 		/// Role of the customer.
 		/// </summary>
-		public CustomerRole Role { get; set; }
+		public CustomerRole Role { get; set; } = new CustomerRole();
+
+		/// <summary>
+		/// Role of the customer as enum.
+		/// </summary>
+		public RoleType RoleType => (RoleType)Role.Id;
 
 		/// <summary>
 		/// IS customer blocked?

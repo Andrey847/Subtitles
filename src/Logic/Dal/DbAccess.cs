@@ -139,7 +139,8 @@ namespace SubtitlesLearn.Logic.Dal
 			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_All_Get", conn);
-				procedure.Parameters.Add("CustomerId", SqlDbType.NVarChar).Value = customerId;
+				procedure.CommandType = CommandType.StoredProcedure;
+				procedure.Parameters.Add("CustomerId", SqlDbType.Int).Value = customerId;
 
 				conn.Open();
 

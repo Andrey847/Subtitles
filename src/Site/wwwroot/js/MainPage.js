@@ -68,10 +68,18 @@ function generateTable(jsonWords)
 	{
 		container.append(`<div class="row">
 									<div class="col-sm-1">${item.frequency}</div>
-									<div class="col-sm-3" class="srt-english"><div class="srt-play-btn" onclick="playWord(this, '${item.english}');"></div><span class="srt-text">${item.english}</span></div>
-									<div class="col-sm-3"><input type="text" value="${item.translation}"></input></div>
-									<div class="col-sm-2" onmouseenter="selectRow(this);" onmouseleave="deselectRow(this);"><button onclick="save('${item.english}', this);">Save</button>
-										<button onclick="markLearned('${item.english}', this);">Learned</button></div>
+									<div class="col-sm-3" class="srt-english">
+										<div class="srt-play-btn" onclick="playWord(this, '${item.english}');"></div>
+										<span class="srt-text">${item.english}</span>
+										<img class='srt-phrases-ico'>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" class='form-control' value="${item.translation}"></input>
+									</div>
+									<div class="col-sm-2" onmouseenter="selectRow(this);" onmouseleave="deselectRow(this);">
+										<button onclick="save('${item.english}', this);">Save</button>
+										<button onclick="markLearned('${item.english}', this);">Learned</button>
+									</div>
 								</div>`);
 	});
 }

@@ -29,3 +29,11 @@
 	line-height: 24px;
 }
 
+.srt-phrases-ico
+{
+	content: url(../images/Pixeden/share.svg);
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+

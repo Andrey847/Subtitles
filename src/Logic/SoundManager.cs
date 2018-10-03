@@ -43,27 +43,28 @@ namespace SubtitlesLearn.Logic
 		/// </summary>
 		/// <param name="word"></param>
 		/// <returns></returns>
-		public byte[] GetWav(string word)
+		public byte[] GetWav(int customerId, string word)
 		{
+			string key = $"{customerId}${word}";
 			byte[] result = null;
 
-			if (!_wavCache.ContainsKey(word))
+			if (!_wavCache.ContainsKey(key))
 			{
-				result = DbAccess.GetSound(word);
+				result = DbAccess.GetSound(customerId, word);
 
 				if (result == null)
 				{
 					result = GetGoogleWav(word);
 					DbAccess.AddSound(word, result);
-					_wavCache.Add(word, result);
+					_wavCache.Add(key, result);
 				}
 				else
 				{
-					_wavCache.Add(word, result);
+					_wavCache.Add(key, result);
 				}
 			}
 
-			result = _wavCache[word];
+			result = _wavCache[key];
 
 			return result;
 		}

@@ -13,6 +13,7 @@ GO
 -- Description:	Adds (if it does not exist yet) and returns word info (is word known or not).
 -- =======================================================
 ALTER PROCEDURE [dbo].[usp_Word_Merge]
+	@CustomerId int,
 	@English nvarchar(100),
 	@Frequency int,
 	@FileName nvarchar(260) = NULL,
@@ -24,16 +25,16 @@ BEGIN
 
 	IF (@MovieId IS NULL)
 	BEGIN
-		INSERT INTO dbo.Movie (Name, SubtitlesFileName, LanguageId)
-			VALUES (@FileName, @FileName, @LanguageId)
+		INSERT INTO dbo.Movie (Name, SubtitlesFileName, LanguageId, CustomerId)
+			VALUES (@FileName, @FileName, @LanguageId, @CustomerId)
 
 		SET @MovieId = SCOPE_IDENTITY();
 	END
 
 	IF NOT EXISTS(SELECT * FROM Word WHERE English = @English)
 	BEGIN
-		INSERT INTO dbo.Word (English, Translation, IsKnown, Frequency)
-			VALUES (@English, NULL, 0, @Frequency)
+		INSERT INTO dbo.Word (English, Translation, IsKnown, Frequency, CustomerId)
+			VALUES (@English, NULL, 0, @Frequency, @CustomerId)
 	END
 	ELSE
 	BEGIN
@@ -43,12 +44,6 @@ BEGIN
 	END
 
 	DECLARE @WordId int = (SELECT WordId FROM [dbo].[Word] WHERE English = @English);
-
-	IF NOT EXISTS (SELECT * FROM [dbo].[MovieWord] WHERE MovieId = @MovieId AND WordId = @WordId)
-	BEGIN
-		INSERT INTO MovieWord (MovieId, WordId)
-			VALUES (@MovieId, @WordId)
-	END
 
 	-- And save phrases (only new)
 	SELECT DISTINCT	R.c.value('Value[1]', 'nvarchar(500)') Phrase		

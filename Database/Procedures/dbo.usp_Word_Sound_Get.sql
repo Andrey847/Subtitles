@@ -13,6 +13,7 @@ GO
 -- Description:	Gets sound for the word.
 -- =======================================================
 ALTER PROCEDURE [dbo].[usp_Word_Sound_Get]
+	@CustomerId int,
 	@English nvarchar(100)
 AS
 BEGIN
@@ -20,6 +21,7 @@ BEGIN
 	
 	SELECT Wav
 	FROM dbo.Word
-	WHERE English = @English;
+	WHERE English = @English
+		AND CustomerId = @CustomerId;
 END
 GO

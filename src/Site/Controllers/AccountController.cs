@@ -37,7 +37,7 @@ namespace SubtitlesLearn.Site.Controllers
 		#region Construction
 
 		/// <summary>
-		/// Main controller.
+		/// Main constructor.
 		/// </summary>
 		/// <param name="userManager"></param>
 		/// <param name="signInManager"></param>

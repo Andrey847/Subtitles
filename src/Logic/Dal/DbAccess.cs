@@ -22,12 +22,13 @@ namespace SubtitlesLearn.Logic.Dal
 		/// </summary>
 		/// <param name="english"></param>
 		/// <returns></returns>
-		public static Word GetWord(Word word, string fileName)
+		public static Word GetWord(int customerId, Word word, string fileName)
 		{
 			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Merge", conn);
 				procedure.CommandType = System.Data.CommandType.StoredProcedure;
+				procedure.Parameters.Add("CustomerId", System.Data.SqlDbType.Int).Value = customerId;
 				procedure.Parameters.Add("English", System.Data.SqlDbType.NVarChar).Value = word.English;
 				procedure.Parameters.Add("Frequency", System.Data.SqlDbType.Int).Value = word.Frequency;
 				procedure.Parameters.Add("FileName", System.Data.SqlDbType.VarChar).Value = fileName;
@@ -87,12 +88,13 @@ namespace SubtitlesLearn.Logic.Dal
 		/// </summary>
 		/// <param name="word"></param>
 		/// <returns></returns>
-		public static byte[] GetSound(string word)
+		public static byte[] GetSound(int customerId, string word)
 		{
 			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
-				SqlCommand procedure = new SqlCommand("usp_Word_Sound_Get", conn);
+				SqlCommand procedure = new SqlCommand("dbo.usp_Word_Sound_Get", conn);
 				procedure.CommandType = System.Data.CommandType.StoredProcedure;
+				procedure.Parameters.Add("CustomerId", SqlDbType.Int).Value = customerId;
 				procedure.Parameters.Add("English", SqlDbType.NVarChar).Value = word;
 
 				conn.Open();
@@ -132,11 +134,12 @@ namespace SubtitlesLearn.Logic.Dal
 		/// </summary>
 		/// <param name="english"></param>
 		/// <returns></returns>
-		public static List<Word> GetAllWords()
+		public static List<Word> GetAllWords(int customerId)
 		{
 			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_All_Get", conn);
+				procedure.Parameters.Add("CustomerId", SqlDbType.NVarChar).Value = customerId;
 
 				conn.Open();
 
@@ -167,9 +170,9 @@ namespace SubtitlesLearn.Logic.Dal
 			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Translation_Save", conn);
-				procedure.CommandType = System.Data.CommandType.StoredProcedure;
-				procedure.Parameters.Add("English", System.Data.SqlDbType.NVarChar).Value = word.English;
-				procedure.Parameters.Add("Translation", System.Data.SqlDbType.NVarChar).Value = word.Translation;
+				procedure.CommandType = CommandType.StoredProcedure;
+				procedure.Parameters.Add("English", SqlDbType.NVarChar).Value = word.English;
+				procedure.Parameters.Add("Translation", SqlDbType.NVarChar).Value = word.Translation;
 
 				conn.Open();
 

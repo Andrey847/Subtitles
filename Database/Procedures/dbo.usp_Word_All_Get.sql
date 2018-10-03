@@ -13,6 +13,7 @@ GO
 -- Description:	Gets all unknown words for the customer.
 -- =======================================================
 ALTER PROCEDURE[dbo].[usp_Word_All_Get]
+	@CustomerId int
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -23,9 +24,8 @@ BEGIN
 		Translation,
 		IsKnown,
 		Frequency
-	FROM dbo.Word w
-		INNER JOIN [dbo].[MovieWord] mw
-			ON w.WordId = mw.WordId
+	FROM dbo.Word w		
 	WHERE IsKnown = 0
+		AND CustomerId = @CustomerId
 END
 GO

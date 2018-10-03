@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Manager;
+using SubtitlesLearn.Site.Services.Identity;
 
 namespace SubtitlesLearn.Site.Controllers
 {
@@ -21,6 +23,34 @@ namespace SubtitlesLearn.Site.Controllers
 	[Authorize]
     public class WorkPlaceController : Controller
     {
+		#region Fields
+
+		private readonly ApplicationUserManager _userManager;
+
+		#endregion Fields
+
+		#region Construction
+
+		/// <summary>
+		/// Main constructor.
+		/// </summary>
+		/// <param name="userManager"></param>
+		/// <param name="signInManager"></param>
+		/// <param name="recaptchaSettings"></param>
+		/// <param name="accessor"></param>
+		public WorkPlaceController(ApplicationUserManager userManager)
+		{
+			_userManager = userManager;			
+		}
+
+		#endregion Construction
+
+		#region Methods
+
+		/// <summary>
+		/// Main page.
+		/// </summary>
+		/// <returns></returns>
 		public IActionResult Index()
 		{
 			return View();
@@ -31,9 +61,11 @@ namespace SubtitlesLearn.Site.Controllers
 		/// </summary>
 		/// <returns></returns>
 		[HttpPost]
-		public IActionResult UploadSrt()
+		public async Task<IActionResult> UploadSrt()
 		{
 			IActionResult response;
+
+			Customer customer = await _userManager.GetUserAsync(User);
 
 			if (Request.Form.Files.Count > 0)
 			{
@@ -49,7 +81,7 @@ namespace SubtitlesLearn.Site.Controllers
 				// check each word with DB.
 				foreach (Word word in words)
 				{
-					Word fromDb = DbAccess.GetWord(word, fileToUpload.FileName);
+					Word fromDb = DbAccess.GetWord(customer.Id, word, fileToUpload.FileName);
 					fromDb.Frequency = word.Frequency;
 
 					result.Add(fromDb);
@@ -123,9 +155,11 @@ namespace SubtitlesLearn.Site.Controllers
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet("[controller]/AllWords")]
-		public IActionResult GetAllWords()
+		public async Task <IActionResult> GetAllWords()
 		{
-			return new JsonResult(DbAccess.GetAllWords());
+			Customer customer = await _userManager.GetUserAsync(User);
+
+			return new JsonResult(DbAccess.GetAllWords(customer.Id));
 		}
 
 		/// <summary>
@@ -133,13 +167,17 @@ namespace SubtitlesLearn.Site.Controllers
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet("[controller]/WordSound/{word}")]
-		public IActionResult WordSound(string word)
+		public async Task<IActionResult> WordSound(string word)
 		{
-			byte[] wav = SoundManager.Instance.GetWav(word);
+			Customer customer = await _userManager.GetUserAsync(User);
+
+			byte[] wav = SoundManager.Instance.GetWav(customer.Id, word);
 
 			MemoryStream ms = new MemoryStream(wav);
 			ms.Position = 0;
 			return new FileStreamResult(ms, "audio/x-wav");
 		}
+
+		#endregion Methods
 	}
 }

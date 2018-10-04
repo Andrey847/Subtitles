@@ -1,1 +1,1 @@
-﻿EXEC dbo.usp_Rollout_Setting N'UnknownRate', N'Unknown Word Rate', N'20', N'How many unknown words (in percent) should be shown? For example, 20% means that only 20% of unknown words are shown 100% - all words are shown.'
+﻿EXEC dbo.usp_Rollout_Setting N'UnknownWordMax', N'Unknown Word MAx count', N'30', N'How many unknown words display at ones.'

@@ -17,8 +17,18 @@ ALTER PROCEDURE[dbo].[usp_Word_All_Get]
 AS
 BEGIN
 	SET NOCOUNT ON;
+
+	DECLARE @UnknownRate int = 
+	(
+		SELECT Value 
+		FROM dbo.CustomerSetting cs
+			INNER JOIN dbo.Setting s
+				ON cs.SettingId = s.SettingId
+		WHERE CustomerId = @CustomerId	
+			AND  s.Code = 'UnknownWordMax'
+	)	
 	
-	SELECT DISTINCT 
+	SELECT TOP (@UnknownRate) 
 		w.WordId,
 		English,
 		Translation,
@@ -27,5 +37,6 @@ BEGIN
 	FROM dbo.Word w		
 	WHERE IsKnown = 0
 		AND CustomerId = @CustomerId
+	ORDER BY Frequency DESC
 END
 GO

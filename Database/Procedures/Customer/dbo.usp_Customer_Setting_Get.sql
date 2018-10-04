@@ -19,7 +19,7 @@ BEGIN
 	SET NOCOUNT ON;
 	
 	SELECT CustomerId,
-		UnknownRate
+		UnknownWordMax
 	FROM 
 	(
 		SELECT cs.CustomerId, s.Code, cs.Value
@@ -27,11 +27,11 @@ BEGIN
 			INNER JOIN dbo.Setting s
 				ON cs.SettingId = s.SettingId
 		WHERE cs.CustomerId = @CustomerId
-			AND s.Code IN ('UnknownRate')
+			AND s.Code IN ('UnknownWordMax')
 	) AS src
 		PIVOT
 		(
-			MAX(Value) FOR Code IN ([UnknownRate])
+			MAX(Value) FOR Code IN ([UnknownWordMax])
 		) pvt
 END
 GO

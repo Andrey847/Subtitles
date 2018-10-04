@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Changes\" />
-    <Folder Include="Data\" />
     <Folder Include="Functions\" />
   </ItemGroup>
 

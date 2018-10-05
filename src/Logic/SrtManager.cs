@@ -48,13 +48,13 @@ namespace SubtitlesLearn.Logic
 			{
 				while (true)
 				{
-					reader.ReadLine(); // number
+					string number = reader.ReadLine(); // number
 					reader.ReadLine(); // timing
 
 					string sentence = string.Empty;
 					string currentLine;
 
-					while (!string.IsNullOrEmpty(currentLine = reader.ReadLine()))
+					while (!string.IsNullOrWhiteSpace(currentLine = reader.ReadLine()))
 					{
 						currentLine = currentLine.Trim();
 
@@ -95,6 +95,7 @@ namespace SubtitlesLearn.Logic
 
 		private Word[] SplitSentance(string sentance)
 		{
+			sentance = sentance.Trim();
 			sentance = sentance.Replace(".", string.Empty)
 				.Replace("?", string.Empty)
 				.Replace("!", string.Empty)

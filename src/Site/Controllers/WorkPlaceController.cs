@@ -57,6 +57,17 @@ namespace SubtitlesLearn.Site.Controllers
 		}
 
 		/// <summary>
+		/// Returns all phrases for required word.
+		/// </summary>
+		/// <param name="wordId"></param>
+		/// <returns></returns>
+		[HttpGet("[controller]/[action]/{wordId}")]
+		public async Task<IActionResult> GetPhrases(int wordId)
+		{
+			return new JsonResult(await SrtManager.Instance.GetPhrases(wordId));
+		}
+
+		/// <summary>
 		/// Uploads subtitles.
 		/// </summary>
 		/// <returns></returns>

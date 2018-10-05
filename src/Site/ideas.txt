@@ -1,0 +1,3 @@
+﻿The way to extract autio track and probably subtitles.
+
+https://stackoverflow.com/questions/32922226/extract-every-audio-and-subtitles-from-a-video-with-ffmpeg/32925753

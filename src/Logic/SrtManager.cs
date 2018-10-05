@@ -1,8 +1,10 @@
-﻿using SubtitlesLearn.Logic.Entities;
+﻿using SubtitlesLearn.Logic.Dal;
+using SubtitlesLearn.Logic.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SubtitlesLearn.Logic
 {
@@ -109,6 +111,16 @@ namespace SubtitlesLearn.Logic
 			result.ForEach(item => item.Phrases.Add(phrase));
 
 			return result.ToArray();
+		}
+
+		/// <summary>
+		/// Returns all phrases for required word.
+		/// </summary>
+		/// <param name="wordId"></param>
+		/// <returns></returns>
+		public async Task<Phrase[]> GetPhrases(int wordId)
+		{
+			return await SrtAccess.GetPhrases(wordId);
 		}
 
 		#endregion Methods

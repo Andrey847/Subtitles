@@ -120,7 +120,7 @@ namespace SubtitlesLearn.Logic.Dal
 		/// <param name="createParameters"></param>
 		/// <param name="mapper"></param>
 		/// <returns></returns>
-		internal static T ExecuteProcedure<T>(string procedureName, Action<SqlParameterCollection> createParameters, Func<SqlDataReader, T> mapper)
+		internal static T ExecuteObject<T>(string procedureName, Action<SqlParameterCollection> createParameters, Func<SqlDataReader, T> mapper)
 			where T : class, new()
 		{
 			using (SqlConnection conn = new SqlConnection(ConnectionString))
@@ -151,7 +151,7 @@ namespace SubtitlesLearn.Logic.Dal
 		/// <param name="createParameters"></param>
 		/// <param name="mapper"></param>
 		/// <returns></returns>
-		internal static async Task<T> ExecuteProcedureAsync<T>(string procedureName, Action<SqlParameterCollection> createParameters, Func<SqlDataReader, T> mapper)
+		internal static async Task<T> ExecuteObjectAsync<T>(string procedureName, Action<SqlParameterCollection> createParameters, Func<SqlDataReader, T> mapper)
 			where T : class, new()
 		{
 			using (SqlConnection conn = new SqlConnection(ConnectionString))
@@ -167,6 +167,40 @@ namespace SubtitlesLearn.Logic.Dal
 				await reader.ReadAsync();
 
 				T result = mapper(reader);
+
+				conn.Close();
+
+				return result;
+			}
+		}
+
+		/// <summary>
+		/// Executes stored procedure ASYNC and returns LIST of mapped objects..
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="procedureName"></param>
+		/// <param name="createParameters"></param>
+		/// <param name="mapper"></param>
+		/// <returns></returns>
+		internal static async Task<List<T>> ExecuteListAsync<T>(string procedureName, Action<SqlParameterCollection> createParameters, Func<SqlDataReader, T> mapper)
+			where T : class, new()
+		{
+			using (SqlConnection conn = new SqlConnection(ConnectionString))
+			{
+				SqlCommand procedure = new SqlCommand(procedureName, conn);
+				procedure.CommandType = System.Data.CommandType.StoredProcedure;
+				createParameters(procedure.Parameters);
+
+				await conn.OpenAsync();
+
+				SqlDataReader reader = await procedure.ExecuteReaderAsync();
+
+				List<T> result = new List<T>();
+
+				while (await reader.ReadAsync())
+				{
+					result.Add(mapper(reader));
+				}
 
 				conn.Close();
 

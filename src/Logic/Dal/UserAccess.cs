@@ -45,7 +45,7 @@ namespace SubtitlesLearn.Logic.Dal
 		/// <param name="user"></param>
 		internal static async Task<Customer> GetUser(string email = null, int? customerId = null)
 		{
-			return await ExecuteProcedureAsync<Customer>("dbo.usp_Customer_Get",
+			return await ExecuteObjectAsync<Customer>("dbo.usp_Customer_Get",
 				(p) =>
 				{
 					p.Add(nameof(Customer.Email), SqlDbType.NVarChar).Value = email;

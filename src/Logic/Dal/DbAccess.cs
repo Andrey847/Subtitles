@@ -15,43 +15,7 @@ namespace SubtitlesLearn.Logic.Dal
 	/// </summary>
 	public static class DbAccess
 	{
-		#region Helper methods		
-
-		/// <summary>
-		/// Returns simple word from the DB. If it is not exists - adds to DB.
-		/// </summary>
-		/// <param name="english"></param>
-		/// <returns></returns>
-		public static Word GetWord(int customerId, Word word, string fileName)
-		{
-			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
-			{
-				SqlCommand procedure = new SqlCommand("usp_Word_Merge", conn);
-				procedure.CommandType = System.Data.CommandType.StoredProcedure;
-				procedure.Parameters.Add("CustomerId", System.Data.SqlDbType.Int).Value = customerId;
-				procedure.Parameters.Add("English", System.Data.SqlDbType.NVarChar).Value = word.English;
-				procedure.Parameters.Add("Frequency", System.Data.SqlDbType.Int).Value = word.Frequency;
-				procedure.Parameters.Add("FileName", System.Data.SqlDbType.VarChar).Value = fileName;
-				procedure.Parameters.Add("Phrases", System.Data.SqlDbType.Xml).Value = SerializationHelper.Serialize(word.Phrases);
-
-				conn.Open();
-
-				Word result = new Word();
-
-				SqlDataReader reader = procedure.ExecuteReader();
-
-				reader.Read();
-
-				result.Id = Convert.ToInt32(reader["WordId"]);
-				result.English = Convert.ToString(reader["English"]);
-				result.IsKnown = Convert.ToBoolean(reader["IsKnown"]);
-				result.Translation = Convert.ToString(reader["Translation"]);
-
-				conn.Close();
-
-				return result;
-			}
-		}
+		#region Helper methods
 
 		/// <summary>
 		/// Logs data to the DB.

@@ -55,9 +55,9 @@ function uploadSrt()
 		contentType: false,
 		processData: false,
 		data: data,
-		success: function (message)
+		success: function ()
 		{
-			generateTable(message);
+			loadWords();
 		},
 		error: function ()
 		{

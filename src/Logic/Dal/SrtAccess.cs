@@ -1,4 +1,5 @@
 ﻿using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Manager;
 using System.Data;
 using System.Threading.Tasks;
 using static SubtitlesLearn.Logic.Dal.DbHelper;
@@ -48,6 +49,25 @@ namespace SubtitlesLearn.Logic.Dal
 						LanguageId = (int)m["LanguageId"]
 					}
 				)).ToArray();
+		}
+
+		/// <summary>
+		/// Imports (if it is required) word to DB.
+		/// </summary>
+		/// <param name="word"></param>
+		/// <param name="fileName"></param>
+		/// <returns></returns>
+		internal static async Task ImportWord(Word word, string fileName)
+		{
+			await ExecuteNonQueryAsync("dbo.usp_Word_Merge",
+				(p) =>
+				{
+					p.Add("CustomerId", SqlDbType.Int).Value = word.CustomerId;
+					p.Add("English", SqlDbType.NVarChar).Value = word.English;
+					p.Add("Frequency", SqlDbType.Int).Value = word.Frequency;
+					p.Add("FileName", SqlDbType.VarChar).Value = fileName;
+					p.Add("Phrases", SqlDbType.Xml).Value = SerializationHelper.Serialize(word.Phrases);
+				});
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SubtitlesLearn.Logic
@@ -146,6 +147,30 @@ namespace SubtitlesLearn.Logic
 		public async Task<Movie[]> GetMovies(int customerId)
 		{
 			return await SrtAccess.GetMovies(customerId);
+		}
+
+		/// <summary>
+		/// Imports words to the database.
+		/// </summary>
+		/// <param name="srtFile">File from browser.</param>
+		/// <returns></returns>
+		public async Task ImportWords(int customerId, MemoryStream srtFile, string fileName)
+		{
+			if (srtFile == null)
+			{
+				throw new ArgumentNullException(nameof(srtFile));
+			}
+
+			string srt = Encoding.UTF8.GetString(srtFile.ToArray());
+
+			Word[] words = GetWords(srt);
+
+			// check each word with DB.
+			foreach (Word word in words)
+			{
+				word.CustomerId = customerId;
+				await SrtAccess.ImportWord(word, fileName);
+			}
 		}
 
 		#endregion Methods

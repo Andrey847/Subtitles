@@ -16,6 +16,11 @@ namespace SubtitlesLearn.Logic.Entities
 		public int Id { get; set; }
 
 		/// <summary>
+		/// Customer identity.
+		/// </summary>
+		public int CustomerId { get; set; }
+
+		/// <summary>
 		/// Word value.
 		/// </summary>
 		public string English { get; set; }

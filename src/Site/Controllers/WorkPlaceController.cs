@@ -78,8 +78,6 @@ namespace SubtitlesLearn.Site.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UploadSrt()
 		{
-			IActionResult response;
-
 			Customer customer = await _userManager.GetUserAsync(User);
 
 			if (Request.Form.Files.Count > 0)
@@ -87,31 +85,10 @@ namespace SubtitlesLearn.Site.Controllers
 				IFormFile fileToUpload = Request.Form.Files.First();
 				MemoryStream txt = GetFileStream(fileToUpload);
 
-				string srt = Encoding.UTF8.GetString(txt.ToArray());
+				await SrtManager.Instance.ImportWords(customer.Id, txt, fileToUpload.FileName);
+			}		
 
-				Word[] words = SrtManager.Instance.GetWords(srt);
-
-				List<Word> result = new List<Word>();
-
-				// check each word with DB.
-				foreach (Word word in words)
-				{
-					Word fromDb = DbAccess.GetWord(customer.Id, word, fileToUpload.FileName);
-					fromDb.Frequency = word.Frequency;
-
-					result.Add(fromDb);
-				}
-
-				result = result.OrderByDescending(item => item.Frequency).ToList();
-
-				response = new JsonResult(result);
-			}
-			else
-			{
-				response = new OkResult();
-			}
-
-			return response;
+			return new OkResult();
 		}
 
 		private MemoryStream GetFileStream(IFormFile file)

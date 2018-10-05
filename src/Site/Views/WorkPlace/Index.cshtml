@@ -2,14 +2,29 @@
 	ViewData["Title"] = "Home Page";
 }
 
+@using SubtitlesLearn.Logic.Entities;
+
 <link rel="stylesheet" href="~/css/MainPage.css" asp-append-version="true" />
 
+<div class="row">
+	<div class="col-sm-6">
+		<input id="file-upload" type="file" />
+		<button id="btnUpload" onclick="uploadSrt();">Upload!</button>
+	</div>
+	<div class="col-sm-1">
+		<span>Movie:</span>
+	</div>
+	<div class="col-sm-3">
+		<select id="cmbMovie" class="form-control">
+			<option value="0" selected>[All]</option>
 
-
-<input id="file-upload" type="file" />
-<button id="btnUpload" onclick="uploadSrt();">Upload!</button>
-
-<br />
+			@foreach(Movie movie in ViewBag.Movies)
+			{
+				<option value="@movie.Id">@movie.Name</option>
+			}
+		</select>
+	</div>
+</div>
 <hr />
 <div class="container" id="dvWords">
 	

@@ -51,8 +51,12 @@ namespace SubtitlesLearn.Site.Controllers
 		/// Main page.
 		/// </summary>
 		/// <returns></returns>
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
+			Customer customer = await _userManager.GetUserAsync(User);
+
+			ViewBag.Movies = (await SrtManager.Instance.GetMovies(customer.Id)).OrderBy(item => item.Name);
+
 			return View();
 		}
 

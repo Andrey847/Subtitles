@@ -123,6 +123,16 @@ namespace SubtitlesLearn.Logic
 			return await SrtAccess.GetPhrases(wordId);
 		}
 
+		/// <summary>
+		/// Returns movies for the customer.
+		/// </summary>
+		/// <param name="customerId"></param>
+		/// <returns></returns>
+		public async Task<Movie[]> GetMovies(int customerId)
+		{
+			return await SrtAccess.GetMovies(customerId);
+		}
+
 		#endregion Methods
 	}
 }

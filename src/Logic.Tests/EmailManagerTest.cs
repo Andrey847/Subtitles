@@ -1,11 +1,6 @@
-using Moq;
 using SubtitlesLearn.Logic;
-using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Tests;
-using System;
-using System.Configuration;
-using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 

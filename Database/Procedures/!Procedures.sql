@@ -8,3 +8,4 @@
 #include "dbo.usp_Word_Sound_Get.sql"
 #include "dbo.usp_Word_Translation_Save.sql"
 #include "dbo.usp_Log_Add.sql"
+#include "dbo.usp_Movie_Get.sql"

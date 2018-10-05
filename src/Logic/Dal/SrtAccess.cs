@@ -25,5 +25,29 @@ namespace SubtitlesLearn.Logic.Dal
 					new Phrase(m["Value"] as string)
 				)).ToArray();
 		}
+
+		/// <summary>
+		/// Returns movies for the customer.
+		/// </summary>
+		/// <param name="customerId"></param>
+		/// <returns></returns>
+		internal static async Task<Movie[]> GetMovies(int customerId)
+		{
+			return (await ExecuteListAsync("dbo.usp_Movie_Get",
+				(p) =>
+				{
+					p.Add("CustomerId", SqlDbType.Int).Value = customerId;
+				},
+				(m) =>
+					new Movie()
+					{
+						Id = (int)m["MovieId"],
+						Name = m["Name"] as string,
+						SubtitlesFileName = m["SubtitlesFileName"] as string,
+						CustomerId = (int)m["CustomerId"],
+						LanguageId = (int)m["LanguageId"]
+					}
+				)).ToArray();
+		}
 	}
 }

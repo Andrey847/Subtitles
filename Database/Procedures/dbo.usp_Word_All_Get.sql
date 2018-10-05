@@ -13,7 +13,8 @@ GO
 -- Description:	Gets all unknown words for the customer.
 -- =======================================================
 ALTER PROCEDURE[dbo].[usp_Word_All_Get]
-	@CustomerId int
+	@CustomerId int,
+	@MovieId int = NULL -- can be null. in this case return all words for this customer
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -27,16 +28,48 @@ BEGIN
 		WHERE CustomerId = @CustomerId	
 			AND  s.Code = 'UnknownWordMax'
 	)	
-	
-	SELECT TOP (@UnknownRate) 
-		w.WordId,
-		English,
-		Translation,
-		IsKnown,
-		Frequency
-	FROM dbo.Word w		
-	WHERE IsKnown = 0
-		AND CustomerId = @CustomerId
-	ORDER BY Frequency DESC
+
+	-- use different queries for the performance reasons
+	IF (@MovieId IS NULL)
+	BEGIN	
+		SELECT TOP (@UnknownRate) 
+			w.WordId,
+			English,
+			Translation,
+			IsKnown,
+			Frequency
+		FROM dbo.Word w				
+		WHERE IsKnown = 0
+			AND CustomerId = @CustomerId
+		ORDER BY Frequency DESC
+	END
+	ELSE
+	BEGIN
+		
+		SELECT TOP (@UnknownRate) 
+			src.WordId,
+			src.English,
+			src.Translation,
+			src.IsKnown,
+			src.Frequency
+		FROM 
+		(
+			-- distinct as each word might be in different phrases
+			SELECT DISTINCT w.WordId,
+				w.English,
+				w.Translation,
+				w.IsKnown,
+				w.Frequency
+			FROM dbo.Word w			
+				INNER JOIN dbo.PhraseWord pw
+					ON w.WordId = pw.WordId
+				INNER JOIN dbo.Phrase p
+					ON pw.PhraseId = p.PhraseId
+			WHERE IsKnown = 0
+				AND CustomerId = @CustomerId
+				AND p.MovieId = @MovieId
+		) src
+		ORDER BY Frequency DESC
+	END
 END
 GO

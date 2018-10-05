@@ -2,18 +2,7 @@
 
 $(document).ready(function ()
 {
-	$.ajax({
-		type: "GET",
-		url: "/WorkPlace/AllWords",
-		success: function (message)
-		{
-			generateTable(message);
-		},
-		error: function ()
-		{
-			alert("There was error uploading files");
-		}
-	});
+	loadWords();
 
 	var wordPlayer = document.getElementById('wordPlayer');
 	wordPlayer.onloadstart = function ()
@@ -33,6 +22,23 @@ $(document).ready(function ()
 	};
 });
 
+function loadWords()
+{
+	let selectedMovie = $('#cmbMovie option:selected').val();
+	
+	$.ajax({
+		type: "GET",
+		url: `/WorkPlace/AllWords/${selectedMovie}`,
+		success: function (message)
+		{
+			generateTable(message);
+		},
+		error: function ()
+		{
+			alert("There was error uploading files");
+		}
+	});
+}
 
 function uploadSrt()
 {
@@ -63,6 +69,7 @@ function uploadSrt()
 function generateTable(jsonWords)
 {
 	let container = $("#dvWords");
+	container.empty();
 
 	jsonWords.forEach((item) =>
 	{

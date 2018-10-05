@@ -132,15 +132,17 @@ namespace SubtitlesLearn.Logic.Dal
 		/// <summary>
 		/// Returns simple word from the DB.
 		/// </summary>
-		/// <param name="english"></param>
+		/// <param name="customerId">Customer</param>
+		/// <param name="movieId">if null all woards of this customer is returned. IF selected then returned words for this movie only.</param>
 		/// <returns></returns>
-		public static List<Word> GetAllWords(int customerId)
+		public static List<Word> GetAllWords(int customerId, int? movieId = null)
 		{
 			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_All_Get", conn);
 				procedure.CommandType = CommandType.StoredProcedure;
 				procedure.Parameters.Add("CustomerId", SqlDbType.Int).Value = customerId;
+				procedure.Parameters.Add("MovieId", SqlDbType.Int).Value = movieId;
 
 				conn.Open();
 

@@ -169,12 +169,12 @@ namespace SubtitlesLearn.Site.Controllers
 		/// Returns all words in the system.
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet("[controller]/AllWords")]
-		public async Task <IActionResult> GetAllWords()
+		[HttpGet("[controller]/AllWords/{movieId}")]
+		public async Task <IActionResult> GetAllWords(int movieId)
 		{
 			Customer customer = await _userManager.GetUserAsync(User);
 
-			return new JsonResult(DbAccess.GetAllWords(customer.Id));
+			return new JsonResult(DbAccess.GetAllWords(customer.Id, movieId == 0 ? null : (int?)movieId));
 		}
 
 		/// <summary>

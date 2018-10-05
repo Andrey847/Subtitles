@@ -154,23 +154,31 @@ namespace SubtitlesLearn.Logic
 		/// </summary>
 		/// <param name="srtFile">File from browser.</param>
 		/// <returns></returns>
-		public async Task ImportWords(int customerId, MemoryStream srtFile, string fileName)
+		public async Task<ImportReponse> ImportWords(int customerId, MemoryStream srtFile, string fileName)
 		{
 			if (srtFile == null)
 			{
 				throw new ArgumentNullException(nameof(srtFile));
 			}
 
+			ImportReponse response = new ImportReponse();
 			string srt = Encoding.UTF8.GetString(srtFile.ToArray());
-
 			Word[] words = GetWords(srt);
 
 			// check each word with DB.
 			foreach (Word word in words)
 			{
 				word.CustomerId = customerId;
-				await SrtAccess.ImportWord(word, fileName);
+				bool isAdded = await SrtAccess.ImportWord(word, fileName);
+
+				if (isAdded)
+				{
+					response.NewWords++;
+				}
+				response.TotalWords++;
 			}
+
+			return response;
 		}
 
 		#endregion Methods

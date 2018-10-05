@@ -78,6 +78,7 @@ namespace SubtitlesLearn.Site.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UploadSrt()
 		{
+			IActionResult result;
 			Customer customer = await _userManager.GetUserAsync(User);
 
 			if (Request.Form.Files.Count > 0)
@@ -85,10 +86,14 @@ namespace SubtitlesLearn.Site.Controllers
 				IFormFile fileToUpload = Request.Form.Files.First();
 				MemoryStream txt = GetFileStream(fileToUpload);
 
-				await SrtManager.Instance.ImportWords(customer.Id, txt, fileToUpload.FileName);
-			}		
+				result = new JsonResult(await SrtManager.Instance.ImportWords(customer.Id, txt, fileToUpload.FileName));
+			}
+			else
+			{
+				result = new OkResult();
+			}
 
-			return new OkResult();
+			return result;
 		}
 
 		private MemoryStream GetFileStream(IFormFile file)

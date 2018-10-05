@@ -55,8 +55,11 @@ function uploadSrt()
 		contentType: false,
 		processData: false,
 		data: data,
-		success: function ()
+		success: function (message)
 		{
+			alert(`File imported. Total word: ${message.totalWords},
+new words: ${message.newWords}`);
+
 			loadWords();
 		},
 		error: function ()

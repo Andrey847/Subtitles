@@ -31,10 +31,14 @@ BEGIN
 		SET @MovieId = SCOPE_IDENTITY();
 	END
 
+	DECLARE @IsAdded bit = 0;
+
 	IF NOT EXISTS(SELECT * FROM Word WHERE English = @English)
 	BEGIN
 		INSERT INTO dbo.Word (English, Translation, IsKnown, Frequency, CustomerId)
 			VALUES (@English, NULL, 0, @Frequency, @CustomerId)
+
+		SET @IsAdded = 1;
 	END
 	ELSE
 	BEGIN
@@ -67,12 +71,7 @@ BEGIN
 				AND pw.PhraseId = p2.PhraseId
 	WHERE pw.PhraseWordId IS NULL
 
-	SELECT WordId,
-		English,
-		Translation,
-		IsKnown
-	FROM dbo.Word
-	WHERE English = @English;
+	SELECT @IsAdded AS IsAdded
 
 	DROP TABLE #Phrases;
 END

@@ -56,10 +56,10 @@ namespace SubtitlesLearn.Logic.Dal
 		/// </summary>
 		/// <param name="word"></param>
 		/// <param name="fileName"></param>
-		/// <returns></returns>
-		internal static async Task ImportWord(Word word, string fileName)
+		/// <returns>True if word is new and added to the dictionary.</returns>
+		internal static async Task<bool> ImportWord(Word word, string fileName)
 		{
-			await ExecuteNonQueryAsync("dbo.usp_Word_Merge",
+			bool isAdded = await ExecuteScalarAsync<bool>("dbo.usp_Word_Merge",
 				(p) =>
 				{
 					p.Add("CustomerId", SqlDbType.Int).Value = word.CustomerId;
@@ -68,6 +68,8 @@ namespace SubtitlesLearn.Logic.Dal
 					p.Add("FileName", SqlDbType.VarChar).Value = fileName;
 					p.Add("Phrases", SqlDbType.Xml).Value = SerializationHelper.Serialize(word.Phrases);
 				});
+
+			return isAdded;
 		}
 	}
 }

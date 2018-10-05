@@ -50,14 +50,29 @@ namespace SubtitlesLearn.Logic
 					reader.ReadLine(); // number
 					reader.ReadLine(); // timing
 
-					string sentance;
+					string sentence = string.Empty;
+					string currentLine;
 
-					while (!string.IsNullOrEmpty(sentance = reader.ReadLine()))
+					while (!string.IsNullOrEmpty(currentLine = reader.ReadLine()))
 					{
-						result.AddRange(SplitSentance(sentance));
+						currentLine = currentLine.Trim();
+
+						// it is dialog case. split each line to separate sentence.
+						if (currentLine.StartsWith("-") && !string.IsNullOrEmpty(sentence))
+						{
+							result.AddRange(SplitSentance(sentence));
+						}
+
+						// it is ok as in most cases subtitles contains 2 rows max int the block.
+						sentence += " " + currentLine;
 					}
 
-					if (sentance == null)
+					if (!string.IsNullOrEmpty(sentence))
+					{
+						result.AddRange(SplitSentance(sentence));
+					}
+
+					if (currentLine == null)
 					{
 						// end of file
 						break;

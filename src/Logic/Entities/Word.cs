@@ -1,11 +1,13 @@
 ﻿using SubtitlesLearn.Logic.Dal;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SubtitlesLearn.Logic.Entities
 {
 	/// <summary>
 	/// Represents one word from the DB (personal for Customer).
 	/// </summary>
+	[DebuggerDisplay("{English}")]
 	public class Word : IIdentifiable
     {
 		/// <summary>

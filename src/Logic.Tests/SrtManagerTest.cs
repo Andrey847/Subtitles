@@ -58,7 +58,7 @@ baby for five minutes in a car.";
 - A-All right, all right.";
 
 			Word[] words = SrtManager.Instance.GetWords(srt);
-			// should be 1 phrase only
+			// should be 2 phrase only
 			string[] phrases = words.SelectMany(item => item.Phrases)
 								.Select(item => item.Value)
 								.Distinct()

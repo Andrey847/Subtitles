@@ -138,7 +138,7 @@ namespace SubtitlesLearn.Logic.Dal
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Translation_Save", conn);
 				procedure.CommandType = CommandType.StoredProcedure;
-				procedure.Parameters.Add("English", SqlDbType.NVarChar).Value = word.Source;
+				procedure.Parameters.Add("Source", SqlDbType.NVarChar).Value = word.Source;
 				procedure.Parameters.Add("Translation", SqlDbType.NVarChar).Value = word.Translation;
 
 				conn.Open();

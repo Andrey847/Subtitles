@@ -231,7 +231,11 @@ namespace SubtitlesLearn.Site.Controllers
 			else if (customer == null)
 			{
 				// no restore code and no registered customer. Show error page. (unreal case).
-				failed = true;				
+				failed = true;
+			}
+			else
+			{
+				model.Email = customer.Email;
 			}
 
 			if (failed)

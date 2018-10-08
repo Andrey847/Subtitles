@@ -21,11 +21,11 @@
 <body>
 	<environment include="Development">
 		<script src="~/js/jquery-3.3.1.js"></script>
-		<script src="~/js/bootstrap.js" asp-append-version="true"></script>		
+		<script src="~/js/bootstrap.js" asp-append-version="true"></script>
 	</environment>
 	<environment exclude="Development">
 		<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-				asp-fallback-src="~/js/jquery-3.3.1.min.js"			
+				asp-fallback-src="~/js/jquery-3.3.1.min.js"
 				crossorigin="anonymous">
 		</script>
 		<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.1.1/bootstrap.min.js"
@@ -34,6 +34,26 @@
 		</script>
 	</environment>
 
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+		<a class="navbar-brand" href="#">Fixed navbar</a>
+		<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="navbar-collapse collapse" id="navbarCollapse" style="">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Link</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">Disabled</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
 	<div class="container body-content">
 		@RenderBody()
 		<hr />
@@ -41,7 +61,7 @@
 			<p>&copy; 2018 - SubtitlesLearn</p>
 		</footer>
 	</div>
-	
+
 	@RenderSection("Scripts", required: false)
 </body>
 </html>

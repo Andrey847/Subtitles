@@ -54,6 +54,7 @@ namespace SubtitlesLearn.Site.Controllers
 			Customer customer = await _userManager.GetUserAsync(User);
 
 			ViewBag.CurrentPageType = PageType.WorkPlace;
+			ViewBag.Languages = await SrtManager.Instance.GetLanguages();
 			
 			return View();
 		}

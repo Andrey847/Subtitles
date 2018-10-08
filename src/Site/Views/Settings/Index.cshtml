@@ -2,6 +2,8 @@
 	ViewData["Title"] = "Settings";
 }
 
+@using SubtitlesLearn.Logic.Entities
+
 @section Css
 	{
 
@@ -14,18 +16,23 @@
 
 
 
-<div class="row">
+<div class="row sett-row">
 	<div class="col-sm-3 offset-sm-3">
 		Current language:
 	</div>
 	<div class="col-sm-3">
-
+		<select class="form-control" id="cmbLanguage">
+			@foreach (Language lang in ViewBag.Languages)
+			{
+				<option value="@lang.Code">@lang.Name</option>
+			}
+		</select>
 	</div>
 </div>
 
-<div class="row">
+<div class="row sett-row">
 	<div class="col-sm-3 offset-sm-6">
 		<a asp-controller="Account" asp-action="ChangePassword">Change password</a>
-	</div>	
+	</div>
 </div>
 

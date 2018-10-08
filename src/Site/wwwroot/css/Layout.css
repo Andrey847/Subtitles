@@ -67,3 +67,14 @@
 {
 	text-align: right;
 }
+
+#imgSmallLogo
+{
+	content: url(/images/Pelican_white.svg);
+	width: 50px;
+}
+
+#lnkLogout
+{
+	color: #fff;
+}

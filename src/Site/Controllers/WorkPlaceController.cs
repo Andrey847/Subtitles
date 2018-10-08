@@ -13,6 +13,7 @@ using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Manager;
+using SubtitlesLearn.Site.Models;
 using SubtitlesLearn.Site.Services.Identity;
 
 namespace SubtitlesLearn.Site.Controllers
@@ -55,6 +56,7 @@ namespace SubtitlesLearn.Site.Controllers
 		{
 			Customer customer = await _userManager.GetUserAsync(User);
 
+			ViewBag.CurrentPageType = PageType.WorkPlace;
 			ViewBag.Movies = (await SrtManager.Instance.GetMovies(customer.Id)).OrderBy(item => item.Name);
 
 			return View();

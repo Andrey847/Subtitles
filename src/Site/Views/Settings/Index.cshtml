@@ -1,0 +1,31 @@
+﻿@{
+	ViewData["Title"] = "Settings";
+}
+
+@section Css
+	{
+
+	<link rel="stylesheet" href="~/css/Settings.css" asp-append-version="true" />
+}
+
+@section Scripts {
+	<script src="~/js/Settings.js" asp-append-version="true"></script>
+}
+
+
+
+<div class="row">
+	<div class="col-sm-3 offset-sm-3">
+		Current language:
+	</div>
+	<div class="col-sm-3">
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-3 offset-sm-6">
+		<a asp-controller="Account" asp-action="ChangePassword">Change password</a>
+	</div>	
+</div>
+

@@ -182,6 +182,15 @@ namespace SubtitlesLearn.Logic
 			return response;
 		}
 
+		/// <summary>
+		/// Returns all languages that system supports.
+		/// </summary>
+		/// <returns></returns>
+		public async Task<Language[]> GetLanguages()
+		{
+			return await SrtAccess.GetLanguages();
+		}
+
 		#endregion Methods
 	}
 }

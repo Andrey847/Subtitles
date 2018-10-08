@@ -66,5 +66,13 @@ baby for five minutes in a car.";
 
 			Assert.True(phrases.Length == 2);
 		}
+
+		[Fact]
+		public async Task GetLanguages()
+		{
+			Language[] langs = await SrtManager.Instance.GetLanguages();
+
+			Assert.True(langs.Length > 0);
+		}
 	}
 }

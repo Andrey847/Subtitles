@@ -5,6 +5,7 @@ using SubtitlesLearn.Logic.Interfaces;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace SubtitlesLearn.Logic.Tests
 {
@@ -29,7 +30,10 @@ namespace SubtitlesLearn.Logic.Tests
 
 			// Mocking of some aux services.
 			UserManager.Instance.Log = new Mock<ILogging>(MockBehavior.Loose).Object;
-			UserManager.Instance.EmailNotifier = new Mock<IEmailNotifier>().Object;
+
+			Mock<IEmailNotifier> emailMock = new Mock<IEmailNotifier>();
+			emailMock.Setup(t => t.SendSimpleText(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(true));
+			UserManager.Instance.EmailNotifier = emailMock.Object;
 
 			Mock<IGlobalSettings> settingMock = new Mock<IGlobalSettings>();
 			settingMock.Setup(t => t.GetFullUrl).Returns(r => r);

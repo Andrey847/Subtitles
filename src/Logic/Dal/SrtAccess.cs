@@ -71,5 +71,25 @@ namespace SubtitlesLearn.Logic.Dal
 
 			return isAdded;
 		}
+
+		/// <summary>
+		/// Returns all possible langauges in the system.
+		/// </summary>
+		/// <returns></returns>
+		internal static async Task<Language[]> GetLanguages()
+		{
+			return (await ExecuteListAsync<Language>("dbo.usp_Language_Get",
+				(p) => { }, // no parameters
+				(m) =>
+				{
+					return new Language()
+					{
+						Id = (int)m["LanguageId"],
+						Code = (string)m["Code"],
+						Name = (string)m["Name"],
+						BannerImage = m["BannerImage"] as string
+					};
+				})).ToArray();
+		}
 	}
 }

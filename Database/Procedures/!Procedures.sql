@@ -9,3 +9,4 @@
 #include "dbo.usp_Word_Translation_Save.sql"
 #include "dbo.usp_Log_Add.sql"
 #include "dbo.usp_Movie_Get.sql"
+#include "dbo.usp_Language_Get.sql"

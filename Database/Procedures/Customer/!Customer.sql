@@ -5,3 +5,4 @@
 #include "dbo.usp_Customer_RestoreCode_Get.sql"
 #include "dbo.usp_Customer_RestoreCode_Verify.sql"
 #include "dbo.usp_Customer_Setting_Get.sql"
+#include "dbo.usp_Customer_Setting_Update.sql"

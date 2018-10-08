@@ -150,6 +150,31 @@ namespace SubtitlesLearn.Logic
 			return await UserAccess.VerifyPasswordRestore(restorePasswordCode);
 		}
 
+		/// <summary>
+		/// Returns current settings.
+		/// </summary>
+		/// <param name="customerId"></param>
+		/// <returns></returns>
+		public async Task<CustomerSettings> GetSettings(int customerId)
+		{
+			return await UserAccess.GetSettings(customerId);
+		}
+
+		/// <summary>
+		/// Updates (creates or updates) settings for customer.
+		/// </summary>
+		/// <param name="settings"></param>
+		/// <returns></returns>
+		public async Task UpdateSettings(CustomerSettings settings)
+		{
+			if (settings == null)
+				throw new ArgumentNullException(nameof(settings));
+
+			await Log.LogInfo("Settings updated", $"Customer Id: {settings.CustomerId}");
+
+			await UserAccess.UpdateSettings(settings);
+		}
+
 		#endregion Methods
 	}
 }

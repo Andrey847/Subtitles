@@ -63,12 +63,43 @@ namespace Logic.Tests
 				customer.PasswordHash = "123123123123";
 				await UserManager.Instance.ChangePassword(customer);
 
-				Assert.True(await UserManager.Instance.RestorePassword(new RestorePasswordRequest(customer.Email)));				
+				Assert.True(await UserManager.Instance.RestorePassword(new RestorePasswordRequest(customer.Email)));		
 			}
 			finally
 			{
 				DbHelper.ExecuteScalarQuery($@"DELETE FROM Customer WHERE Email = '{customer.Email}'");
 			}
+		}
+
+		[Fact]
+		public async void GetSettings()
+		{
+			Customer customer = await UserManager.Instance.GetUser("ag_a@mail.ru");
+
+			Assert.NotNull(UserManager.Instance.GetSettings(customer.Id));
+		}
+
+		[Fact]
+		public async void SaveSettings()
+		{
+			Customer customer = await UserManager.Instance.GetUser("ag_a@mail.ru");
+
+			CustomerSettings settings = await UserManager.Instance.GetSettings(customer.Id);
+
+			string currentCode = settings.CurrentLanguageCode;
+			string newCode = currentCode + "$";
+
+			settings.CurrentLanguageCode = newCode;
+
+			await UserManager.Instance.UpdateSettings(settings);
+
+			// Verify that updated
+			settings = await UserManager.Instance.GetSettings(customer.Id);
+			Assert.Equal(newCode, settings.CurrentLanguageCode);
+
+			// return everything back
+			settings.CurrentLanguageCode = currentCode;
+			await UserManager.Instance.UpdateSettings(settings);
 		}
 	}
 }

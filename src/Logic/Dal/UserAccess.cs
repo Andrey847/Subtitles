@@ -91,5 +91,40 @@ namespace SubtitlesLearn.Logic.Dal
 			return await ExecuteScalarAsync<string>("dbo.usp_Customer_RestoreCode_Verify",
 														p => p.Add("RestorePasswordCode", SqlDbType.NVarChar).Value = restorePasswordCode);
 		}
+
+		/// <summary>
+		/// Returns settings for the customer.
+		/// </summary>
+		/// <param name="customerId"></param>
+		/// <returns></returns>
+		internal static async Task<CustomerSettings> GetSettings(int customerId)
+		{
+			return await ExecuteObjectAsync<CustomerSettings>("dbo.usp_Customer_Setting_Get",
+				p => p.Add("CustomerId", SqlDbType.Int).Value = customerId,
+				(m) =>
+				{
+					return new CustomerSettings()
+					{
+						CustomerId = customerId,
+						 CurrentLanguageCode = m["CurrentLanguageCode"] as string
+					};
+				}
+				);
+		}
+
+		/// <summary>
+		/// Saves customer settings.
+		/// </summary>
+		/// <param name="settings"></param>
+		/// <returns></returns>
+		internal static async Task UpdateSettings(CustomerSettings settings)
+		{
+			await ExecuteNonQueryAsync("dbo.usp_Customer_Setting_Update", 
+				p =>
+				{
+					p.Add("CustomerId", SqlDbType.Int).Value = settings.CustomerId;
+					p.Add("CurrentLanguageCode", SqlDbType.NVarChar).Value = settings.CurrentLanguageCode;
+				});
+		}
 	}
 }

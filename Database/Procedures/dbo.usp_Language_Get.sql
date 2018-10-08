@@ -20,7 +20,8 @@ BEGIN
 	SELECT LanguageId,
 		Code,
 		Name,
-		BannerImage
+		BannerImage,
+		GoogleCode
 	FROM dbo.[Language]
 END
 GO

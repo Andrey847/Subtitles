@@ -87,7 +87,8 @@ namespace SubtitlesLearn.Logic.Dal
 						Id = (int)m["LanguageId"],
 						Code = (string)m["Code"],
 						Name = (string)m["Name"],
-						BannerImage = m["BannerImage"] as string
+						BannerImage = m["BannerImage"] as string,
+						GoogleCode = m["GoogleCode"] as string
 					};
 				})).ToArray();
 		}

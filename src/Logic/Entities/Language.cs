@@ -24,5 +24,10 @@
 		/// Name of image file with this language flag.
 		/// </summary>
 		public string BannerImage { get; set; }
+
+		/// <summary>
+		/// Code to be used to get speech from google.
+		/// </summary>
+		public string GoogleCode { get; set; }
 	}
 }

@@ -15,6 +15,7 @@ GO
 ALTER PROCEDURE[dbo].[usp_Rollout_Language] 	
 	@Code nvarchar(50),
 	@Name nvarchar(50),
+	@GoogleCode nvarchar(10),
 	@BannerImage nvarchar(255) = NULL	-- file name of banner. can be null.
 AS
 BEGIN
@@ -24,14 +25,15 @@ BEGIN
 
 	IF (@LanguageId IS NULL)
 	BEGIN
-		INSERT INTO dbo.[Language] (Code, [Name], BannerImage)
-			VALUES (@Code, @Name, @BannerImage);
+		INSERT INTO dbo.[Language] (Code, [Name], BannerImage, GoogleCode)
+			VALUES (@Code, @Name, @BannerImage, @GoogleCode);
 	END
 	ELSE
 	BEGIN
 		UPDATE dbo.[Language]
 		SET Name = @Name,
-			BannerImage = @BannerImage
+			BannerImage = @BannerImage,
+			GoogleCode = @GoogleCode
 		WHERE LanguageId = @LanguageId
 	END
 END

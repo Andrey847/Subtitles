@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /src/Site/email.json
 /src/Site/personal.json
+/Database/Changes/9999_Logic.sql

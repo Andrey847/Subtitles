@@ -59,7 +59,7 @@ namespace SubtitlesLearn.Logic.Dal
 				SqlCommand procedure = new SqlCommand("dbo.usp_Word_Sound_Get", conn);
 				procedure.CommandType = System.Data.CommandType.StoredProcedure;
 				procedure.Parameters.Add("CustomerId", SqlDbType.Int).Value = customerId;
-				procedure.Parameters.Add("English", SqlDbType.NVarChar).Value = word;
+				procedure.Parameters.Add("Source", SqlDbType.NVarChar).Value = word;
 
 				conn.Open();
 
@@ -81,9 +81,9 @@ namespace SubtitlesLearn.Logic.Dal
 			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Sound_Add", conn);
-				procedure.CommandType = System.Data.CommandType.StoredProcedure;
-				procedure.Parameters.Add("English", System.Data.SqlDbType.NVarChar).Value = word;
-				procedure.Parameters.Add("Wav", System.Data.SqlDbType.Binary).Value = sound;
+				procedure.CommandType = CommandType.StoredProcedure;
+				procedure.Parameters.Add("Source", SqlDbType.NVarChar).Value = word;
+				procedure.Parameters.Add("Wav", SqlDbType.Binary).Value = sound;
 
 				conn.Open();
 
@@ -118,7 +118,7 @@ namespace SubtitlesLearn.Logic.Dal
 				{
 					Word word = new Word();
 					word.Id = Convert.ToInt32(reader["WordId"]);
-					word.English = Convert.ToString(reader["English"]);
+					word.Source = Convert.ToString(reader["Source"]);
 					word.IsKnown = Convert.ToBoolean(reader["IsKnown"]);
 					word.Translation = Convert.ToString(reader["Translation"]);
 					word.Frequency = Convert.ToInt32(reader["Frequency"]);
@@ -138,7 +138,7 @@ namespace SubtitlesLearn.Logic.Dal
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Translation_Save", conn);
 				procedure.CommandType = CommandType.StoredProcedure;
-				procedure.Parameters.Add("English", SqlDbType.NVarChar).Value = word.English;
+				procedure.Parameters.Add("English", SqlDbType.NVarChar).Value = word.Source;
 				procedure.Parameters.Add("Translation", SqlDbType.NVarChar).Value = word.Translation;
 
 				conn.Open();
@@ -154,8 +154,8 @@ namespace SubtitlesLearn.Logic.Dal
 			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
 			{
 				SqlCommand procedure = new SqlCommand("usp_Word_Learned_Mark", conn);
-				procedure.CommandType = System.Data.CommandType.StoredProcedure;
-				procedure.Parameters.Add("English", System.Data.SqlDbType.NVarChar).Value = word.English;
+				procedure.CommandType = CommandType.StoredProcedure;
+				procedure.Parameters.Add("Source", SqlDbType.NVarChar).Value = word.Source;
 
 				conn.Open();
 

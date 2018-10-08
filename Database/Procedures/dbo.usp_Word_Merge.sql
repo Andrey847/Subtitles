@@ -14,7 +14,7 @@ GO
 -- =======================================================
 ALTER PROCEDURE [dbo].[usp_Word_Merge]
 	@CustomerId int,
-	@English nvarchar(100),
+	@Source nvarchar(100),
 	@Frequency int,
 	@FileName nvarchar(260) = NULL,
 	@Phrases xml,
@@ -33,10 +33,10 @@ BEGIN
 
 	DECLARE @IsAdded bit = 0;
 
-	IF NOT EXISTS(SELECT * FROM Word WHERE English = @English)
+	IF NOT EXISTS(SELECT * FROM Word WHERE Source = @Source)
 	BEGIN
-		INSERT INTO dbo.Word (English, Translation, IsKnown, Frequency, CustomerId)
-			VALUES (@English, NULL, 0, @Frequency, @CustomerId)
+		INSERT INTO dbo.Word (Source, Translation, IsKnown, Frequency, CustomerId)
+			VALUES (@Source, NULL, 0, @Frequency, @CustomerId)
 
 		SET @IsAdded = 1;
 	END
@@ -44,10 +44,10 @@ BEGIN
 	BEGIN
 		UPDATE dbo.Word
 		SET Frequency = Frequency + @Frequency
-		WHERE English = @English
+		WHERE Source = @Source
 	END
 
-	DECLARE @WordId int = (SELECT WordId FROM [dbo].[Word] WHERE English = @English);
+	DECLARE @WordId int = (SELECT WordId FROM [dbo].[Word] WHERE Source = @Source);
 
 	-- And save phrases (only new)
 	SELECT DISTINCT	R.c.value('Value[1]', 'nvarchar(500)') Phrase		

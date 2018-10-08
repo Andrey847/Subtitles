@@ -14,14 +14,14 @@ GO
 -- =======================================================
 ALTER PROCEDURE [dbo].[usp_Word_Sound_Get]
 	@CustomerId int,
-	@English nvarchar(100)
+	@Source nvarchar(100)
 AS
 BEGIN
 	SET NOCOUNT ON;
 	
 	SELECT Wav
 	FROM dbo.Word
-	WHERE English = @English
+	WHERE Source = @Source
 		AND CustomerId = @CustomerId;
 END
 GO

@@ -34,7 +34,7 @@ BEGIN
 	BEGIN	
 		SELECT TOP (@UnknownRate) 
 			w.WordId,
-			English,
+			Source,
 			Translation,
 			IsKnown,
 			Frequency
@@ -48,7 +48,7 @@ BEGIN
 		
 		SELECT TOP (@UnknownRate) 
 			src.WordId,
-			src.English,
+			src.Source,
 			src.Translation,
 			src.IsKnown,
 			src.Frequency
@@ -56,7 +56,7 @@ BEGIN
 		(
 			-- distinct as each word might be in different phrases
 			SELECT DISTINCT w.WordId,
-				w.English,
+				w.Source,
 				w.Translation,
 				w.IsKnown,
 				w.Frequency

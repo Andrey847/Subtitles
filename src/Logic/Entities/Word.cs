@@ -7,7 +7,7 @@ namespace SubtitlesLearn.Logic.Entities
 	/// <summary>
 	/// Represents one word from the DB (personal for Customer).
 	/// </summary>
-	[DebuggerDisplay("{English}")]
+	[DebuggerDisplay("{Source}")]
 	public class Word : IIdentifiable
     {
 		/// <summary>
@@ -23,7 +23,7 @@ namespace SubtitlesLearn.Logic.Entities
 		/// <summary>
 		/// Word value.
 		/// </summary>
-		public string English { get; set; }
+		public string Source { get; set; }
 
 		/// <summary>
 		/// Translation of the word.

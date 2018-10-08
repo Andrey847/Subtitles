@@ -13,7 +13,7 @@ GO
 -- Description:	Adds sound for word.
 -- =======================================================
 ALTER PROCEDURE [dbo].[usp_Word_Sound_Add]
-	@English nvarchar(100),
+	@Source nvarchar(100),
 	@Wav varbinary(max)
 AS
 BEGIN
@@ -21,6 +21,6 @@ BEGIN
 	
 	UPDATE dbo.Word
 	SET Wav = @Wav
-	WHERE English = @English;
+	WHERE Source = @Source;
 END
 GO

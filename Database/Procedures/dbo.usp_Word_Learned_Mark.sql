@@ -13,13 +13,13 @@ GO
 -- Description:	Marks word as learned.
 -- =======================================================
 ALTER PROCEDURE [dbo].[usp_Word_Learned_Mark]
-	@English nvarchar(100)
+	@Source nvarchar(100)
 AS
 BEGIN
 	UPDATE Word
 	SET IsKnown = 1,
 		UpdatedWhen = getdate()
-	WHERE English = @English;
+	WHERE Source = @Source;
 END
 GO
 

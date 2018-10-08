@@ -13,13 +13,13 @@ GO
 -- Description:	Updates translation for the word.
 -- =======================================================
 ALTER PROCEDURE [dbo].[usp_Word_Translation_Save]
-	@English nvarchar(100),
+	@Source nvarchar(100),
 	@Translation nvarchar(100)
 AS
 BEGIN
 	UPDATE Word
 	SET Translation = @Translation,
 		UpdatedWhen = GETDATE()
-	WHERE English = @English;
+	WHERE Source = @Source;
 END
 GO

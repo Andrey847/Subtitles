@@ -81,10 +81,10 @@ namespace SubtitlesLearn.Logic
 				}
 			}
 
-			Word[] words = result.GroupBy(item => item.English)
+			Word[] words = result.GroupBy(item => item.Source)
 							.Select(item => new Word()
 							{
-								English = item.Key,
+								Source = item.Key,
 								Frequency = item.Count(),
 								Phrases = new List<Phrase>(item.SelectMany(jtem => jtem.Phrases))
 							})
@@ -121,7 +121,7 @@ namespace SubtitlesLearn.Logic
 			{
 				if (word.Length > 2 && !word.Contains("<") && !word.Contains(">") && !word.Contains("'"))
 				{
-					result.Add(new Word() { English = word });
+					result.Add(new Word() { Source = word });
 				}
 			}
 

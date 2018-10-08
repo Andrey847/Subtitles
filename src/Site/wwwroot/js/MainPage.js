@@ -79,16 +79,16 @@ function generateTable(jsonWords)
 		container.append(`<div class="row">
 									<div class="col-sm-1">${item.frequency}</div>
 									<div class="col-sm-3" class="srt-english">
-										<div class="srt-play-btn" onclick="playWord(this, '${item.english}');"></div>
-										<span class="srt-text">${item.english}</span>
+										<div class="srt-play-btn" onclick="playWord(this, '${item.source}');"></div>
+										<span class="srt-text">${item.source}</span>
 										<img class="srt-phrases-ico" onclick="showPhrases(this, '${item.id}')">
 									</div>
 									<div class="col-sm-3">
 										<input type="text" class='form-control' value="${item.translation}"></input>
 									</div>
 									<div class="col-sm-2" onmouseenter="selectRow(this);" onmouseleave="deselectRow(this);">
-										<button onclick="save('${item.english}', this);">Save</button>
-										<button onclick="markLearned('${item.english}', this, ${item.id});">Learned</button>
+										<button onclick="save('${item.source}', this);">Save</button>
+										<button onclick="markLearned('${item.source}', this, ${item.id});">Learned</button>
 									</div>
 								</div>`);
 	});
@@ -165,7 +165,7 @@ function playWord(sender, word)
 	player.load();
 }
 
-function save(english, sender)
+function save(source, sender)
 {
 	let translation = $(sender).closest('.row').find('input').val();
 
@@ -176,13 +176,13 @@ function save(english, sender)
 		contentType: 'application/json',
 		data: JSON.stringify(
 			{
-				"english": english,
+				"source": source,
 				"translation": translation
 			})
 	});
 }
 
-function markLearned(english, sender, wordId)
+function markLearned(source, sender, wordId)
 {
 	// close phrases for the word, if we marked it as learned.
 	let existingContainer = $('.srt-phrase-container');
@@ -199,7 +199,7 @@ function markLearned(english, sender, wordId)
 		contentType: 'application/json',
 		data: JSON.stringify(
 			{
-				"english": english
+				"source": source
 			}),
 		success: function ()
 		{

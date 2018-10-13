@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
 namespace SubtitlesLearn.Logic.Entities
 {
@@ -9,6 +10,12 @@ namespace SubtitlesLearn.Logic.Entities
 	/// </summary>
 	public class Phrase
 	{
+		#region Constrants
+
+		private const string TIMESPAN_FORMAT = @"hh\:mm\:ss\.fff";
+
+		#endregion Constants
+
 		#region Properties
 
 		/// <summary>
@@ -17,14 +24,45 @@ namespace SubtitlesLearn.Logic.Entities
 		public string Value { get; set; }
 
 		/// <summary>
+		/// Phrase order number in this movie.
+		/// </summary>
+		public int OrderNumber { get; set; }
+
+		/// <summary>
 		/// Time from.
 		/// </summary>
-		public TimeSpan? TimeFrom { get; set; }
+		[XmlIgnore]
+		public TimeSpan TimeFrom { get; set; }
+
+		/// <summary>
+		/// Field for xml serialization to save in MS SQL.
+		/// </summary>
+		public string TimeFromSql
+		{
+			get => TimeFrom.ToString(TIMESPAN_FORMAT, CultureInfo.InvariantCulture);
+			set
+			{
+				// do nothing. For serialization only.
+			}
+		}
 
 		/// <summary>
 		/// Time to.
 		/// </summary>
-		public TimeSpan? TimeTo { get; set; }
+		[XmlIgnore]
+		public TimeSpan TimeTo { get; set; }
+
+		/// <summary>
+		/// Field for xml serialization to save in MS SQL.
+		/// </summary>
+		public string TimeToSql
+		{
+			get => TimeTo.ToString(TIMESPAN_FORMAT, CultureInfo.InvariantCulture);
+			set
+			{
+				// do nothing. For serialization only.
+			}
+		}
 
 		#endregion Properties
 
@@ -91,8 +129,25 @@ namespace SubtitlesLearn.Logic.Entities
 
 			const string format = @"hh\:mm\:ss\,fff";
 
-			TimeFrom = TimeSpan.ParseExact(m.Groups["from"].Value, format, CultureInfo.InvariantCulture);
-			TimeTo = TimeSpan.ParseExact(m.Groups["to"].Value, format, CultureInfo.InvariantCulture);
+			try
+			{
+
+				TimeFrom = TimeSpan.ParseExact(m.Groups["from"].Value, format, CultureInfo.InvariantCulture);
+				TimeTo = TimeSpan.ParseExact(m.Groups["to"].Value, format, CultureInfo.InvariantCulture);
+			}
+			catch (Exception ex)
+			{
+				throw new InvalidOperationException($"Unable to parse {timing}", ex);
+			}
+		}
+
+		/// <summary>
+		/// Clones current phrase.
+		/// </summary>
+		/// <returns></returns>
+		public Phrase Clone()
+		{
+			return (Phrase)this.MemberwiseClone();
 		}
 
 		#endregion Methods

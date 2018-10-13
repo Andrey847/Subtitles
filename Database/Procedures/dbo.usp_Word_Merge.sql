@@ -50,12 +50,15 @@ BEGIN
 	DECLARE @WordId int = (SELECT WordId FROM [dbo].[Word] WHERE Source = @Source);
 
 	-- And save phrases (only new)
-	SELECT DISTINCT	R.c.value('Value[1]', 'nvarchar(500)') Phrase		
+	SELECT DISTINCT	R.c.value('Value[1]', 'nvarchar(500)') Phrase,
+		R.c.value('TimeFromSql[1]', 'time(7)') AS TimeFrom,
+			R.c.value('TimeToSql[1]', 'time(7)') AS TimeTo,
+			R.c.value('OrderNumber[1]', 'int') AS OrderNumber
 	INTO #Phrases
 	FROM @Phrases.nodes('ArrayOfPhrase/Phrase') AS R(c);
-
-	INSERT INTO Phrase (Value, MovieId)
-	SELECT src.Phrase, @MovieId
+	
+	INSERT INTO Phrase (Value, MovieId, TimeFrom, TimeTo, OrderNumber)
+	SELECT src.Phrase, @MovieId, src.TimeFrom, src.TimeTo, src.OrderNumber
 	FROM #Phrases src
 		LEFT JOIN Phrase tgt
 			ON src.Phrase = tgt.Value
@@ -76,4 +79,3 @@ BEGIN
 	DROP TABLE #Phrases;
 END
 GO
-

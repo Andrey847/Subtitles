@@ -43,15 +43,26 @@ namespace SubtitlesLearn.Logic
 		public Word[] GetWords(string srtContent)
 		{
 			List<Word> result = new List<Word>();
+			int orderNumber = 0;
 
 			using (StringReader reader = new StringReader(srtContent))
 			{
 				while (true)
 				{
-					string number = reader.ReadLine(); // number
-					reader.ReadLine(); // timing
+					orderNumber++;
 
-					string sentence = string.Empty;
+					Phrase phrase = new Phrase();
+
+					string number = reader.ReadLine(); // number
+					if (number == null)
+					{
+						// end of text.
+						break;
+					}
+
+					phrase.SetTiming(reader.ReadLine()); // timing
+					phrase.OrderNumber = orderNumber;
+
 					string currentLine;
 
 					while (!string.IsNullOrWhiteSpace(currentLine = reader.ReadLine()))
@@ -59,18 +70,27 @@ namespace SubtitlesLearn.Logic
 						currentLine = currentLine.Trim();
 
 						// it is dialog case. split each line to separate sentence.
-						if (currentLine.StartsWith("-") && !string.IsNullOrEmpty(sentence))
+						if (currentLine.StartsWith("-") && !string.IsNullOrEmpty(phrase.Value))
 						{
-							result.AddRange(SplitSentance(sentence));
-						}
+							result.AddRange(SplitSentance(phrase));
 
-						// it is ok as in most cases subtitles contains 2 rows max int the block.
-						sentence += " " + currentLine;
+							// To start new phrase
+							phrase = phrase.Clone();
+
+							orderNumber++;
+							phrase.OrderNumber = orderNumber;
+							phrase.Value = currentLine;
+						}
+						else
+						{
+							// it is ok as in most cases subtitles contains 2 rows max int the block.
+							phrase.Value += " " + currentLine;
+						}
 					}
 
-					if (!string.IsNullOrEmpty(sentence))
+					if (!string.IsNullOrEmpty(phrase.Value))
 					{
-						result.AddRange(SplitSentance(sentence));
+						result.AddRange(SplitSentance(phrase));
 					}
 
 					if (currentLine == null)
@@ -93,9 +113,9 @@ namespace SubtitlesLearn.Logic
 			return words;
 		}
 
-		private Word[] SplitSentance(string sentance)
+		private Word[] SplitSentance(Phrase phrase)
 		{
-			sentance = sentance.Trim();
+			string sentance = phrase.Value.Trim();
 			sentance = sentance.Replace(".", string.Empty)
 				.Replace("?", string.Empty)
 				.Replace("!", string.Empty)
@@ -108,14 +128,11 @@ namespace SubtitlesLearn.Logic
 				.Replace("(", string.Empty)
 				.Replace(")", string.Empty);
 
+			phrase.Value = sentance;
+
 			string[] words = sentance.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
 			List<Word> result = new List<Word>();
-
-			Phrase phrase = new Phrase()
-			{
-				Value = sentance
-			};
 
 			foreach (string word in words)
 			{

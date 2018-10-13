@@ -1,3 +1,30 @@
-﻿The way to extract autio track and probably subtitles.
+﻿
+]he way to extract autio track and probably subtitles.
 
 https://stackoverflow.com/questions/32922226/extract-every-audio-and-subtitles-from-a-video-with-ffmpeg/32925753
+
+todo:
+waiter on file load
+calc frequency on each movie separately
+show file loading progress in percents
+contact form
+show all text when exact movie is choosen
+make closing/opening detail smooth
+save timings with phrases to recreate text from separate phrases
+add the ability to remove movie
+add the ability to rename movie
+add setting of unknown word count
+add drag n drop to upload file
+save settings
+line up everything
+refresh movies list when ne movie is loaded
+undo button
+
+
+-------
+infrastructure:
+to buy the domain sub-learn
+ to buy ssl certificate
+
+?
+chunks. is there any dictionary wich chunks?

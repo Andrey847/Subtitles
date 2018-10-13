@@ -37,3 +37,17 @@
 	cursor: pointer;
 }
 
+
+.srt-phrase-container
+{
+	max-height: 0;
+	overflow: hidden;
+	-webkit-transition: max-height 1.5s ease-in-out;
+	transition: max-height 1.5s ease-out;
+}
+
+	.srt-phrase-container:hover
+	{
+		max-height: 500px;
+	}
+

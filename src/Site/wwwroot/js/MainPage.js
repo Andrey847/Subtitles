@@ -144,6 +144,10 @@ function showPhrases(sender, wordId)
 					</div>
 				</div>`
 				);
+
+				// very strange but transition work with a tiny delay only.
+				setTimeout(() => $('.srt-phrase-container')[0].style.maxHeight = '500px', 1);
+				
 			}
 		});
 	}

@@ -4,12 +4,12 @@
 https://stackoverflow.com/questions/32922226/extract-every-audio-and-subtitles-from-a-video-with-ffmpeg/32925753
 
 todo:
+
 waiter on file load
 calc frequency on each movie separately
 show file loading progress in percents
 contact form
 show all text when exact movie is choosen
-make closing/opening detail smooth
 save timings with phrases to recreate text from separate phrases
 add the ability to remove movie
 add the ability to rename movie

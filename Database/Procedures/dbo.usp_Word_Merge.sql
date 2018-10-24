@@ -15,7 +15,6 @@ GO
 ALTER PROCEDURE [dbo].[usp_Word_Merge]
 	@CustomerId int,
 	@Source nvarchar(100),
-	@Frequency int,
 	@FileName nvarchar(260) = NULL,
 	@Phrases xml,
 	@LanguageId int = 1 -- eng
@@ -35,16 +34,10 @@ BEGIN
 
 	IF NOT EXISTS(SELECT * FROM Word WHERE Source = @Source)
 	BEGIN
-		INSERT INTO dbo.Word (Source, Translation, IsKnown, Frequency, CustomerId)
-			VALUES (@Source, NULL, 0, @Frequency, @CustomerId)
+		INSERT INTO dbo.Word (Source, Translation, IsKnown, CustomerId)
+			VALUES (@Source, NULL, 0, @CustomerId)
 
 		SET @IsAdded = 1;
-	END
-	ELSE
-	BEGIN
-		UPDATE dbo.Word
-		SET Frequency = Frequency + @Frequency
-		WHERE Source = @Source
 	END
 
 	DECLARE @WordId int = (SELECT WordId FROM [dbo].[Word] WHERE Source = @Source);

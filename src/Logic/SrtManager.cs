@@ -104,8 +104,7 @@ namespace SubtitlesLearn.Logic
 			Word[] words = result.GroupBy(item => item.Source)
 							.Select(item => new Word()
 							{
-								Source = item.Key,
-								Frequency = item.Count(),
+								Source = item.Key,								
 								Phrases = new List<Phrase>(item.SelectMany(jtem => jtem.Phrases))
 							})
 							.ToArray();

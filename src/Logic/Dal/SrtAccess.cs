@@ -64,7 +64,6 @@ namespace SubtitlesLearn.Logic.Dal
 				{
 					p.Add("CustomerId", SqlDbType.Int).Value = word.CustomerId;
 					p.Add("Source", SqlDbType.NVarChar).Value = word.Source;
-					p.Add("Frequency", SqlDbType.Int).Value = word.Frequency;
 					p.Add("FileName", SqlDbType.VarChar).Value = fileName;
 					p.Add("Phrases", SqlDbType.Xml).Value = SerializationHelper.Serialize(word.Phrases);
 				});

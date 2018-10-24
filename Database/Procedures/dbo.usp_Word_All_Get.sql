@@ -28,48 +28,29 @@ BEGIN
 		WHERE CustomerId = @CustomerId	
 			AND  s.Code = 'UnknownWordMax'
 	)	
-
-	-- use different queries for the performance reasons
-	IF (@MovieId IS NULL)
-	BEGIN	
+	
+	SELECT w.WordId,
+		w.Source,
+		w.Translation,
+		w.IsKnown,
+		src.Frequency
+	FROM
+	(
 		SELECT TOP (@UnknownRate) 
-			w.WordId,
-			Source,
-			Translation,
-			IsKnown,
-			Frequency
-		FROM dbo.Word w				
+			w.WordId,	
+			COUNT(pw.PhraseId) AS Frequency
+		FROM dbo.Word w	
+			INNER JOIN dbo.PhraseWord pw
+				ON w.WordId = pw.WordId
+			INNER JOIN dbo.Phrase p	
+				ON pw.PhraseId = p.PhraseId
 		WHERE IsKnown = 0
-			AND CustomerId = @CustomerId
+			AND CustomerId = @CustomerId	
+			AND (@MovieId IS NULL OR p.MovieId = @MovieId)
+		GROUP BY w.WordId
 		ORDER BY Frequency DESC
-	END
-	ELSE
-	BEGIN
-		
-		SELECT TOP (@UnknownRate) 
-			src.WordId,
-			src.Source,
-			src.Translation,
-			src.IsKnown,
-			src.Frequency
-		FROM 
-		(
-			-- distinct as each word might be in different phrases
-			SELECT DISTINCT w.WordId,
-				w.Source,
-				w.Translation,
-				w.IsKnown,
-				w.Frequency
-			FROM dbo.Word w			
-				INNER JOIN dbo.PhraseWord pw
-					ON w.WordId = pw.WordId
-				INNER JOIN dbo.Phrase p
-					ON pw.PhraseId = p.PhraseId
-			WHERE IsKnown = 0
-				AND CustomerId = @CustomerId
-				AND p.MovieId = @MovieId
-		) src
-		ORDER BY Frequency DESC
-	END
+	) src
+		INNER JOIN dbo.Word w
+			ON src.WordId = w.WordId
 END
 GO

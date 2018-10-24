@@ -177,7 +177,18 @@ namespace SubtitlesLearn.Site.Controllers
 			return new FileStreamResult(ms, "audio/x-wav");
 		}
 
-		//public async Task<IActionResult>
+		/// <summary>
+		/// Removes movie completly from  DB.
+		/// </summary>
+		/// <param name="movieId"></param>
+		/// <returns></returns>
+		[HttpDelete("[controller]/[action]/{movieId}")]
+		public async Task<IActionResult> DeleteMovie(int movieId)
+		{ 
+			await SrtManager.Instance.DeleteMovie(movieId);
+
+			return Ok();
+		}
 
 		#endregion Methods
 	}

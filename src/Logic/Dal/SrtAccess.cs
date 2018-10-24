@@ -52,6 +52,20 @@ namespace SubtitlesLearn.Logic.Dal
 		}
 
 		/// <summary>
+		/// Removes movie from DB.
+		/// </summary>
+		/// <param name="movieId"></param>
+		/// <returns></returns>
+		internal static async Task DeleteMovie(int movieId)
+		{
+			await ExecuteNonQueryAsync("dbo.usp_Movie_Delete", 
+				(p) =>
+				{
+					p.Add("MovieId", SqlDbType.Int).Value = movieId;
+				});
+		}
+
+		/// <summary>
 		/// Imports (if it is required) word to DB.
 		/// </summary>
 		/// <param name="word"></param>

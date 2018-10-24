@@ -199,6 +199,17 @@ namespace SubtitlesLearn.Logic
 		}
 
 		/// <summary>
+		/// Removes movie.
+		/// </summary>
+		/// <param name="movieId"></param>
+		/// <returns></returns>
+		public async Task DeleteMovie(int movieId)
+		{
+			await Log.LogInfo("Deleting movie", $"MovieId: {movieId}");
+			await SrtAccess.DeleteMovie(movieId);
+		}
+
+		/// <summary>
 		/// Returns all languages that system supports.
 		/// </summary>
 		/// <returns></returns>

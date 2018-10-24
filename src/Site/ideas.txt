@@ -19,6 +19,7 @@ line up everything
 refresh movies list when ne movie is loaded
 undo button
 remove control words from phrases (like WOMAN: or [SOMEONE KNOCKING])
+add email notifications
 
 
 -------

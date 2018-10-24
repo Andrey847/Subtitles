@@ -211,3 +211,25 @@ function markLearned(source, sender, wordId)
 		}
 	});
 }
+
+function deleteMovie()
+{
+	if (confirm("Are you sure? All data, linked to this movie, will be removed"))
+	{
+		let selectedMovie = $('#cmbMovie option:selected').val();
+
+		$.ajax({
+			type: "DELETE",
+			url: `/WorkPlace/DeleteMovie/${selectedMovie}`,
+			success: function ()
+			{
+				loadWords();
+			},
+			error: function ()
+			{
+				// redirect to the main page.
+				window.location.href = '/';
+			}
+		});
+	}
+}

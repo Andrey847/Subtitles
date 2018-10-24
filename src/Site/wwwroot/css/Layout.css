@@ -78,3 +78,13 @@
 {
 	color: #fff;
 }
+
+.div-btn
+{
+	cursor: pointer;
+}
+	.div-btn:hover
+	{
+		border: 1px solid #ced4da;
+		border-radius: 4px;
+	}

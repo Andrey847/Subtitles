@@ -13,12 +13,14 @@ GO
 -- Description:	Deletes movie.
 -- =======================================================
 ALTER PROCEDURE[dbo].[usp_Movie_Delete]
+	@CustomerId int,	-- additional protection. Only owner can delete its movie.
 	@MovieId int
 AS
 BEGIN
 	SET NOCOUNT ON;
 
 	DELETE FROM dbo.Movie
-	WHERE MovieId = @MovieId;
+	WHERE MovieId = @MovieId
+		AND CustomerId = @CustomerId;
 END
 GO

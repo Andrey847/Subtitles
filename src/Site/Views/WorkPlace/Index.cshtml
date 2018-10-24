@@ -18,7 +18,7 @@
 		<select id="cmbMovie" class="form-control" onchange="loadWords();">
 			<option value="0" selected>[All]</option>
 
-			@foreach(Movie movie in ViewBag.Movies)
+			@foreach (Movie movie in ViewBag.Movies)
 			{
 				<option value="@movie.Id">@movie.Name</option>
 			}
@@ -26,18 +26,18 @@
 	</div>
 
 	<div class="col-sm-1">
-		<div id="btnRenameMovie" title="Rename movie" onclick="renameMovie()" class="div-btn">
-			<img  />
+		<div id="btnRenameMovie" title="Rename movie" onclick="renameMovieDialog();" class="div-btn">
+			<img />
 		</div>
 
-		<div id="btnDeleteMovie" title="Delete movie" onclick="deleteMovie()" class="div-btn" >
-			<img/>
+		<div id="btnDeleteMovie" title="Delete movie" onclick="deleteMovie()" class="div-btn">
+			<img />
 		</div>
 	</div>
 </div>
 <hr />
 <div class="container" id="dvWords">
-	
+
 </div>
 
 <audio id="wordPlayer">
@@ -45,3 +45,8 @@
 </audio>
 
 <script src="~/js/MainPage.js" asp-append-version="true"></script>
+
+@* Rename movie popup *@
+@{
+	await Html.RenderPartialAsync("~/Views/WorkPlace/MovieRename.cshtml");
+}

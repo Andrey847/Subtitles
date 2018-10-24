@@ -184,10 +184,26 @@ namespace SubtitlesLearn.Site.Controllers
 		/// <returns></returns>
 		[HttpDelete("[controller]/[action]/{movieId}")]
 		public async Task<IActionResult> DeleteMovie(int movieId)
-		{ 
-			await SrtManager.Instance.DeleteMovie(movieId);
+		{
+			Customer customer = await _userManager.GetUserAsync(User);
+			await SrtManager.Instance.DeleteMovie(customer.Id, movieId);
 
 			return Ok();
+		}
+
+		/// <summary>
+		/// Renames movide.
+		/// </summary>
+		/// <param name="movieId"></param>
+		/// <param name="newName"></param>
+		/// <returns></returns>
+		[HttpPost("[controller]/[action]/{movieId}/{newName}")]
+		public async Task<IActionResult> RenameMovie(int movieId, string newName)
+		{
+			Customer customer = await _userManager.GetUserAsync(User);
+			string error = await SrtManager.Instance.RenameMovie(customer.Id, movieId, newName);
+
+			return new JsonResult(error);
 		}
 
 		#endregion Methods

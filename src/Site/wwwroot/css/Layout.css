@@ -88,3 +88,36 @@
 		border: 1px solid #ced4da;
 		border-radius: 4px;
 	}
+
+.srt-error
+{
+	color: red;
+}
+
+.btn-close-modal
+{
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: none;
+	position: absolute;
+	top: 1em;
+	left: 1em;
+	cursor: pointer;
+	z-index: 1;
+	background-color: rgb(250, 250, 250);
+}
+
+	.btn-close-modal > img
+	{
+		width: 32px;
+		height: 32px;
+		content: url(../images/Pixeden/close.svg);
+		margin-top: -5px;
+	}
+
+.srt-modal-title
+{
+	width: 100%;
+	text-align: center;
+}

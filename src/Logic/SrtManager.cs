@@ -203,10 +203,10 @@ namespace SubtitlesLearn.Logic
 		/// </summary>
 		/// <param name="movieId"></param>
 		/// <returns></returns>
-		public async Task DeleteMovie(int movieId)
+		public async Task DeleteMovie(int customerId, int movieId)
 		{
-			await Log.LogInfo("Deleting movie", $"MovieId: {movieId}");
-			await SrtAccess.DeleteMovie(movieId);
+			await Log.LogInfo("Deleting movie", $"CustomerId: {customerId}, MovieId: {movieId}");
+			await SrtAccess.DeleteMovie(customerId, movieId);
 		}
 
 		/// <summary>
@@ -216,6 +216,20 @@ namespace SubtitlesLearn.Logic
 		public async Task<Language[]> GetLanguages()
 		{
 			return await SrtAccess.GetLanguages();
+		}
+
+		/// <summary>
+		/// Renames movie.
+		/// </summary>
+		/// <param name="customerId"></param>
+		/// <param name="movieId"></param>
+		/// <param name="newName"></param>
+		/// <returns></returns>
+		public async Task<string> RenameMovie(int customerId, int movieId, string newName)
+		{
+			await Log.LogInfo("Renaming movie", $"CustomerId: {customerId}, MovieId: {movieId}, NewName: {newName}");
+
+			return await SrtAccess.RenameMovie(customerId, movieId, newName);
 		}
 
 		#endregion Methods

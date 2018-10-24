@@ -1,0 +1,32 @@
+﻿<div class="modal fade" id="dlgRenameMovie" tabindex="-1" role="dialog" aria-hidden="false">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="btn-close-modal" id="btnCloseRenameMovie" onclick="$('#dlgRenameMovie').modal('hide')">
+					<img />
+				</button>
+				<h5 class="srt-modal-title">Rename movie</h5>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-3">New movie name:</div>
+					<div class="col-sm-9">
+						<input type="text" id="txtMovieName" class="form-control" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<span class="srt-error" style="display: none" id="vldMovieName"></span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6"></div>
+					<div class="col-sm-6">
+						<button id="btnMovieRename" class="btn btn-primary" onclick="renameMovie();">Rename</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -205,10 +205,7 @@ function markLearned(source, sender, wordId)
 			{
 				"source": source
 			}),
-		success: function ()
-		{
-			$(sender).closest('.row').remove();
-		}
+		success: () => $(sender).closest('.row').remove()		
 	});
 }
 
@@ -221,7 +218,7 @@ function deleteMovie()
 		$.ajax({
 			type: "DELETE",
 			url: `/WorkPlace/DeleteMovie/${selectedMovie}`,
-			success: function ()
+			success: () =>
 			{
 				// select [All] movies
 				$('#cmbMovie').val('0');
@@ -230,12 +227,60 @@ function deleteMovie()
 				// do not forget to remove deleted movie.
 				$(`#cmbMovie option[value='${selectedMovie}']`).remove();
 			},
-			error: function (e)
+			error: (e) => { throw e; }
+		});		
+	}
+}
+function renameMovieDialog()
+{
+	let movieId = $('#cmbMovie option:selected').val();
+
+	if (movieId != '0') // 0 is [All]. Of course we cannot rename it.
+	{
+		$('#txtMovieName').val($('#cmbMovie option:selected').text());
+		$('#vldMovieName').hide();
+
+		$('#dlgRenameMovie').modal();
+	}
+}
+
+function renameMovie()
+{
+	// validation
+	let newName = $('#txtMovieName').val();
+	
+	if (!newName)
+	{	
+		$('#vldMovieName').text('Please enter name.');
+		$('#vldMovieName').show();
+	}
+	else
+	{
+		$('#btnMovieRename').attr('disabled', 'disabled');
+		$('#vldMovieName').hide();
+
+		let movieId = $('#cmbMovie option:selected').val();
+
+		$.ajax({
+			type: "POST",
+			url: `/WorkPlace/RenameMovie/${movieId}/${encodeURIComponent(newName)}`,
+			success: (error) =>
 			{
-				// redirect to the main page.
-				throw e;
-				//window.location.href = '/';
-			}
+				if (error)
+				{
+					// unable to rename. Show this error
+					$('#vldMovieName').text(error);
+					$('#vldMovieName').show();
+				}
+				else
+				{
+					// everything is ok. close form 
+					$('#dlgRenameMovie').modal('hide');
+					$('#cmbMovie option:selected').text(newName);
+				}
+			},
+			error: (e) =>  { throw e; },
+			complete: () => $('#btnMovieRename').attr('disabled', null)
 		});		
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Manager;
+using System;
 using System.Data;
 using System.Threading.Tasks;
 using static SubtitlesLearn.Logic.Dal.DbHelper;
@@ -56,11 +57,12 @@ namespace SubtitlesLearn.Logic.Dal
 		/// </summary>
 		/// <param name="movieId"></param>
 		/// <returns></returns>
-		internal static async Task DeleteMovie(int movieId)
+		internal static async Task DeleteMovie(int customerId, int movieId)
 		{
 			await ExecuteNonQueryAsync("dbo.usp_Movie_Delete", 
 				(p) =>
 				{
+					p.Add("CustomerId", SqlDbType.Int).Value = customerId;
 					p.Add("MovieId", SqlDbType.Int).Value = movieId;
 				});
 		}
@@ -104,6 +106,23 @@ namespace SubtitlesLearn.Logic.Dal
 						GoogleCode = m["GoogleCode"] as string
 					};
 				})).ToArray();
+		}
+
+		/// <summary>
+		/// Renames movie.
+		/// </summary>
+		/// <param name="customerId"></param>
+		/// <param name="movieId"></param>
+		/// <param name="newName"></param>
+		/// <returns></returns>
+		internal static async Task<string> RenameMovie(int customerId, int movieId, string newName)
+		{
+			return (await ExecuteScalarAsync<string>("dbo.usp_Movie_Rename", (p) =>
+			{
+				p.Add("CustomerId", SqlDbType.Int).Value = customerId;
+				p.Add("MovieId", SqlDbType.Int).Value = movieId;
+				p.Add("NewName", SqlDbType.NVarChar).Value = newName;
+			}));
 		}
 	}
 }

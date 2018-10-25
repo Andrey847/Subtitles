@@ -8,15 +8,17 @@ todo:
 contact form
 show all text when exact movie is choosen
 add setting of unknown word count
-add drag n drop to upload file
 save settings
 line up everything
 refresh movies list when ne movie is loaded
 undo button
-remove control words from phrases (like WOMAN: or [SOMEONE KNOCKING])
+remove control words from phrases (like WOMAN: or [SOMEONE KNOCKING]) (better.call.saul.s04.e10.winner.(2018).eng.1cd.(7504479) (1).zip)
 add email notifications
 save state (choosen movie etc)
 support many srt files in archive.
+google auth
+define subtitles language automatically (and warn about it).
+delete words completely if there are no another movie that a linked to a word.
 
 -------
 infrastructure:

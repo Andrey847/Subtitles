@@ -19,6 +19,19 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	-- Remove words that belongs to this movie only.
+	DELETE w
+	FROM uv_WordMovie m
+		LEFT JOIN uv_WordMovie om-- other movie
+			ON m.WordId = om.WordId
+				AND om.CustomerId = @CustomerId	
+				AND om.MovieId <> @MovieId
+		INNER JOIN dbo.Word w
+			ON m.WordId = w.WordId
+	WHERE m.CustomerId = @CustomerId	
+		AND m.MovieId = @MovieId
+		AND om.WordId IS NULL	-- words that in this movie only
+
 	DELETE FROM dbo.Movie
 	WHERE MovieId = @MovieId
 		AND CustomerId = @CustomerId;

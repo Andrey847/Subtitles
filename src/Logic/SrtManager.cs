@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SubtitlesLearn.Logic
@@ -81,7 +82,7 @@ namespace SubtitlesLearn.Logic
 						// it is dialog case. split each line to separate sentence.
 						if (currentLine.StartsWith("-") && !string.IsNullOrEmpty(phrase.Value))
 						{
-							result.AddRange(SplitSentance(phrase));
+							result.AddRange(SplitSentence(phrase));
 
 							// To start new phrase
 							phrase = phrase.Clone();
@@ -99,7 +100,7 @@ namespace SubtitlesLearn.Logic
 
 					if (!string.IsNullOrEmpty(phrase.Value))
 					{
-						result.AddRange(SplitSentance(phrase));
+						result.AddRange(SplitSentence(phrase));
 					}
 
 					if (currentLine == null)
@@ -121,10 +122,22 @@ namespace SubtitlesLearn.Logic
 			return words;
 		}
 
-		private Word[] SplitSentance(Phrase phrase)
+		/// <summary>
+		/// Splits sentence by words.
+		/// </summary>
+		/// <param name="phrase"></param>
+		/// <returns></returns>
+		internal Word[] SplitSentence(Phrase phrase)
 		{
-			string sentance = phrase.Value.Trim();
-			sentance = sentance.Replace(".", string.Empty)
+			string sentence = phrase.Value.Trim();
+
+			// remove text in [] 
+			sentence = Regex.Replace(sentence, @"\[.*?\]", string.Empty);
+
+			// Remove ALLCAPITALS words. usually the means Aux words like actor name etc.
+			sentence = Regex.Replace(sentence, @"[A-Z]{2,100}", string.Empty);
+
+			sentence = sentence.Replace(".", string.Empty)
 				.Replace("?", string.Empty)
 				.Replace("!", string.Empty)
 				.Replace("'s", string.Empty)
@@ -132,13 +145,13 @@ namespace SubtitlesLearn.Logic
 				.Replace(",", string.Empty)
 				.Replace(":", string.Empty)
 				.Replace("[", string.Empty)
-				.Replace("[", string.Empty)
+				.Replace("]", string.Empty)
 				.Replace("(", string.Empty)
 				.Replace(")", string.Empty);
 
-			phrase.Value = sentance;
+			phrase.Value = sentence;
 
-			string[] words = sentance.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+			string[] words = sentence.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
 			List<Word> result = new List<Word>();
 

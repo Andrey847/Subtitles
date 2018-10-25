@@ -1,4 +1,4 @@
-using SubtitlesLearn.Logic;
+﻿using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Tests;
@@ -65,6 +65,36 @@ baby for five minutes in a car.";
 								.ToArray();
 
 			Assert.True(phrases.Length == 2);
+		}
+
+		/// <summary>
+		/// Removing capitals from phrases.
+		/// </summary>
+		[Fact]
+		public void ParseWords_Capitals()
+		{
+			Word[] words = SrtManager.Instance.SplitSentence(new Phrase(" - ERNIE: ♪ I really need you tonight ♪"));
+			Assert.True(words.Length == 4);
+		}
+
+		/// <summary>
+		/// Removing words in []. 
+		/// </summary>
+		[Fact]
+		public void ParseWords_Aux1()
+		{
+			Word[] words = SrtManager.Instance.SplitSentence(new Phrase(" - [CHEERS AND APPLAUSE]"));
+			Assert.True(words.Length == 0);
+		}
+
+		/// <summary>
+		/// Removing words in []. 
+		/// </summary>
+		[Fact]
+		public void ParseWords_Aux2()
+		{
+			Word[] words = SrtManager.Instance.SplitSentence(new Phrase(" - [CHUCKLING] Yeah."));
+			Assert.True(words.Length == 1);
 		}
 
 		[Fact]

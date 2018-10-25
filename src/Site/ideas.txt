@@ -18,7 +18,7 @@ save state (choosen movie etc)
 support many srt files in archive.
 google auth
 define subtitles language automatically (and warn about it).
-delete words completely if there are no another movie that a linked to a word.
+
 
 -------
 infrastructure:

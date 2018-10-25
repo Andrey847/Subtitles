@@ -66,6 +66,38 @@ baby for five minutes in a car.";
 
 			Assert.True(phrases.Length == 2);
 		}
+		
+		/// <summary>
+		/// Parses block from srt correctly.
+		/// </summary>
+		[Fact]
+		public void ParseWords_WatermelonProblem()
+		{
+			string srt = @"234
+00:09:15,670 --> 00:09:17,470
+JIMMY: Watermelon, pickles.
+
+235
+00:09:19,510 --> 00:09:21,600
+Watermelon, pickles.
+
+236
+00:09:21,620 --> 00:09:25,410
+Watermelon, pickles.
+
+237
+00:09:25,420 --> 00:09:30,480
+Watermelon, pickles.";
+
+			Word[] words = SrtManager.Instance.GetWords(srt);
+			// should be 1 phrase only
+			string[] phrases = words.SelectMany(item => item.Phrases)
+								.Select(item => item.Value)
+								.Distinct()
+								.ToArray();
+
+			Assert.True(phrases.Length == 1);
+		}
 
 		/// <summary>
 		/// Removing capitals from phrases.

@@ -114,7 +114,7 @@ namespace SubtitlesLearn.Logic
 			Word[] words = result.GroupBy(item => item.Source)
 							.Select(item => new Word()
 							{
-								Source = item.Key,								
+								Source = item.Key,
 								Phrases = new List<Phrase>(item.SelectMany(jtem => jtem.Phrases))
 							})
 							.ToArray();
@@ -129,13 +129,15 @@ namespace SubtitlesLearn.Logic
 		/// <returns></returns>
 		internal Word[] SplitSentence(Phrase phrase)
 		{
-			string sentence = phrase.Value.Trim();
+			string sentence = phrase.Value;
 
 			// remove text in [] 
 			sentence = Regex.Replace(sentence, @"\[.*?\]", string.Empty);
 
 			// Remove ALLCAPITALS words. usually the means Aux words like actor name etc.
-			sentence = Regex.Replace(sentence, @"[A-Z]{2,100}", string.Empty);
+			sentence = Regex.Replace(sentence, @"[A-Z]{2,100}:\s", string.Empty);
+
+			phrase.Value = sentence.Trim();
 
 			sentence = sentence.Replace(".", string.Empty)
 				.Replace("?", string.Empty)
@@ -148,8 +150,6 @@ namespace SubtitlesLearn.Logic
 				.Replace("]", string.Empty)
 				.Replace("(", string.Empty)
 				.Replace(")", string.Empty);
-
-			phrase.Value = sentence;
 
 			string[] words = sentence.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 

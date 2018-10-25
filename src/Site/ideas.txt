@@ -12,7 +12,6 @@ save settings
 line up everything
 refresh movies list when ne movie is loaded
 undo button
-remove control words from phrases (like WOMAN: or [SOMEONE KNOCKING]) (better.call.saul.s04.e10.winner.(2018).eng.1cd.(7504479) (1).zip)
 add email notifications
 save state (choosen movie etc)
 support many srt files in archive.

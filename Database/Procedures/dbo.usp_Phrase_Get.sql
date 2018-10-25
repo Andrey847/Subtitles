@@ -18,7 +18,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT p.Value
+	SELECT DISTINCT p.Value
 	FROM Phrase p
 		INNER JOIN PhraseWord pw	
 			ON p.PhraseId = pw.PhraseId

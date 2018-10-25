@@ -25,5 +25,6 @@ BEGIN
 		CustomerId
 	FROM dbo.Movie
 	WHERE CustomerId = @CustomerId
+	ORDER BY Name
 END
 GO

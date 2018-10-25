@@ -79,9 +79,22 @@ namespace SubtitlesLearn.Site.Controllers
 			Customer customer = await _userManager.GetUserAsync(User);
 
 			ViewBag.CurrentPageType = PageType.WorkPlace;
-			ViewBag.Movies = (await SrtManager.Instance.GetMovies(customer.Id)).OrderBy(item => item.Name);
+			ViewBag.Movies = (await SrtManager.Instance.GetMovies(customer.Id));
 
 			return View();
+		}
+
+		/// <summary>
+		/// Returns all movies for the Customer.
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet("[controller]/[action]")]
+		public async Task<IActionResult> GetMovies()
+		{
+			Customer customer = await _userManager.GetUserAsync(User);
+			Movie[] result = await SrtManager.Instance.GetMovies(customer.Id);
+
+			return new JsonResult(result);
 		}
 
 		/// <summary>

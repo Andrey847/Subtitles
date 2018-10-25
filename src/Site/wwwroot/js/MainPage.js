@@ -7,9 +7,8 @@ connection.on("UploadProgress", (percentCompleted) =>
 {
 	if (percentCompleted == 100)
 	{
-		// Everything completed. Remove %  and unblock Upload button
-		$('#btnUpload').text('Upload');
-		$('#btnUpload').attr('disabled', null);
+		// Everything completed. Reload movies and then Remove %  and unblock Upload button
+		reloadMovies();
 	}
 	else
 	{
@@ -35,6 +34,7 @@ function signalConnect(cnt)
 }
 
 var _currentWordIcon;
+var _loadingFile;
 
 $(document).ready(function ()
 {
@@ -59,6 +59,35 @@ $(document).ready(function ()
 		wordPlayer.play();
 	};
 });
+
+// Reloads all movies of combobox.
+function reloadMovies()
+{
+	$('#cmbMovie').empty();
+
+	$.ajax(
+		{
+			type: "GET",
+			url: `/WorkPlace/GetMovies/`,
+			success: (movies) =>
+			{
+				let cmbMovie = $('#cmbMovie');
+
+				cmbMovie.append(`<option value="0">[All]</option>`);
+
+				movies.forEach((item) =>
+				{
+					let selected = item.name == _loadingFile ? ' selected ' : '';
+					cmbMovie.append(`<option value="${item.id}" ${selected}>${item.name}</option>`);
+				});
+
+				loadWords();
+
+				$('#btnUpload').text('Upload');
+				$('#btnUpload').attr('disabled', null);
+			}
+		});	
+}
 
 function loadWords()
 {
@@ -88,6 +117,10 @@ function uploadSrt(files)
 	for (var i = 0; i < files.length; i++)
 	{
 		data.append(files[i].name, files[i]);
+
+		// doesn't matter what is the files from the list. In most cases there is one file only.
+		// and we show it as selected after the loading.
+		_loadingFile = files[i].name;
 	}
 
 	$.ajax({
@@ -100,8 +133,6 @@ function uploadSrt(files)
 		{
 			alert(`File imported. Total word: ${message.totalWords},
 new words: ${message.newWords}`);
-
-			loadWords();
 		},
 		error: function ()
 		{

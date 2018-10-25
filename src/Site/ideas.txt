@@ -21,7 +21,6 @@ support many srt files in archive.
 google auth
 define subtitles language automatically (and warn about it).
 
-block buttons during marked as learned or save (or remove immidiately, and save in the background)
 
 Refresh button is required
 

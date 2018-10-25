@@ -17,10 +17,15 @@
 }
 
 <div class="row">
-	<div class="col-sm-6">
+	<div class="col-sm-6" id="dvUploadArea" 
+		 ondragenter="fileDragEnter(event);"
+		 ondragleave="fileDragLeave(event);"
+		 ondrop="fileDropped(event);"
+		 ondragover="allowDrop(event)"
+		 >
 		<div class="srt-file">
 			<button type="button" id="btnUpload" class="btn" onclick="fileChooseClick(event);" title="">Upload</button>
-			<input id="flUpload" type="file" onchange="uploadSrt();" />
+			<input id="flUpload" type="file" onchange="uploadSrt(event.currentTarget.files);" />
 			<img id="imgUploadWaiter" style="display: none;" />
 		</div>
 	</div>
@@ -49,9 +54,7 @@
 	</div>
 </div>
 <hr />
-<div class="container" id="dvWords">
-
-</div>
+<div class="container" id="dvWords"></div>
 
 <audio id="wordPlayer">
 	<source id="srcWordWav" type="audio/wav">

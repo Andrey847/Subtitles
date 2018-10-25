@@ -78,13 +78,12 @@ function loadWords()
 	});
 }
 
-function uploadSrt()
+function uploadSrt(files)
 {
 	// disable the upload button during the load.
 	$('#btnUpload').attr('disabled', 'disabled');
 	$('#imgUploadWaiter').show();
 
-	var files = document.getElementById('flUpload').files;
 	var data = new FormData();
 	for (var i = 0; i < files.length; i++)
 	{
@@ -338,3 +337,30 @@ function fileChooseClick(evnt)
 	fileBrowser.click();
 }
 
+function fileDragEnter(ev)
+{
+	ev.preventDefault();
+	$('#dvUploadArea').addClass('drag-highlight');	
+}
+
+function fileDragLeave(ev)
+{
+	$('#dvUploadArea').removeClass('drag-highlight');
+	ev.stopPropagation();
+}
+
+function fileDropped(ev)
+{
+	ev.stopPropagation();
+
+	fileDragLeave(event);
+	// to prevent default browser behaviour (file to be opened).
+	ev.preventDefault();
+
+	uploadSrt(ev.dataTransfer.files)
+}
+
+function allowDrop(ev)
+{
+	ev.preventDefault();
+}

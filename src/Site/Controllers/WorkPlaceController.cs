@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Manager;
 using SubtitlesLearn.Site.Models;
+using SubtitlesLearn.Site.Services;
 using SubtitlesLearn.Site.Services.Identity;
 
 namespace SubtitlesLearn.Site.Controllers
@@ -27,6 +29,9 @@ namespace SubtitlesLearn.Site.Controllers
 		#region Fields
 
 		private readonly ApplicationUserManager _userManager;
+		
+		private static IHubContext<NotificationHub> _hubContext = null;
+		private static object _syncHub = new object();
 
 		#endregion Fields
 
@@ -39,9 +44,26 @@ namespace SubtitlesLearn.Site.Controllers
 		/// <param name="signInManager"></param>
 		/// <param name="recaptchaSettings"></param>
 		/// <param name="accessor"></param>
-		public WorkPlaceController(ApplicationUserManager userManager)
+		public WorkPlaceController(ApplicationUserManager userManager,
+			IHubContext<NotificationHub> hubContext)
 		{
-			_userManager = userManager;			
+			_userManager = userManager;
+
+			// initialize SignalR context and subscribe on load changes			
+			if (_hubContext == null)
+			{
+				lock (_syncHub)
+				{
+					if (_hubContext == null)
+					{
+						_hubContext = hubContext;
+
+						//UserManager.Instance.SentenceLeftUpdated += SentenceLeftUpdatedHandler;
+						//TtsManager.Instance.Mp3Progress += Mp3ProgressHandler;
+						SrtManager.Instance.SrtUploadProgress += SrtUploadProgress;
+					}
+				}
+			}
 		}
 
 		#endregion Construction
@@ -108,6 +130,7 @@ namespace SubtitlesLearn.Site.Controllers
 			{
 				using (ZipArchive zip = new ZipArchive(ms))
 				{
+					// Always take first file from archive.
 					ZipArchiveEntry entry = zip.Entries.First();
 
 					using (BinaryReader sr = new BinaryReader(entry.Open()))
@@ -204,6 +227,11 @@ namespace SubtitlesLearn.Site.Controllers
 			string error = await SrtManager.Instance.RenameMovie(customer.Id, movieId, newName);
 
 			return new JsonResult(error);
+		}
+
+		private void SrtUploadProgress(object sender, SrtProgressArgs e)
+		{
+			_hubContext.Clients.User(e.CustomerId.ToString()).SendAsync("UploadProgress", e.PercentCompleted);
 		}
 
 		#endregion Methods

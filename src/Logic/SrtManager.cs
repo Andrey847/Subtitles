@@ -14,6 +14,15 @@ namespace SubtitlesLearn.Logic
 	/// </summary>
 	public class SrtManager : ManagerBase
 	{
+		#region Events
+
+		/// <summary>
+		/// Raised if srt upload progress changed.
+		/// </summary>
+		public event EventHandler<SrtProgressArgs> SrtUploadProgress;
+
+		#endregion Events
+
 		#region Singleton
 
 		private static Lazy<SrtManager> _instance = new Lazy<SrtManager>(() => new SrtManager());
@@ -182,6 +191,8 @@ namespace SubtitlesLearn.Logic
 			string srt = Encoding.UTF8.GetString(srtFile.ToArray());
 			Word[] words = GetWords(srt);
 
+			int currentPercentage = -1;
+
 			// check each word with DB.
 			foreach (Word word in words)
 			{
@@ -193,9 +204,22 @@ namespace SubtitlesLearn.Logic
 					response.NewWords++;
 				}
 				response.TotalWords++;
+
+				int percentage = (int)((response.TotalWords / (float)words.Length) * 100);
+
+				if (percentage != currentPercentage)
+				{
+					currentPercentage = percentage;
+					OnSrtUploadProgress(customerId, currentPercentage);
+				}
 			}
 
 			return response;
+		}
+
+		private void OnSrtUploadProgress(int customerId, int percentCompleted)
+		{
+			SrtUploadProgress?.Invoke(this, new SrtProgressArgs(customerId, percentCompleted));
 		}
 
 		/// <summary>

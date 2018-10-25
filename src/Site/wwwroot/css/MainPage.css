@@ -88,3 +88,45 @@
 {
 	margin-top: 1em;
 }
+
+.srt-file
+{	
+	height: 50px;
+}
+
+	.srt-file input[type="file"]
+	{
+		display: none;
+	}
+
+	.set-file label
+	{
+		border: 1px solid #ccc;
+		display: inline-block;
+		padding: 6px 12px;
+		cursor: pointer;
+		min-width: 15em;
+	}
+
+
+	.srt-file div span
+	{
+		cursor: pointer;
+	}
+
+	.srt-file div button
+	{
+		margin-right: 1em;
+	}
+
+		.srt-file div button:disabled
+		{
+			cursor: default;
+		}
+
+#imgUploadWaiter
+{
+	width: 24px;
+	height: 24px;
+	content: url(../images/loading.gif);
+}

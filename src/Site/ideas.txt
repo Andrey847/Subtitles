@@ -9,8 +9,6 @@ waiter on file load
 show file loading progress in percents
 contact form
 show all text when exact movie is choosen
-add the ability to remove movie
-add the ability to rename movie
 add setting of unknown word count
 add drag n drop to upload file
 save settings
@@ -19,7 +17,8 @@ refresh movies list when ne movie is loaded
 undo button
 remove control words from phrases (like WOMAN: or [SOMEONE KNOCKING])
 add email notifications
-
+save state (choosen movie etc)
+support many srt files in archive.
 
 -------
 infrastructure:

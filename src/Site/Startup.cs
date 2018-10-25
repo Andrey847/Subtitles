@@ -105,7 +105,7 @@ namespace SubtitlesLearn.Site
 
 			services.ConfigureApplicationCookie(options =>
 			{
-				options.ExpireTimeSpan = TimeSpan.FromMinutes(15); // 15 minutes timeout of inactivity.
+				options.ExpireTimeSpan = TimeSpan.FromDays(1); // 1 day timeout of inactivity.
 				options.SlidingExpiration = true;
 			});
 
@@ -114,7 +114,9 @@ namespace SubtitlesLearn.Site
 				// one year for security validation.
 				options.ValidationInterval = TimeSpan.FromDays(365);
 			});
-			
+
+			services.AddSignalR();
+
 			services.AddMvc();
 		}
 
@@ -137,6 +139,11 @@ namespace SubtitlesLearn.Site
 			app.UseCors("AllowSpecificOrigin");
 
 			app.UseStaticFiles();
+
+			app.UseSignalR(route =>
+			{
+				route.MapHub<NotificationHub>("/NotificationHub");
+			});
 
 			app.UseMvc(routes =>
 			{

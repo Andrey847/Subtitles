@@ -1,7 +1,45 @@
-﻿var _currentWordIcon;
+﻿
+const connection = new signalR.HubConnectionBuilder()
+	.withUrl("/NotificationHub")
+	.build();
+
+connection.on("UploadProgress", (percentCompleted) =>
+{
+	if (percentCompleted == 100)
+	{
+		// Everything completed. Remove %  and unblock Upload button
+		$('#btnUpload').text('Upload');
+		$('#btnUpload').attr('disabled', null);
+	}
+	else
+	{
+		$('#btnUpload').text(`Upload ${percentCompleted}%`);
+
+		// this waiter is shown until first percent changes.
+		$('#imgUploadWaiter').hide();
+	}
+});
+
+function signalConnect(cnt)
+{
+	console.log('SignalR: connecting');
+	cnt.start().catch(err =>
+	{
+		console.error(err.toString());
+
+		// reconnect after 5 seconds.
+		setTimeout(() => signalConnect(cnt), 5000);
+
+		c += 1;
+	});
+}
+
+var _currentWordIcon;
 
 $(document).ready(function ()
 {
+	signalConnect(connection);
+
 	loadWords();
 
 	var wordPlayer = document.getElementById('wordPlayer');
@@ -42,7 +80,11 @@ function loadWords()
 
 function uploadSrt()
 {
-	var files = document.getElementById('file-upload').files;
+	// disable the upload button during the load.
+	$('#btnUpload').attr('disabled', 'disabled');
+	$('#imgUploadWaiter').show();
+
+	var files = document.getElementById('flUpload').files;
 	var data = new FormData();
 	for (var i = 0; i < files.length; i++)
 	{
@@ -65,6 +107,7 @@ new words: ${message.newWords}`);
 		error: function ()
 		{
 			alert("There was error uploading files");
+			$('#imgUploadWaiter').hide();
 		}
 	});
 }
@@ -284,3 +327,14 @@ function renameMovie()
 		});		
 	}
 }
+
+function fileChooseClick(evnt)
+{
+	var jButton = $(evnt.toElement);
+
+	var fileBrowser = jButton.parent().find('input[type="file"]');
+
+	// emulate click.
+	fileBrowser.click();
+}
+

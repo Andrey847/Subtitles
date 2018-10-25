@@ -4,12 +4,25 @@
 
 @using SubtitlesLearn.Logic.Entities;
 
-<link rel="stylesheet" href="~/css/MainPage.css" asp-append-version="true" />
+
+@section Css
+	{
+	<link rel="stylesheet" href="~/css/MainPage.css" asp-append-version="true" />
+}
+
+@section Scripts
+	{
+	<script src="~/js/signalr.min.js" asp-append-version="true"></script>
+	<script src="~/js/MainPage.js" asp-append-version="true"></script>
+}
 
 <div class="row">
 	<div class="col-sm-6">
-		<input id="file-upload" type="file" />
-		<button id="btnUpload" onclick="uploadSrt();">Upload!</button>
+		<div class="srt-file">
+			<button type="button" id="btnUpload" class="btn" onclick="fileChooseClick(event);" title="">Upload</button>
+			<input id="flUpload" type="file" onchange="uploadSrt();" />
+			<img id="imgUploadWaiter" style="display: none;" />
+		</div>
 	</div>
 	<div class="col-sm-1">
 		<span>Movie:</span>
@@ -43,8 +56,6 @@
 <audio id="wordPlayer">
 	<source id="srcWordWav" type="audio/wav">
 </audio>
-
-<script src="~/js/MainPage.js" asp-append-version="true"></script>
 
 @* Rename movie popup *@
 @{

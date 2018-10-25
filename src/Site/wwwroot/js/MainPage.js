@@ -255,9 +255,11 @@ function markLearned(source, sender, wordId)
 		data: JSON.stringify(
 			{
 				"source": source
-			}),
-		success: () => $(sender).closest('.row').remove()		
+			})
 	});
+
+	// remove learned word immidiately, as saving is in the background.
+	$(sender).closest('.row').remove();
 }
 
 function deleteMovie()

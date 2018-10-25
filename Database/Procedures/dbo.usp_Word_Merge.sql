@@ -43,18 +43,19 @@ BEGIN
 	DECLARE @WordId int = (SELECT WordId FROM [dbo].[Word] WHERE Source = @Source);
 
 	-- And save phrases (only new)
-	SELECT DISTINCT	R.c.value('Value[1]', 'nvarchar(500)') Phrase,
-		R.c.value('TimeFromSql[1]', 'time(7)') AS TimeFrom,
+	SELECT R.c.value('Value[1]', 'nvarchar(500)') Phrase,
+			R.c.value('TimeFromSql[1]', 'time(7)') AS TimeFrom,
 			R.c.value('TimeToSql[1]', 'time(7)') AS TimeTo,
 			R.c.value('OrderNumber[1]', 'int') AS OrderNumber
 	INTO #Phrases
-	FROM @Phrases.nodes('ArrayOfPhrase/Phrase') AS R(c);
-	
+	FROM @Phrases.nodes('ArrayOfPhrase/Phrase') AS R(c);	
+		
 	INSERT INTO Phrase (Value, MovieId, TimeFrom, TimeTo, OrderNumber)
 	SELECT src.Phrase, @MovieId, src.TimeFrom, src.TimeTo, src.OrderNumber
 	FROM #Phrases src
 		LEFT JOIN Phrase tgt
-			ON src.Phrase = tgt.Value
+			ON src.Phrase = tgt.Value				
+				AND src.OrderNumber = tgt.OrderNumber
 	WHERE tgt.PhraseId IS NULL
 		
 	INSERT INTO PhraseWord (PhraseId, WordId)
@@ -62,10 +63,12 @@ BEGIN
 	FROM #Phrases p1
 		INNER JOIN Phrase p2
 			ON p1.Phrase = p2.Value
+				AND p1.OrderNumber = p2.OrderNumber
 		LEFT JOIN PhraseWord pw
 			ON pw.WordId = @WordId
 				AND pw.PhraseId = p2.PhraseId
 	WHERE pw.PhraseWordId IS NULL
+		AND p2.MovieId = @MovieId
 
 	SELECT @IsAdded AS IsAdded
 

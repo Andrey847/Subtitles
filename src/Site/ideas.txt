@@ -5,12 +5,15 @@ https://stackoverflow.com/questions/32922226/extract-every-audio-and-subtitles-f
 
 todo:
 
+refresh movies list when ne movie is loaded
+automatically select just loaded movie
+
 contact form
 show all text when exact movie is choosen
 add setting of unknown word count
 save settings
 line up everything
-refresh movies list when ne movie is loaded
+
 undo button
 add email notifications
 save state (choosen movie etc)
@@ -18,6 +21,7 @@ support many srt files in archive.
 google auth
 define subtitles language automatically (and warn about it).
 
+block buttons during marked as learned or save (or remove immidiately, and save in the background)
 
 -------
 infrastructure:

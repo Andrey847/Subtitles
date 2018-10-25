@@ -31,6 +31,8 @@ BEGIN
 	WHERE m.CustomerId = @CustomerId	
 		AND m.MovieId = @MovieId
 		AND om.WordId IS NULL	-- words that in this movie only
+		AND w.Translation IS NULL	-- never delete word with translation
+		AND w.IsKnown = 0	-- OR marked as known.
 
 	DELETE FROM dbo.Movie
 	WHERE MovieId = @MovieId

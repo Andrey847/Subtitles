@@ -121,7 +121,7 @@ function generateTable(jsonWords)
 		container.append(`<div class="row">
 									<div class="col-sm-1">${item.frequency}</div>
 									<div class="col-sm-3" class="srt-english">
-										<div class="srt-play-btn" onclick="playWord(this, '${item.source}');"></div>
+										<div class="srt-play-btn" onclick="playWord(this, ${item.id}, '${item.source}');"></div>
 										<span class="srt-text">${item.source}</span>
 										<img class="srt-phrases-ico" onclick="showPhrases(this, '${item.id}')">
 									</div>
@@ -195,8 +195,17 @@ function showPhrases(sender, wordId)
 	}
 }
 
-function playWord(sender, word)
+function playWord(sender, wordId, word)
 {
+	let existingContainer = $('.srt-phrase-container');
+
+	if (existingContainer.length > 0
+		&& existingContainer.attr('data-val-wordid') != wordId)
+	{
+		// close shown phrases if they are of another word.
+		existingContainer.remove();
+	}
+
 	_currentWordIcon = sender;
 	
 	var player = document.getElementById('wordPlayer');

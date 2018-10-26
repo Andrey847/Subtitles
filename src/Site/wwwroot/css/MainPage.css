@@ -124,7 +124,7 @@
 			cursor: default;
 		}
 
-#imgUploadWaiter
+.srt-waiter
 {
 	width: 24px;
 	height: 24px;
@@ -134,4 +134,21 @@
 .drag-highlight
 {
 	background-color: rgba(23, 68, 216, 0.1);
+}
+
+#btnRefresh
+{
+	float: left;
+	margin-right: 0.5em;
+	width: 100px;
+}
+
+.btn-waiter-hidden
+{
+	text-align: center;
+}
+
+.btn-waiter-hidden > img
+{
+	display: none;
 }

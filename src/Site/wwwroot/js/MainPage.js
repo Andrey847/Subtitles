@@ -92,6 +92,7 @@ function reloadMovies()
 function loadWords()
 {
 	let selectedMovie = $('#cmbMovie option:selected').val();
+	$('#btnRefresh').removeClass('btn-waiter-hidden');
 	
 	$.ajax({
 		type: "GET",
@@ -103,6 +104,10 @@ function loadWords()
 		error: function ()
 		{
 			alert("There was error uploading files");
+		},
+		complete: () =>
+		{
+			$('#btnRefresh').addClass('btn-waiter-hidden');
 		}
 	});
 }

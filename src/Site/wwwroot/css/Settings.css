@@ -14,3 +14,8 @@
 	background-color: white !important;
 	transition: background-color 500ms linear;
 }
+
+.form-control:disabled, .form-control[readonly]
+{
+	background-color: #e9ecef !important;
+}

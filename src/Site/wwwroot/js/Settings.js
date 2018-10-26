@@ -56,6 +56,7 @@ function successBlink(jControl)
 function saveSettings(success)
 {
 	blockControls(true);
+	$('body').css('cursor', 'progress');
 
 	$.ajax(
 		{
@@ -66,6 +67,7 @@ function saveSettings(success)
 			success: () =>
 			{
 				blockControls(false);
+				$('body').css('cursor', 'default');
 				success();
 			},
 			error: (er) => alert('Unable to save settings: ' + er)
@@ -76,6 +78,6 @@ function saveSettings(success)
 function blockControls(block)
 {
 	let state = block ? 'disabled' : null;
-	_cmbLanguage.attr('disabled', state);
-	_cmbUnknownWordMax.attr('disabled', state);	
+	_cmbLanguage.prop('disabled', state);
+	_cmbUnknownWordMax.prop('disabled', state);	
 }

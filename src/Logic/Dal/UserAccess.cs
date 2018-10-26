@@ -61,7 +61,7 @@ namespace SubtitlesLearn.Logic.Dal
 						IsBlocked = Convert.ToBoolean(m["IsBlocked"]),
 						IsConfirmed = Convert.ToBoolean(m["IsConfirmed"]),
 						Id = (int)m["CustomerId"],
-						RestorePasswordCode = m["RestorePasswordCode"] as string						
+						RestorePasswordCode = m["RestorePasswordCode"] as string
 					};
 
 					c.Role.Id = (int)m["CustomerRoleId"];
@@ -106,7 +106,8 @@ namespace SubtitlesLearn.Logic.Dal
 					return new CustomerSettings()
 					{
 						CustomerId = customerId,
-						 CurrentLanguageCode = m["CurrentLanguageCode"] as string
+						CurrentLanguageCode = m["CurrentLanguageCode"] as string,
+						UnknownWordMax = int.Parse(m["UnknownWordMax"] as string)
 					};
 				}
 				);
@@ -119,11 +120,12 @@ namespace SubtitlesLearn.Logic.Dal
 		/// <returns></returns>
 		internal static async Task UpdateSettings(CustomerSettings settings)
 		{
-			await ExecuteNonQueryAsync("dbo.usp_Customer_Setting_Update", 
+			await ExecuteNonQueryAsync("dbo.usp_Customer_Setting_Update",
 				p =>
 				{
 					p.Add("CustomerId", SqlDbType.Int).Value = settings.CustomerId;
 					p.Add("CurrentLanguageCode", SqlDbType.NVarChar).Value = settings.CurrentLanguageCode;
+					p.Add("UnknownWordMax", SqlDbType.Int).Value = settings.UnknownWordMax;
 				});
 		}
 	}

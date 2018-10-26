@@ -55,8 +55,35 @@ namespace SubtitlesLearn.Site.Controllers
 
 			ViewBag.CurrentPageType = PageType.WorkPlace;
 			ViewBag.Languages = await SrtManager.Instance.GetLanguages();
-			
+
 			return View();
+		}
+
+		/// <summary>
+		/// Return user settings.
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		public async Task<JsonResult> GetSettings()
+		{
+			Customer customer = await _userManager.GetUserAsync(User);
+
+			CustomerSettings settings = await UserManager.Instance.GetSettings(customer.Id);
+
+			return new JsonResult(settings);
+		}
+
+		/// <summary>
+		/// Saves user settings.
+		/// </summary>
+		/// <param name="settings"></param>
+		/// <returns></returns>
+		[HttpPost()]
+		public async Task<IActionResult> UpdateSettings([FromBody] CustomerSettings settings)
+		{
+			await UserManager.Instance.UpdateSettings(settings);
+
+			return Ok();
 		}
 
 		#endregion Methods

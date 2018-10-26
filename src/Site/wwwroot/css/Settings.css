@@ -2,3 +2,15 @@
 {
 	margin-top: 1em;
 }
+
+#cmbLanguage,
+#cmbUnknownWordMax
+{
+	background-color: lightgreen;
+}
+
+.srt-save-normal
+{
+	background-color: white !important;
+	transition: background-color 500ms linear;
+}

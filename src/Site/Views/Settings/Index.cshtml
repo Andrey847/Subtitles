@@ -21,11 +21,25 @@
 		Current language:
 	</div>
 	<div class="col-sm-3">
-		<select class="form-control" id="cmbLanguage">
+		<select class="form-control srt-save-normal" id="cmbLanguage" disabled onchange="saveLanguage();">
 			@foreach (Language lang in ViewBag.Languages)
 			{
 				<option value="@lang.Code">@lang.Name</option>
 			}
+		</select>
+	</div>
+</div>
+
+<div class="row sett-row">
+	<div class="col-sm-3 offset-sm-3">
+		<span title="How many words to be show on the main page.">Visible words count:</span>
+	</div>
+	<div class="col-sm-3">
+		<select class="form-control srt-save-normal" id="cmbUnknownWordMax" disabled onchange="saveUnknownWordMax();">
+			<option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+			<option value="100">100</option>
 		</select>
 	</div>
 </div>

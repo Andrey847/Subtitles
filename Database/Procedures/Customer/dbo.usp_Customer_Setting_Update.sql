@@ -14,7 +14,8 @@ GO
 -- =======================================================
 ALTER PROCEDURE [dbo].[usp_Customer_Setting_Update]
 	@CustomerId int,
-	@CurrentLanguageCode nvarchar(10)
+	@CurrentLanguageCode nvarchar(10),
+	@UnknownWordMax nvarchar(10)
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -22,17 +23,21 @@ BEGIN
 	MERGE dbo.CustomerSetting AS Tgt
 	USING
 	(
-		SELECT s.SettingId, @CustomerId AS CustomerId
+		SELECT s.SettingId, @CustomerId AS CustomerId, @CurrentLanguageCode AS SettingValue
 		FROM dbo.Setting s
-		WHERE s.Code = N'CurrentLanguageCode'		
+		WHERE s.Code = N'CurrentLanguageCode'
+		UNION ALL
+		SELECT s.SettingId, @CustomerId AS CustomerId, @UnknownWordMax AS SettingValue
+		FROM dbo.Setting s
+		WHERE s.Code = N'UnknownWordMax'		
 	) AS Src
 		ON Tgt.SettingId = Src.SettingId
 			AND Tgt.CustomerId = Src.CustomerId
 		WHEN MATCHED THEN 
-			UPDATE SET [Value] = @CurrentLanguageCode,
+			UPDATE SET [Value] = SettingValue,
 						UpdatedWhen = GETDATE()
 		WHEN NOT MATCHED THEN
 			INSERT (CustomerId, SettingId, Value)
-				VALUES (Src.CustomerId, Src.SettingId, @CurrentLanguageCode);
+				VALUES (Src.CustomerId, Src.SettingId, SettingValue);
 END
 GO

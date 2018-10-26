@@ -20,6 +20,11 @@ namespace SubtitlesLearn.Logic
 		/// </summary>
 		public EmailSettings Settings { get; set; }
 
+		/// <summary>
+		/// Email of site manager (or admin).
+		/// </summary>
+		public string ManagerEmail { get; set; }
+
 		#endregion Properties
 
 		#region Singleton

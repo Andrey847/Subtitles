@@ -40,6 +40,7 @@ namespace SubtitlesLearn.Site
 			EmailSettings emailSettings = new EmailSettings();
 			Configuration.GetSection("Email").Bind(emailSettings);
 			EmailManager.Instance.Settings = emailSettings;
+			EmailManager.Instance.ManagerEmail = Configuration["ManagerEmail"];
 
 			EmailManager.Instance.GlobalSettings
 				= UserManager.Instance.GlobalSettings

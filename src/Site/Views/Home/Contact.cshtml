@@ -1,17 +1,36 @@
-﻿@{
-    ViewData["Title"] = "Contact";
-}
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+﻿<div class="modal fade" id="dlgContact" tabindex="-1" role="dialog" aria-hidden="false">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+			<div class="modal-header">
+				<button type="button" class="btn-close-modal" id="btnCloseContact" onclick="$('#dlgContact').modal('hide')">
+					<img />
+				</button>
+				<h5 class="srt-modal-title">Contact us</h5>
+			</div>
+			<div class="modal-body">				
+				<div class="row">
+					<div class="col-sm-12">
+						<textarea id="txtContactMessage" placeholder="Feel free to send any message, suggestion, problem!"></textarea>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<span class="srt-error" style="display: none" id="vldContact">Please enter message</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 d-flex justify-content-center">
+						<button id="btnContactSend" class="btn btn-primary" onclick="sendContact();">Send</button>
+					</div>
+				</div>
 
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+				<hr />
+
+				<div class="row">
+					<div class="col-sm-12">Or just send an <a href="mailto:ag_a@mail.ru?Subject=Message%20from%20www.sub-learn.com">email</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

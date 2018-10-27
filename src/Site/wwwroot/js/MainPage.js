@@ -81,7 +81,7 @@ function reloadMovies()
 					let selected = item.name == _loadingFile ? ' selected ' : '';
 
 					// mark archived movies as italic
-					let content = item.isArchived ? `<i>${item.name}</i>` : item.name;
+					let content = item.isArchived ? `[Archived] ${item.name}` : item.name;
 					cmbMovie.append(`<option value="${item.id}" data-val-isArchived="${item.isArchived}" ${selected}>${content}</option>`);
 				});
 
@@ -392,6 +392,7 @@ function setArchiveState(archive)
 		success: () =>
 		{
 			reloadMovies();
+			$('#dlgRenameMovie').modal('hide');
 		},
 		error: (e) => { throw e; }
 	});		

@@ -47,7 +47,14 @@
 
 			@foreach (Movie movie in ViewBag.Movies)
 			{
-				<option value="@movie.Id">@movie.Name</option>
+				@if (movie.IsArchived)
+				{
+					<option value="@movie.Id" data-val-isArchived="true">[Archived] @movie.Name</option>
+				}
+				else
+				{
+					<option value="@movie.Id">@movie.Name</option>
+				}
 			}
 		</select>
 	</div>

@@ -18,6 +18,16 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @ShowArchived bit = 
+	(
+		SELECT cs.Value
+		FROM CustomerSetting cs
+			INNER JOIN dbo.Setting s
+				ON cs.SettingId = s.SettingId
+		WHERE cs.CustomerId = @CustomerId
+			AND s.Code = N'ShowArchivedMovies'
+	)
+
 	SELECT MovieId,
 		Name,
 		SubtitlesFileName,
@@ -26,6 +36,7 @@ BEGIN
 		IsArchived
 	FROM dbo.Movie
 	WHERE CustomerId = @CustomerId
+		AND (@ShowArchived = 1 OR ISArchived = 0) -- show all or not archived only.
 	ORDER BY Name
 END
 GO

@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Logic.Tests
 {
@@ -135,6 +136,33 @@ Watermelon, pickles.";
 			Language[] langs = await SrtManager.Instance.GetLanguages();
 
 			Assert.True(langs.Length > 0);
+		}
+
+		/// <summary>
+		/// Tests setting of learned/unlerned state.
+		/// </summary>
+		/// <returns></returns>
+		[Fact]
+		public async Task LearnedState()
+		{
+			Customer customer = await UserManager.Instance.GetUser("ag_a@mail.ru");
+
+			List<Word> words = await SrtManager.Instance.GetAllWords(customer.Id);
+			Assert.NotEmpty(words);
+
+			Word any = words.First();
+
+			await SrtManager.Instance.SetLearned(any, true);
+
+			// check that there is no this word
+			words = await SrtManager.Instance.GetAllWords(customer.Id);
+			Assert.Null(words.Where(item => item.Id == any.Id).FirstOrDefault());
+
+			// Set it UNlearned again
+			await SrtManager.Instance.SetLearned(any, false);
+
+			words = await SrtManager.Instance.GetAllWords(customer.Id);
+			Assert.NotNull(words.Where(item => item.Id == any.Id).FirstOrDefault());
 		}
 	}
 }

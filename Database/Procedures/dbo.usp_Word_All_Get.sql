@@ -33,12 +33,13 @@ BEGIN
 		w.Source,
 		w.Translation,
 		w.IsKnown,
-		src.Frequency
+		src.Frequency,
+		w.CustomerId
 	FROM
 	(
 		SELECT TOP (@UnknownRate) 
 			w.WordId,	
-			COUNT(pw.PhraseId) AS Frequency
+			COUNT(pw.PhraseId) AS Frequency			
 		FROM dbo.Word w	
 			INNER JOIN dbo.PhraseWord pw
 				ON w.WordId = pw.WordId

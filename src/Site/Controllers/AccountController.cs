@@ -21,7 +21,7 @@ namespace SubtitlesLearn.Site.Controllers
 		#region Constants
 
 		private const string MSG_GREETING = "greeting";
-		
+
 		#endregion Constants
 
 		#region Fields
@@ -156,7 +156,7 @@ namespace SubtitlesLearn.Site.Controllers
 				{
 					// This doesn't count login failures towards account lockout
 					// To enable password failures to trigger account lockout, set lockoutOnFailure: true
-					var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+					var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, lockoutOnFailure: false);
 
 					if (result.Succeeded)
 					{
@@ -330,12 +330,12 @@ namespace SubtitlesLearn.Site.Controllers
 				};
 				var result = await _userManager.CreateAsync(user, model.Password);
 				if (result.Succeeded)
-				{					
+				{
 					await LogManager.Instance.LogInfo($"User {model.Email} created a new account with password.");
-					
+
 					// Send him to login page with greeting message
 					return RedirectToAction(nameof(AccountController.Login), "AccountController", MSG_GREETING);
-				}				
+				}
 			}
 
 			// If we got this far, something failed, redisplay form

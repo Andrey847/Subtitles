@@ -35,6 +35,7 @@ function signalConnect(cnt)
 
 var _currentWordIcon;
 var _loadingFile;
+var _undoQueue = [];
 
 $(document).ready(function ()
 {
@@ -91,6 +92,9 @@ function reloadMovies()
 
 function loadWords()
 {
+	// immidiately clear undo queue as it used hidden elements that will be deleted by this method.
+	clearUndo();
+
 	let selectedMovie = $('#cmbMovie option:selected').val();
 	$('#btnRefresh').removeClass('btn-waiter-hidden');
 	
@@ -101,9 +105,9 @@ function loadWords()
 		{
 			generateTable(message);
 		},
-		error: function ()
+		error: function (ex)
 		{
-			alert("There was error uploading files");
+			throw ex;
 		},
 		complete: () =>
 		{
@@ -283,6 +287,9 @@ function markLearned(source, sender, wordId)
 		existingContainer.remove();
 	}
 
+	// html that contains such word (to be shown in undo case in the future)
+	let htmlContainer = $(sender).closest('.row');
+
 	// simple async save
 	$.ajax({
 		type: 'POST',
@@ -291,11 +298,62 @@ function markLearned(source, sender, wordId)
 		data: JSON.stringify(
 			{
 				"source": source
-			})
+			}),
+		success: () =>
+		{
+			// update the undo stack (add source, which is word);
+			addToUndo(source, htmlContainer);
+		}
 	});
 
-	// remove learned word immidiately, as saving is in the background.
-	$(sender).closest('.row').remove();
+	// hide learned word immidiately, as saving is in the background.
+	htmlContainer.hide();
+}
+
+// adds new item to undo
+function addToUndo(word, container)
+{
+	_undoQueue.push(
+		{
+			word: word,
+			container: container
+		});
+
+	$('#btnUndo').prop('disabled', null);
+}
+
+// Performs undo operation
+function performUndo()
+{
+	let undoItem = _undoQueue.pop();
+
+	if (undoItem != null)
+	{
+		undoItem.container.show();
+
+		$.ajax({
+			type: 'POST',
+			url: '/WorkPlace/MarkUnlearned',
+			contentType: 'application/json',
+			data: JSON.stringify(
+				{
+					"source": undoItem.word
+				})
+		});
+	}
+
+	if (_undoQueue.length == 0)
+	{
+		// disable undo button as there are no other words to be undo.
+		$('#btnUndo').prop('disabled', 'disabled');
+	}
+}
+
+// clears undo queue. For example, after refresh.
+function clearUndo()
+{
+	_undoQueue = [];
+	$('#btnUndo').prop('disabled', 'disabled');
 }
 
 function deleteMovie()

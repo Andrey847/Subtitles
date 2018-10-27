@@ -46,6 +46,15 @@ namespace SubtitlesLearn.Logic
 		#region Methods
 
 		/// <summary>
+		/// Sets learned/unlearned state for the word.
+		/// </summary>
+		public async Task SetLearned(Word word, bool isLearned)
+		{
+			await Log.LogDebug("Set learned state", $"CustomerId: {word.CustomerId}, word: {word.Source}, is learned: {isLearned}");
+			await SrtAccess.SetLearned(word, isLearned);
+		}
+
+		/// <summary>
 		/// Returns all words in the srt file.
 		/// </summary>
 		/// <param name="srtContent"></param>
@@ -267,6 +276,17 @@ namespace SubtitlesLearn.Logic
 			await Log.LogInfo("Renaming movie", $"CustomerId: {customerId}, MovieId: {movieId}, NewName: {newName}");
 
 			return await SrtAccess.RenameMovie(customerId, movieId, newName);
+		}
+
+		/// <summary>
+		/// Returns top unlearned words.
+		/// </summary>
+		/// <param name="customerId"></param>
+		/// <param name="movieId"></param>
+		/// <returns></returns>
+		public async Task<List<Word>> GetAllWords(int customerId, int? movieId = null)
+		{
+			return await SrtAccess.GetAllWords(customerId, movieId);
 		}
 
 		#endregion Methods

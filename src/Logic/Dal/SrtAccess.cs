@@ -1,7 +1,9 @@
 ﻿using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Manager;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using static SubtitlesLearn.Logic.Dal.DbHelper;
 
@@ -21,9 +23,9 @@ namespace SubtitlesLearn.Logic.Dal
 			return (await ExecuteListAsync("dbo.usp_Phrase_Get",
 				(p) =>
 				{
-					p.Add("WordId", SqlDbType.Int).Value =wordId;					
-				}, 
-				(m) => 
+					p.Add("WordId", SqlDbType.Int).Value = wordId;
+				},
+				(m) =>
 					new Phrase(m["Value"] as string)
 				)).ToArray();
 		}
@@ -59,7 +61,7 @@ namespace SubtitlesLearn.Logic.Dal
 		/// <returns></returns>
 		internal static async Task DeleteMovie(int customerId, int movieId)
 		{
-			await ExecuteNonQueryAsync("dbo.usp_Movie_Delete", 
+			await ExecuteNonQueryAsync("dbo.usp_Movie_Delete",
 				(p) =>
 				{
 					p.Add("CustomerId", SqlDbType.Int).Value = customerId;
@@ -123,6 +125,51 @@ namespace SubtitlesLearn.Logic.Dal
 				p.Add("MovieId", SqlDbType.Int).Value = movieId;
 				p.Add("NewName", SqlDbType.NVarChar).Value = newName;
 			}));
+		}
+
+		/// <summary>
+		/// Sets (or unsets) learned state for the word.
+		/// </summary>
+		/// <param name="word"></param>
+		/// <param name="isLearned"></param>
+		/// <returns></returns>
+		internal static async Task SetLearned(Word word, bool isLearned)
+		{
+			await ExecuteNonQueryAsync("dbo.usp_Word_Learned_Set", (p) =>
+			{
+				p.Add("CustomerId", SqlDbType.Int).Value = word.CustomerId;
+				p.Add("Source", SqlDbType.NVarChar).Value = word.Source;
+				p.Add("IsKnown", SqlDbType.Bit).Value = isLearned;
+			});
+		}
+
+		/// <summary>
+		/// Returns top unlearned words.
+		/// </summary>
+		/// <param name="customerId">Customer</param>
+		/// <param name="movieId">if null all words of this customer is returned. If selected then returned words for this movie only.</param>
+		/// <returns></returns>
+		internal static async Task<List<Word>> GetAllWords(int customerId, int? movieId = null)
+		{
+			List<Word> result = await ExecuteListAsync<Word>("dbo.usp_Word_All_Get",
+				(p) =>
+				{
+					p.Add("CustomerId", SqlDbType.Int).Value = customerId;
+					p.Add("MovieId", SqlDbType.Int).Value = movieId;
+				},
+				(m) =>
+					new Word()
+					{
+						Id = Convert.ToInt32(m["WordId"]),
+						CustomerId = Convert.ToInt32(m["CustomerId"]),
+						Source = Convert.ToString(m["Source"]),
+						IsKnown = Convert.ToBoolean(m["IsKnown"]),
+						Translation = Convert.ToString(m["Translation"]),
+						Frequency = Convert.ToInt32(m["Frequency"])
+					}
+				);
+
+			return result.OrderByDescending(item => item.Frequency).ToList();			
 		}
 	}
 }

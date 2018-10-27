@@ -93,44 +93,7 @@ namespace SubtitlesLearn.Logic.Dal
 			}
 		}
 
-		/// <summary>
-		/// Returns simple word from the DB.
-		/// </summary>
-		/// <param name="customerId">Customer</param>
-		/// <param name="movieId">if null all woards of this customer is returned. IF selected then returned words for this movie only.</param>
-		/// <returns></returns>
-		public static List<Word> GetAllWords(int customerId, int? movieId = null)
-		{
-			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
-			{
-				SqlCommand procedure = new SqlCommand("usp_Word_All_Get", conn);
-				procedure.CommandType = CommandType.StoredProcedure;
-				procedure.Parameters.Add("CustomerId", SqlDbType.Int).Value = customerId;
-				procedure.Parameters.Add("MovieId", SqlDbType.Int).Value = movieId;
-
-				conn.Open();
-
-				List<Word> result = new List<Word>();
-
-				SqlDataReader reader = procedure.ExecuteReader();
-
-				while (reader.Read())
-				{
-					Word word = new Word();
-					word.Id = Convert.ToInt32(reader["WordId"]);
-					word.Source = Convert.ToString(reader["Source"]);
-					word.IsKnown = Convert.ToBoolean(reader["IsKnown"]);
-					word.Translation = Convert.ToString(reader["Translation"]);
-					word.Frequency = Convert.ToInt32(reader["Frequency"]);
-
-					result.Add(word);
-				}
-
-				conn.Close();
-
-				return result.OrderByDescending(item => item.Frequency).ToList();
-			}
-		}
+	
 
 		public static void SaveTranslation(Word word)
 		{
@@ -140,22 +103,6 @@ namespace SubtitlesLearn.Logic.Dal
 				procedure.CommandType = CommandType.StoredProcedure;
 				procedure.Parameters.Add("Source", SqlDbType.NVarChar).Value = word.Source;
 				procedure.Parameters.Add("Translation", SqlDbType.NVarChar).Value = word.Translation;
-
-				conn.Open();
-
-				procedure.ExecuteNonQuery();
-
-				conn.Close();
-			}
-		}
-
-		public static void MarkLearned(Word word)
-		{
-			using (SqlConnection conn = new SqlConnection(DbHelper.ConnectionString))
-			{
-				SqlCommand procedure = new SqlCommand("usp_Word_Learned_Mark", conn);
-				procedure.CommandType = CommandType.StoredProcedure;
-				procedure.Parameters.Add("Source", SqlDbType.NVarChar).Value = word.Source;
 
 				conn.Open();
 

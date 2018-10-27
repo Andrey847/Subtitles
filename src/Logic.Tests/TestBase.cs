@@ -30,6 +30,7 @@ namespace SubtitlesLearn.Logic.Tests
 
 			// Mocking of some aux services.
 			UserManager.Instance.Log = new Mock<ILogging>(MockBehavior.Loose).Object;
+			SrtManager.Instance.Log = new Mock<ILogging>(MockBehavior.Loose).Object;
 
 			Mock<IEmailNotifier> emailMock = new Mock<IEmailNotifier>();
 			emailMock.Setup(t => t.SendSimpleText(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(true));
@@ -37,8 +38,7 @@ namespace SubtitlesLearn.Logic.Tests
 
 			Mock<IGlobalSettings> settingMock = new Mock<IGlobalSettings>();
 			settingMock.Setup(t => t.GetFullUrl).Returns(r => r);
-			UserManager.Instance.GlobalSettings = settingMock.Object;
-			
+			UserManager.Instance.GlobalSettings = settingMock.Object;			
 		}
 	}
 }

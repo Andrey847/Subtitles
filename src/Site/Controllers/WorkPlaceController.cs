@@ -178,10 +178,27 @@ namespace SubtitlesLearn.Site.Controllers
 		/// <param name="word"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public IActionResult MarkLearned([FromBody] Word word)
+		public async Task<IActionResult> MarkLearned([FromBody] Word word)
 		{
-			DbAccess.MarkLearned(word);
+			return await SetLearned(word, true);
+		}
 
+		/// <summary>
+		/// Marks the word as UNlearned.
+		/// </summary>
+		/// <param name="word"></param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<IActionResult> MarkUnlearned([FromBody] Word word)
+		{
+			return await SetLearned(word, false);
+		}
+
+		private async Task<IActionResult> SetLearned(Word word, bool isLearned)
+		{
+			Customer customer = await _userManager.GetUserAsync(User);
+			word.CustomerId = customer.Id;
+			await SrtManager.Instance.SetLearned(word, isLearned);
 			return new OkResult();
 		}
 
@@ -194,7 +211,9 @@ namespace SubtitlesLearn.Site.Controllers
 		{
 			Customer customer = await _userManager.GetUserAsync(User);
 
-			return new JsonResult(DbAccess.GetAllWords(customer.Id, movieId == 0 ? null : (int?)movieId));
+			List<Word> words = await SrtManager.Instance.GetAllWords(customer.Id, movieId == 0 ? null : (int?)movieId);
+
+			return new JsonResult(words);
 		}
 
 		/// <summary>

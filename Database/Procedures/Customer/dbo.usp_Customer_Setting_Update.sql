@@ -14,8 +14,9 @@ GO
 -- =======================================================
 ALTER PROCEDURE [dbo].[usp_Customer_Setting_Update]
 	@CustomerId int,
-	@CurrentLanguageCode nvarchar(10),
-	@UnknownWordMax nvarchar(10)
+	@CurrentLanguageCode nvarchar(100),
+	@UnknownWordMax nvarchar(100),
+	@ShowArchivedMovies nvarchar(100)
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -23,13 +24,23 @@ BEGIN
 	MERGE dbo.CustomerSetting AS Tgt
 	USING
 	(
-		SELECT s.SettingId, @CustomerId AS CustomerId, @CurrentLanguageCode AS SettingValue
-		FROM dbo.Setting s
-		WHERE s.Code = N'CurrentLanguageCode'
-		UNION ALL
-		SELECT s.SettingId, @CustomerId AS CustomerId, @UnknownWordMax AS SettingValue
-		FROM dbo.Setting s
-		WHERE s.Code = N'UnknownWordMax'		
+		SELECT s.SettingId,
+			@CustomerId AS CustomerId,
+			Upvt.SettingValue
+		FROM 
+		(
+			SELECT 
+				@CurrentLanguageCode AS CurrentLanguageCode,
+				@UnknownWordMax AS UnknownWordMax,
+				@ShowArchivedMovies AS ShowArchivedMovies
+		) Src
+		UNPIVOT 
+		(
+			SettingValue FOR SettingCode IN ([CurrentLanguageCode], [UnknownWordMax], [ShowArchivedMovies])
+		) Upvt
+			INNER JOIN dbo.Setting s
+				ON s.Code = Upvt.SettingCode
+		
 	) AS Src
 		ON Tgt.SettingId = Src.SettingId
 			AND Tgt.CustomerId = Src.CustomerId

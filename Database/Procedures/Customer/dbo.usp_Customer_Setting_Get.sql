@@ -20,7 +20,8 @@ BEGIN
 	
 	SELECT CustomerId,
 		UnknownWordMax,
-		CurrentLanguageCode
+		CurrentLanguageCode,
+		ShowArchivedMovies
 	FROM 
 	(
 		SELECT cs.CustomerId, s.Code, cs.Value
@@ -28,11 +29,11 @@ BEGIN
 			INNER JOIN dbo.Setting s
 				ON cs.SettingId = s.SettingId
 		WHERE cs.CustomerId = @CustomerId
-			AND s.Code IN ('UnknownWordMax', 'CurrentLanguageCode')
+			AND s.Code IN ('UnknownWordMax', 'CurrentLanguageCode', 'ShowArchivedMovies')
 	) AS src
 		PIVOT
 		(
-			MAX(Value) FOR Code IN ([UnknownWordMax], [CurrentLanguageCode])
+			MAX(Value) FOR Code IN ([UnknownWordMax], [CurrentLanguageCode], [ShowArchivedMovies])
 		) pvt
 END
 GO

@@ -1,2 +1,3 @@
 ﻿EXEC dbo.usp_Rollout_Setting N'UnknownWordMax', N'Unknown Word Max count', N'25', N'How many unknown words display at ones.'
 EXEC dbo.usp_Rollout_Setting N'CurrentLanguageCode', N'Current language code', N'eng', 'Code of language that currently is used by customer.'
+EXEC dbo.usp_Rollout_Setting N'ShowArchivedMovies', N'Show archived movies in the main list or not?', N'0', 'how archived movies in the main list or not?'

@@ -6,6 +6,11 @@
 	public class CustomerSettings
 	{
 		/// <summary>
+		/// Customer Id.
+		/// </summary>
+		public int CustomerId { get; set; }
+
+		/// <summary>
 		/// Code of language that currently used by Customer.
 		/// </summary>
 		public string CurrentLanguageCode { get; set; }
@@ -16,8 +21,8 @@
 		public int UnknownWordMax { get; set; }
 
 		/// <summary>
-		/// Customer Id.
+		/// Show archive movies on the main page?
 		/// </summary>
-		public int CustomerId { get; set; }
+		public bool ShowArchivedMovies { get; set; }
 	}
 }

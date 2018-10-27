@@ -107,7 +107,8 @@ namespace SubtitlesLearn.Logic.Dal
 					{
 						CustomerId = customerId,
 						CurrentLanguageCode = m["CurrentLanguageCode"] as string,
-						UnknownWordMax = int.Parse(m["UnknownWordMax"] as string)
+						UnknownWordMax = int.Parse(m["UnknownWordMax"] as string),
+						ShowArchivedMovies = Convert.ToBoolean(int.Parse(m["ShowArchivedMovies"] as string))
 					};
 				}
 				);
@@ -126,6 +127,7 @@ namespace SubtitlesLearn.Logic.Dal
 					p.Add("CustomerId", SqlDbType.Int).Value = settings.CustomerId;
 					p.Add("CurrentLanguageCode", SqlDbType.NVarChar).Value = settings.CurrentLanguageCode;
 					p.Add("UnknownWordMax", SqlDbType.Int).Value = settings.UnknownWordMax;
+					p.Add("ShowArchivedMovies", SqlDbType.Bit).Value = settings.ShowArchivedMovies;
 				});
 		}
 	}

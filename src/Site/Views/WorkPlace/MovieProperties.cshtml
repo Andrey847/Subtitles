@@ -11,21 +11,22 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-3">New movie name:</div>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<input type="text" id="txtMovieName" class="form-control" />
+					</div>
+					<div class="col-sm-1">
+						<button id="btnMovieRename" class="btn btn-primary" onclick="renameMovie();">Rename</button>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
 						<span class="srt-error" style="display: none" id="vldMovieName"></span>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-6"></div>
-					<div class="col-sm-6">
-						<button id="btnMovieRename" class="btn btn-primary" onclick="renameMovie();">Rename</button>
-					</div>
-				</div>
+				</div>				
+			</div>
+
+			<div class="modal-footer" id="dvRenameFooter">
+				<button class="btn btn-danger" id="btnDeleteMovie" title="Delete movie" onclick="deleteMovie()">Delete</button>				
 			</div>
 		</div>
 	</div>

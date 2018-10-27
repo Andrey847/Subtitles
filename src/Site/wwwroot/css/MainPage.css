@@ -66,8 +66,7 @@
 
 #btnDeleteMovie
 {
-	float: right;
-	width: 32px;
+	float: left;
 }
 
 #btnRenameMovie > img
@@ -77,20 +76,8 @@
 	height: 24px;
 }
 
-#btnDeleteMovie > img
-{
-	content: url(../images/Pixeden/close.svg);
-	width: 32px;
-	height: 32px;
-}
-
-#btnMovieRename
-{
-	margin-top: 1em;
-}
-
 .srt-file
-{	
+{
 	height: 50px;
 }
 
@@ -99,30 +86,30 @@
 		display: none;
 	}
 
-	.set-file label
+.set-file label
+{
+	border: 1px solid #ccc;
+	display: inline-block;
+	padding: 6px 12px;
+	cursor: pointer;
+	min-width: 15em;
+}
+
+
+.srt-file div span
+{
+	cursor: pointer;
+}
+
+.srt-file div button
+{
+	margin-right: 1em;
+}
+
+	.srt-file div button:disabled
 	{
-		border: 1px solid #ccc;
-		display: inline-block;
-		padding: 6px 12px;
-		cursor: pointer;
-		min-width: 15em;
+		cursor: default;
 	}
-
-
-	.srt-file div span
-	{
-		cursor: pointer;
-	}
-
-	.srt-file div button
-	{
-		margin-right: 1em;
-	}
-
-		.srt-file div button:disabled
-		{
-			cursor: default;
-		}
 
 .srt-waiter
 {
@@ -148,13 +135,19 @@
 	text-align: center;
 }
 
-.btn-waiter-hidden > img
-{
-	display: none;
-}
+	.btn-waiter-hidden > img
+	{
+		display: none;
+	}
 
 #btnUndo
 {
 	float: left;
 	margin-right: 0.5em;
+}
+
+#dvRenameFooter
+{
+	flex: unset;
+	display: unset;
 }

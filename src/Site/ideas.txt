@@ -15,8 +15,6 @@ mobile mode
 line up everything
 tune email templates
 
-to fix problem with main menu (Settings is not "selected");
-
 to highlight words in phrases
 
 ---- Future ToDo -----

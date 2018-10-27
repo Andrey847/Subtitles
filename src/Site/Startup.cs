@@ -11,6 +11,7 @@ using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Site.Services;
 using SubtitlesLearn.Site.Services.Identity;
 using System;
+using System.Threading.Tasks;
 
 namespace SubtitlesLearn.Site
 {
@@ -118,7 +119,19 @@ namespace SubtitlesLearn.Site
 
 			services.AddSignalR();
 
-			services.AddMvc();
+			// Add framework services.
+			services.AddMvc(config =>
+			{
+				config.Filters.Add(typeof(GlobalExceptionFilter));
+			});
+
+			LogManager.Instance.Error += SystemError;
+		}
+
+		private void SystemError(object sender, Logic.Infrastructure.ErrorArgs e)
+		{
+			// do that in parallel to do not block main thread
+			Task.Run(() => EmailManager.Instance.NotifyAdmin("Application error", $"{e.Message}<br>Details:<br>{e.Details}"));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

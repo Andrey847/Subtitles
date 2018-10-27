@@ -23,6 +23,11 @@ namespace SubtitlesLearn.Logic
 		/// </summary>
 		public event EventHandler<SrtProgressArgs> SrtUploadProgress;
 
+		private void OnSrtUploadProgress(int customerId, int percentCompleted)
+		{
+			SrtUploadProgress?.Invoke(this, new SrtProgressArgs(customerId, percentCompleted));
+		}
+
 		#endregion Events
 
 		#region Singleton
@@ -238,12 +243,7 @@ namespace SubtitlesLearn.Logic
 			}
 
 			return response;
-		}
-
-		private void OnSrtUploadProgress(int customerId, int percentCompleted)
-		{
-			SrtUploadProgress?.Invoke(this, new SrtProgressArgs(customerId, percentCompleted));
-		}
+		}		
 
 		/// <summary>
 		/// Removes movie.

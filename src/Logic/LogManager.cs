@@ -11,10 +11,20 @@ namespace SubtitlesLearn.Logic
 	/// </summary>
 	public class LogManager : ILogging
 	{
-		#region Properties
+		#region Events
 
-		#endregion Properties
-		
+		/// <summary>
+		/// Raised if error (fatal or not) occured.
+		/// </summary>
+		public event EventHandler<ErrorArgs> Error;
+
+		private void OnError(string message, string details)
+		{
+			Error?.Invoke(this, new ErrorArgs(message, details));
+		}
+
+		#endregion Events
+
 		#region Singleton
 
 		private static Lazy<LogManager> _instance = new Lazy<LogManager>(() => new LogManager());
@@ -38,7 +48,7 @@ namespace SubtitlesLearn.Logic
 
 		private async Task Log(string message, string details, LogLevel level)
 		{
-
+			OnError(message, details);
 
 			await DbAccess.LogAsync(message, details, DateTime.Now, level);
 		}

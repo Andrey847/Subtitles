@@ -48,7 +48,7 @@ namespace SubtitlesLearn.Logic
 				throw new ArgumentException("Password hash is empty.");
 
 			await UserAccess.CreateUser(user);
-
+			
 			if (!user.IsConfirmed)
 			{
 				// For non-google users send the confirmation notification to activate account.
@@ -67,6 +67,7 @@ namespace SubtitlesLearn.Logic
 			}
 
 			await Log.LogInfo("User created", $"Email: {user.Email}");
+			await EmailNotifier.NotifyAdmin("New user", user.Email);
 		}
 
 		/// <summary>

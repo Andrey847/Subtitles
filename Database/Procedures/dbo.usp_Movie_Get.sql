@@ -22,7 +22,8 @@ BEGIN
 		Name,
 		SubtitlesFileName,
 		LanguageId,
-		CustomerId
+		CustomerId,
+		IsArchived
 	FROM dbo.Movie
 	WHERE CustomerId = @CustomerId
 	ORDER BY Name

@@ -26,7 +26,10 @@
 			</div>
 
 			<div class="modal-footer" id="dvRenameFooter">
-				<button class="btn btn-danger" id="btnDeleteMovie" title="Delete movie" onclick="deleteMovie()">Delete</button>				
+				<button class="btn btn-danger" id="btnDeleteMovie" title="Delete movie" onclick="deleteMovie()">Delete</button>
+
+				<button class="btn btn-primary" id="btnArchiveMovie" title="Archive movie" onclick="setArchiveState(true)">Archive</button>
+				<button class="btn btn-primary" id="btnUnArchiveMovie" title="Unarchiving movie" onclick="setArchiveState(false)">Unarchive</button>
 			</div>
 		</div>
 	</div>

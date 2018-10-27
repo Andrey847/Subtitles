@@ -151,3 +151,10 @@
 	flex: unset;
 	display: unset;
 }
+
+
+#btnArchiveMovie,
+#btnUnArchiveMovie
+{
+	float: right;
+}

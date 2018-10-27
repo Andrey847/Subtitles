@@ -79,7 +79,10 @@ function reloadMovies()
 				movies.forEach((item) =>
 				{
 					let selected = item.name == _loadingFile ? ' selected ' : '';
-					cmbMovie.append(`<option value="${item.id}" ${selected}>${item.name}</option>`);
+
+					// mark archived movies as italic
+					let content = item.isArchived ? `<i>${item.name}</i>` : item.name;
+					cmbMovie.append(`<option value="${item.id}" data-val-isArchived="${item.isArchived}" ${selected}>${content}</option>`);
 				});
 
 				loadWords();
@@ -360,7 +363,7 @@ function deleteMovie()
 {
 	if (confirm("Are you sure? All data, linked to this movie, will be removed"))
 	{
-		let selectedMovie = $('#cmbMovie option:selected').val();		
+		let selectedMovie = $('#cmbMovie option:selected').val();
 		
 		$.ajax({
 			type: "DELETE",
@@ -378,14 +381,43 @@ function deleteMovie()
 		});		
 	}
 }
+
+function setArchiveState(archive)
+{
+	let selectedMovie = $('#cmbMovie option:selected').val();
+
+	$.ajax({
+		type: "POST",
+		url: `/WorkPlace/SetArchiveState/${selectedMovie}/${archive}`,
+		success: () =>
+		{
+			reloadMovies();
+		},
+		error: (e) => { throw e; }
+	});		
+}
+
 function renameMovieDialog()
 {
 	let movieId = $('#cmbMovie option:selected').val();
+	let isArchived = $('#cmbMovie option:selected').attr('data-val-isArchived');
 
 	if (movieId != '0') // 0 is [All]. Of course we cannot rename it.
 	{
 		$('#txtMovieName').val($('#cmbMovie option:selected').text());
 		$('#vldMovieName').hide();
+
+		// archive/unarchive buttons
+		$('#btnArchiveMovie').hide();
+		$('#btnUnArchiveMovie').hide();
+		if (isArchived)
+		{
+			$('#btnUnArchiveMovie').show();
+		}
+		else
+		{
+			$('#btnArchiveMovie').show();
+		}
 
 		$('#dlgRenameMovie').modal();
 	}

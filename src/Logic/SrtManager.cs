@@ -280,6 +280,20 @@ namespace SubtitlesLearn.Logic
 		}
 
 		/// <summary>
+		/// Sets or unsets archived state for the movie.
+		/// </summary>
+		/// <param name="customerId"></param>
+		/// <param name="movieId"></param>
+		/// <param name="archive"></param>
+		/// <returns></returns>
+		public async Task SetArchiveState(int customerId, int movieId, bool archive)
+		{
+			await Log.LogInfo("Set movie archive state", $"CustomerId: {customerId}, MovieId: {movieId}, state: {archive}");
+
+			await SrtAccess.SetArchiveState(customerId, movieId, archive);
+		}
+
+		/// <summary>
 		/// Returns top unlearned words.
 		/// </summary>
 		/// <param name="customerId"></param>

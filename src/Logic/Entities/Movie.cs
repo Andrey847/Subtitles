@@ -26,8 +26,13 @@
 		public int CustomerId { get; set; }
 
 		/// <summary>
-		/// Language Id ()each movie can be linked to 1 language only!)
+		/// Language Id (each movie can be linked to 1 language only!)
 		/// </summary>
 		public int LanguageId { get; set; }
+
+		/// <summary>
+		/// IS current movie archived?
+		/// </summary>
+		public bool IsArchived { get; set; }
 	}
 }

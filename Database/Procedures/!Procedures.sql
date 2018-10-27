@@ -12,3 +12,4 @@
 #include "dbo.usp_Language_Get.sql"
 #include "dbo.usp_Movie_Delete.sql"
 #include "dbo.usp_Movie_Rename.sql"
+#include "dbo.usp_Movie_Archive_Set.sql"

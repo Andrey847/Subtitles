@@ -49,7 +49,8 @@ namespace SubtitlesLearn.Logic.Dal
 						Name = m["Name"] as string,
 						SubtitlesFileName = m["SubtitlesFileName"] as string,
 						CustomerId = (int)m["CustomerId"],
-						LanguageId = (int)m["LanguageId"]
+						LanguageId = (int)m["LanguageId"],
+						IsArchived = Convert.ToBoolean(m["IsArchived"])
 					}
 				)).ToArray();
 		}
@@ -170,6 +171,23 @@ namespace SubtitlesLearn.Logic.Dal
 				);
 
 			return result.OrderByDescending(item => item.Frequency).ToList();			
+		}
+
+		/// <summary>
+		/// Sets archive state for the movie.
+		/// </summary>
+		/// <param name="customerId"></param>
+		/// <param name="movieId"></param>
+		/// <param name="archive"></param>
+		/// <returns></returns>
+		internal static async Task SetArchiveState(int customerId, int movieId, bool archive)
+		{
+			await ExecuteNonQueryAsync("dbo.usp_Movie_Archive_Set", (p) =>
+			{
+				p.Add("CustomerId", SqlDbType.Int).Value = customerId;
+				p.Add("MovieId", SqlDbType.Int).Value = movieId;
+				p.Add("IsArchived", SqlDbType.Bit).Value = archive;
+			});
 		}
 	}
 }

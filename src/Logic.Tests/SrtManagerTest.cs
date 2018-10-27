@@ -19,7 +19,7 @@ namespace Logic.Tests
 		/// Default constructor (can be used for initialization).
 		/// </summary>
 		public SrtManagerTest()
-		{			
+		{
 		}
 
 		/// <summary>
@@ -67,7 +67,7 @@ baby for five minutes in a car.";
 
 			Assert.True(phrases.Length == 2);
 		}
-		
+
 		/// <summary>
 		/// Parses block from srt correctly.
 		/// </summary>
@@ -136,6 +136,34 @@ Watermelon, pickles.";
 			Language[] langs = await SrtManager.Instance.GetLanguages();
 
 			Assert.True(langs.Length > 0);
+		}
+
+		/// <summary>
+		/// Testing of set archive state workflow.
+		/// </summary>
+		/// <returns></returns>
+		[Fact]
+		public async Task SetArchiveState()
+		{
+			Customer customer = await UserManager.Instance.GetUser("ag_a@mail.ru");
+			CustomerSettings s = await UserManager.Instance.GetSettings(customer.Id);
+			bool initialSetting = s.ShowArchivedMovies;
+
+			Movie[] movies = await SrtManager.Instance.GetMovies(customer.Id);
+			Assert.NotEmpty(movies);
+
+			Movie any = movies.Where(item => !item.IsArchived).First();
+
+			// archive item
+			await SrtManager.Instance.SetArchiveState(customer.Id, any.Id, true);
+			any = (await SrtManager.Instance.GetMovies(customer.Id)).Where(item => item.Id == any.Id).FirstOrDefault();
+			Assert.True(any == null || any.IsArchived); // null can be if current user setting is "not show archived"
+
+			// unarchive item
+			await SrtManager.Instance.SetArchiveState(customer.Id, any.Id, false);
+			any = (await SrtManager.Instance.GetMovies(customer.Id)).Where(item => item.Id == any.Id).First();
+			Assert.False(any.IsArchived);
+
 		}
 
 		/// <summary>

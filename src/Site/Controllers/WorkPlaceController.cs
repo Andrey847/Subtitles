@@ -262,6 +262,21 @@ namespace SubtitlesLearn.Site.Controllers
 			return new JsonResult(error);
 		}
 
+		/// <summary>
+		/// Sets archive state for movie (sets or unsets).
+		/// </summary>
+		/// <param name="movieId"></param>
+		/// <returns></returns>
+		[HttpPost("[controller]/[action]/{movieId}/{archive}")]
+		public async Task<IActionResult> SetArchiveState(int movieId, bool archive)
+		{
+			Customer customer = await _userManager.GetUserAsync(User);
+
+			await SrtManager.Instance.SetArchiveState(customer.Id, movieId, archive);
+
+			return Ok();
+		}
+
 		private void SrtUploadProgress(object sender, SrtProgressArgs e)
 		{
 			_hubContext.Clients.User(e.CustomerId.ToString()).SendAsync("UploadProgress", e.PercentCompleted);

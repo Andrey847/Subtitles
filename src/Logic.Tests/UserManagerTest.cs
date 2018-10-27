@@ -88,19 +88,25 @@ namespace Logic.Tests
 			CustomerSettings settings = await UserManager.Instance.GetSettings(customer.Id);
 
 			string currentCode = settings.CurrentLanguageCode;
-			string newCode = currentCode + "$";
 
-			settings.CurrentLanguageCode = newCode;
+			try
+			{
+				string newCode = DateTime.Now.Ticks.ToString();
 
-			await UserManager.Instance.UpdateSettings(settings);
+				settings.CurrentLanguageCode = newCode;
 
-			// Verify that updated
-			settings = await UserManager.Instance.GetSettings(customer.Id);
-			Assert.Equal(newCode, settings.CurrentLanguageCode);
+				await UserManager.Instance.UpdateSettings(settings);
 
-			// return everything back
-			settings.CurrentLanguageCode = currentCode;
-			await UserManager.Instance.UpdateSettings(settings);
+				// Verify that updated
+				settings = await UserManager.Instance.GetSettings(customer.Id);
+				Assert.Equal(newCode, settings.CurrentLanguageCode);
+			}
+			finally
+			{
+				// return everything back
+				settings.CurrentLanguageCode = currentCode;
+				await UserManager.Instance.UpdateSettings(settings);
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace SubtitlesLearn.Logic.Entities
+﻿namespace SubtitlesLearn.Logic.Infrastructure
 {
 	/// <summary>
 	/// Response of srt file import.

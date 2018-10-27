@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SubtitlesLearn.Logic.Entities
+namespace SubtitlesLearn.Logic.Infrastructure
 {
 	/// <summary>
 	/// Request for restoring the passowrd.

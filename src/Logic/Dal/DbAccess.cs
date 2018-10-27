@@ -1,4 +1,5 @@
 ﻿using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Infrastructure;
 using SubtitlesLearn.Logic.Manager;
 using System;
 using System.Collections.Generic;

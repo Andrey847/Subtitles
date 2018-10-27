@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
 
-namespace SubtitlesLearn.Logic.Entities
+namespace SubtitlesLearn.Logic.Infrastructure
 {
 	/// <summary>
 	/// Request for the email notification.

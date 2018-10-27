@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SubtitlesLearn.Logic.Entities
+namespace SubtitlesLearn.Logic.Infrastructure
 {
 	/// <summary>
 	/// Args of srt upload progress.

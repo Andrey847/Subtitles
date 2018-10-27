@@ -1,5 +1,6 @@
 ﻿using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;

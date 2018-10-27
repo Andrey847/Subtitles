@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Infrastructure;
 using SubtitlesLearn.Site.Models;
 using SubtitlesLearn.Site.Services;
 using SubtitlesLearn.Site.Services.Identity;

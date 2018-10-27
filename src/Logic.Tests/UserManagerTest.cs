@@ -1,6 +1,7 @@
 using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Infrastructure;
 using SubtitlesLearn.Logic.Tests;
 using System;
 using System.Threading.Tasks;

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Infrastructure;
 
 namespace SubtitlesLearn.Logic
 {

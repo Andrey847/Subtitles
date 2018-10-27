@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.SignalR;
 using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Infrastructure;
 using SubtitlesLearn.Logic.Manager;
 using SubtitlesLearn.Site.Models;
 using SubtitlesLearn.Site.Services;

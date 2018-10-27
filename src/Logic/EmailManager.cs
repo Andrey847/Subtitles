@@ -1,4 +1,5 @@
 ﻿using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Infrastructure;
 using SubtitlesLearn.Logic.Interfaces;
 using System;
 using System.Net;
@@ -120,6 +121,17 @@ namespace SubtitlesLearn.Logic
 			);
 
 			return await SendEmail(request);
+		}
+
+		/// <summary>
+		/// Notifies admin about some action or error or smth like that.
+		/// </summary>
+		/// <param name="subject"></param>
+		/// <param name="body"></param>
+		/// <returns></returns>
+		public async Task<bool> NotifyAdmin(string subject, string body)
+		{
+			return await SendSimpleText(ManagerEmail, $"Sub-Learn: {subject}", body);
 		}
 
 		#endregion Methods

@@ -15,5 +15,13 @@ namespace SubtitlesLearn.Logic.Interfaces
 		/// <param name="body"></param>
 		/// <returns></returns>
 		Task<bool> SendSimpleText(string to, string subject, string body);
+
+		/// <summary>
+		/// Notifies site admins of various events (errors or user actions or smth like that).
+		/// </summary>
+		/// <param name="subject"></param>
+		/// <param name="body"></param>
+		/// <returns></returns>
+		Task<bool> NotifyAdmin(string subject, string body);
 	}
 }

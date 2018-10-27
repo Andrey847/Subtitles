@@ -1,5 +1,6 @@
 ﻿using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Infrastructure;
 using System;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace SubtitlesLearn.Logic
 	public class LogManager : ILogging
 	{
 		#region Properties
-		
+
 		#endregion Properties
 		
 		#region Singleton
@@ -37,6 +38,8 @@ namespace SubtitlesLearn.Logic
 
 		private async Task Log(string message, string details, LogLevel level)
 		{
+
+
 			await DbAccess.LogAsync(message, details, DateTime.Now, level);
 		}
 

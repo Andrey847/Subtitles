@@ -66,9 +66,7 @@ namespace SubtitlesLearn.Site.Controllers
 		{
 			Customer customer = await _userManager.GetUserAsync(User);
 
-			await EmailManager.Instance.SendSimpleText(EmailManager.Instance.ManagerEmail,
-				$"Sub-learn message: from {customer.Email}",
-				message);
+			await EmailManager.Instance.NotifyAdmin($"message from {customer.Email}", message);
 
 			return Ok();
 		}

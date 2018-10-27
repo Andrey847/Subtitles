@@ -4,7 +4,8 @@
 }
 
 #cmbLanguage,
-#cmbUnknownWordMax
+#cmbUnknownWordMax,
+#dvShowArchivedMovies
 {
 	background-color: lightgreen;
 }
@@ -18,4 +19,9 @@
 .form-control:disabled, .form-control[readonly]
 {
 	background-color: #e9ecef !important;
+}
+
+#ShowArchivedMovies
+{
+	width: 50px;
 }

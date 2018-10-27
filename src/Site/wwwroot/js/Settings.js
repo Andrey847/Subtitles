@@ -1,11 +1,13 @@
 ﻿var _settings;
 var _cmbLanguage;
 var _cmbUnknownWordMax;
+var _chkShowArchivedMovies;
 
 $(document).ready(function ()
 {
 	_cmbLanguage = $('#cmbLanguage');
 	_cmbUnknownWordMax = $('#cmbUnknownWordMax');
+	_chkShowArchivedMovies = $('#chkShowArchivedMovies');
 
 	// loads settings
 	$.ajax(
@@ -19,6 +21,7 @@ $(document).ready(function ()
 
 					_cmbLanguage.val(_settings.currentLanguageCode);
 					_cmbUnknownWordMax.val(_settings.unknownWordMax);
+					_chkShowArchivedMovies.prop('checked', _settings.showArchivedMovies);
 
 					// Unblock controls
 					blockControls(false);
@@ -36,6 +39,12 @@ function saveUnknownWordMax()
 {
 	_settings.unknownWordMax = _cmbUnknownWordMax.val();
 	saveSettings(() => successBlink(_cmbUnknownWordMax));	
+}
+
+function saveShowArchivedMovies()
+{	
+	_settings.showArchivedMovies = _chkShowArchivedMovies.prop('checked');
+	saveSettings(() => successBlink($('#dvShowArchivedMovies')));
 }
 
 // Blinks control if everything is ok.
@@ -79,5 +88,6 @@ function blockControls(block)
 {
 	let state = block ? 'disabled' : null;
 	_cmbLanguage.prop('disabled', state);
-	_cmbUnknownWordMax.prop('disabled', state);	
+	_cmbUnknownWordMax.prop('disabled', state);
+	_chkShowArchivedMovies.prop('disabled', state);
 }

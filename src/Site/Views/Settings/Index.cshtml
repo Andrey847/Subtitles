@@ -45,6 +45,18 @@
 </div>
 
 <div class="row sett-row">
+	<div class="col-sm-3 offset-sm-3">
+		<span title="If unchecked, archived movies are not displayed on the main list.">Show archived movies?</span>
+	</div>
+	<div class="col-sm-3">
+		<div id="dvShowArchivedMovies" class="srt-save-normal">
+			<input type="checkbox" id="chkShowArchivedMovies" onchange="saveShowArchivedMovies()">
+		</div>
+	</div>
+</div>
+
+
+<div class="row sett-row">
 	<div class="col-sm-3 offset-sm-6">
 		<a asp-controller="Account" asp-action="ChangePassword">Change password</a>
 	</div>

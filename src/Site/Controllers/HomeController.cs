@@ -33,7 +33,15 @@ namespace SubtitlesLearn.Site.Controllers
 		/// <returns></returns>
 		public IActionResult Index()
 		{
-			return View();
+			if (User.Identity.IsAuthenticated)
+			{
+				// Auth user should be redirected to main work place
+				return Redirect("/WorkPlace");
+			}
+			else
+			{
+				return View();
+			}
 		}
 
 		/// <summary>

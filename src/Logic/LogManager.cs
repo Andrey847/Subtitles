@@ -48,7 +48,10 @@ namespace SubtitlesLearn.Logic
 
 		private async Task Log(string message, string details, LogLevel level)
 		{
-			OnError(message, details);
+			if (level == LogLevel.Error || level == LogLevel.FatalError)
+			{
+				OnError(message, details);
+			}
 
 			await DbAccess.LogAsync(message, details, DateTime.Now, level);
 		}

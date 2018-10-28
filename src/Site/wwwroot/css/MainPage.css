@@ -56,6 +56,16 @@
 		max-height: 500px;
 	}
 
+.srt-phrase > span
+{
+	margin-right: 0.5em;
+}
+
+.srt-searched-word
+{
+	background-color: lightgoldenrodyellow;
+}
+
 #btnRenameMovie
 {
 	float: left;

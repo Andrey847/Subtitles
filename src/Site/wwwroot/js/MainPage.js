@@ -166,7 +166,7 @@ function generateTable(jsonWords)
 									<div class="col-sm-3" class="srt-english">
 										<div class="srt-play-btn" onclick="playWord(this, ${item.id}, '${item.source}');"></div>
 										<span class="srt-text">${item.source}</span>
-										<img class="srt-phrases-ico" onclick="showPhrases(this, '${item.id}')">
+										<img class="srt-phrases-ico" onclick="showPhrases(this, '${item.id}', '${item.source}')">
 									</div>
 									<div class="col-sm-3">
 										<input type="text" class='form-control' value="${item.translation}"></input>
@@ -189,7 +189,7 @@ function deselectRow(sender)
 	$(sender).closest('.row').removeClass('srt-selected-row');
 }
 
-function showPhrases(sender, wordId)
+function showPhrases(sender, wordId, word)
 {
 	let existingContainer = $('.srt-phrase-container');
 
@@ -217,7 +217,15 @@ function showPhrases(sender, wordId)
 
 				phrases.forEach((item) =>
 				{
-					phraseHtml += `<div class="srt-phrase">${item.value}</div>`;
+					let phrase = '';
+
+					item.value.split(' ').forEach((w) =>
+					{
+						phrase += (w == word)
+							? `<span class='srt-searched-word'>${w}</span>`
+							: `<span>${w}</span>`;						
+					});
+					phraseHtml += `<div class="srt-phrase">${phrase}</div>`;
 				});
 
 				// add element

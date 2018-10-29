@@ -8,3 +8,8 @@
 	margin: 0 auto;
 	width: 304px;
 }
+
+#btnRegisterLogin
+{
+	float: left;
+}

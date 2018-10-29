@@ -142,14 +142,6 @@ namespace SubtitlesLearn.Site.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
 		{
-			ViewData["RecaptchaSiteKey"] = _recaptchaSettings.SiteKey;
-			bool verified = await CaptchaVerifier.VerifyAsync(_recaptchaSettings, Request);
-
-			if (!verified)
-			{
-				ModelState.AddModelError(string.Empty, "Captcha failed");
-			}
-
 			if (ModelState.IsValid)
 			{
 				if (!string.IsNullOrEmpty(model.Email)

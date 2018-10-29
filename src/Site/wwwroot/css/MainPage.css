@@ -194,4 +194,14 @@
 		margin-top: 0.5em;
 		text-align: center;
 	}
+
+	#lblSpanMovie
+	{
+		display: none;
+	}
+
+	#cmbMovie
+	{
+		margin-top: 0.5em;
+	}
 }

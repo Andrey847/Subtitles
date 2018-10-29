@@ -26,3 +26,12 @@
 {
 	width: 50px;
 }
+
+/* mobile features */
+@media screen and (max-width: 802px)
+{
+	.body-content
+	{
+		padding-top: 50px;
+	}
+}

@@ -5,9 +5,6 @@ https://stackoverflow.com/questions/32922226/extract-every-audio-and-subtitles-f
 
 todo:
 
-mobile mode
-line up everything
-
 google auth
 
 tune email templates

@@ -28,6 +28,18 @@ BEGIN
 			AND s.Code = N'ShowArchivedMovies'
 	)
 
+	DECLARE @LanguageId int = 
+	(
+		SELECT l.LanguageId 
+		FROM dbo.CustomerSetting cs
+			INNER JOIN dbo.Setting s
+				ON cs.SettingId = s.SettingId
+			INNER JOIN dbo.Language l
+				ON cs.Value = l.Code
+		WHERE CustomerId = @CustomerId	
+			AND  s.Code = 'CurrentLanguageCode'
+	)
+
 	SELECT MovieId,
 		Name,
 		SubtitlesFileName,
@@ -36,7 +48,8 @@ BEGIN
 		IsArchived
 	FROM dbo.Movie
 	WHERE CustomerId = @CustomerId
-		AND (@ShowArchived = 1 OR ISArchived = 0) -- show all or not archived only.
+		AND (@ShowArchived = 1 OR IsArchived = 0) -- show all or not archived only.
+		AND LanguageId = @LanguageId
 	ORDER BY Name
 END
 GO

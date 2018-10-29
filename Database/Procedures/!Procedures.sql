@@ -13,3 +13,6 @@
 #include "dbo.usp_Movie_Delete.sql"
 #include "dbo.usp_Movie_Rename.sql"
 #include "dbo.usp_Movie_Archive_Set.sql"
+
+#include "dbo.usp_CustomerState_Update.sql"
+#include "dbo.usp_CustomerState_Get.sql"

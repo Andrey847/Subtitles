@@ -108,5 +108,17 @@ namespace Logic.Tests
 				await UserManager.Instance.UpdateSettings(settings);
 			}
 		}
+
+		/// <summary>
+		/// Simple test to update customer layout state.
+		/// </summary>
+		[Fact]
+		public async void State()
+		{
+			Customer customer = await UserManager.Instance.GetUser("ag_a@mail.ru");
+
+			CustomerState state = await UserManager.Instance.GetState(customer.Id);
+			await UserManager.Instance.UpdateState(state);
+		}
 	}
 }

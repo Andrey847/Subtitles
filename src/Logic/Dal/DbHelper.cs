@@ -164,9 +164,16 @@ namespace SubtitlesLearn.Logic.Dal
 
 				SqlDataReader reader = await procedure.ExecuteReaderAsync();
 
-				await reader.ReadAsync();
-
-				T result = mapper(reader);
+				T result;
+				if (await reader.ReadAsync())
+				{
+					result = mapper(reader);
+				}
+				else
+				{
+					// nothing to read. just create the object.
+					result = new T();
+				}
 
 				conn.Close();
 

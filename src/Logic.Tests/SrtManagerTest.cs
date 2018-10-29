@@ -153,6 +153,7 @@ Watermelon, pickles.";
 			Assert.NotEmpty(movies);
 
 			Movie any = movies.Where(item => !item.IsArchived).First();
+			int anyId = any.Id;
 
 			// archive item
 			await SrtManager.Instance.SetArchiveState(customer.Id, any.Id, true);
@@ -160,8 +161,8 @@ Watermelon, pickles.";
 			Assert.True(any == null || any.IsArchived); // null can be if current user setting is "not show archived"
 
 			// unarchive item
-			await SrtManager.Instance.SetArchiveState(customer.Id, any.Id, false);
-			any = (await SrtManager.Instance.GetMovies(customer.Id)).Where(item => item.Id == any.Id).First();
+			await SrtManager.Instance.SetArchiveState(customer.Id, anyId, false);
+			any = (await SrtManager.Instance.GetMovies(customer.Id)).Where(item => item.Id == anyId).First();
 			Assert.False(any.IsArchived);
 
 		}

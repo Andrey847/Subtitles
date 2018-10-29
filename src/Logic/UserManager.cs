@@ -177,6 +177,29 @@ namespace SubtitlesLearn.Logic
 			await UserAccess.UpdateSettings(settings);
 		}
 
+		/// <summary>
+		/// Updates customer's state.
+		/// </summary>
+		/// <param name="state"></param>
+		/// <returns></returns>
+		public async Task UpdateState(CustomerState state)
+		{
+			if (state == null)
+				throw new ArgumentNullException(nameof(state));
+
+			await UserAccess.UpdateCustomerState(state);
+		}
+
+		/// <summary>
+		/// Returns customer page state.
+		/// </summary>
+		/// <param name="customerId"></param>
+		/// <returns></returns>
+		public async Task<CustomerState> GetState(int customerId)
+		{
+			return await UserAccess.GetCustomerState(customerId);
+		}
+
 		#endregion Methods
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using SubtitlesLearn.Logic.Entities;
+using SubtitlesLearn.Logic.Infrastructure;
 using System;
 using System.Data;
 using System.Threading.Tasks;
@@ -128,6 +129,44 @@ namespace SubtitlesLearn.Logic.Dal
 					p.Add("CurrentLanguageCode", SqlDbType.NVarChar).Value = settings.CurrentLanguageCode;
 					p.Add("UnknownWordMax", SqlDbType.Int).Value = settings.UnknownWordMax;
 					p.Add("ShowArchivedMovies", SqlDbType.Bit).Value = settings.ShowArchivedMovies;
+				});
+		}
+
+		/// <summary>
+		/// Returns customer state
+		/// </summary>
+		/// <returns></returns>
+		internal static async Task<CustomerState> GetCustomerState(int customerId)
+		{
+			CustomerState result = await ExecuteObjectAsync<CustomerState>("dbo.usp_CustomerState_Get",
+				(p) =>
+				{
+					p.Add("CustomerId", SqlDbType.Int).Value = customerId;
+				},
+				(m) =>
+					new CustomerState()
+					{
+						WorkPlace = m["WorkPlaceLayout"] as string
+					}
+				);
+
+			result.CustomerId = customerId;
+
+			return result;
+		}
+
+		/// <summary>
+		/// Updates customer state.
+		/// </summary>
+		/// <param name="state"></param>
+		/// <returns></returns>
+		internal static async Task UpdateCustomerState(CustomerState state)
+		{
+			await ExecuteNonQueryAsync("dbo.usp_CustomerState_Update",
+				(p) =>
+				{
+					p.Add("CustomerId", SqlDbType.Int).Value = state.CustomerId;
+					p.Add("WorkPlaceLayout", SqlDbType.NVarChar).Value = state.WorkPlace;
 				});
 		}
 	}

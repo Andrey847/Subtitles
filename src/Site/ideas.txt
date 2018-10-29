@@ -8,16 +8,17 @@ todo:
 mobile mode
 line up everything
 
-save state (choosen movie etc)
 google auth
 
 tune email templates
+fix problem with languages
 
 ---- Future ToDo -----
 show all texts when exact movie is choosen
 define subtitles language automatically (and warn about it).
 support many srt files in archive.
 facebook login
+minification and bundling.
 
 ----------------------
 infrastructure:

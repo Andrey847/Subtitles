@@ -1,9 +1,4 @@
-﻿.srt-english
-{
-	text-align: right;
-}
-
-.srt-play-btn
+﻿.srt-play-btn
 {
 	background: url(../images/Pixeden/play.svg);
 }
@@ -167,4 +162,37 @@
 #btnUnArchiveMovie
 {
 	float: right;
+}
+
+
+#dvWords .row
+{
+	margin-bottom: 3px;
+}
+
+
+/* mobile features */
+
+@media screen and (max-width: 802px)
+{
+	#btnRenameMovie
+	{
+		display: none;
+	}
+
+	.srt-freq
+	{
+		display: none;
+	}
+
+	.srt-btn-learned
+	{
+		float: right;
+	}
+
+	.srt-english
+	{
+		margin-top: 0.5em;
+		text-align: center;
+	}
 }

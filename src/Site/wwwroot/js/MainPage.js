@@ -162,8 +162,8 @@ function generateTable(jsonWords)
 	jsonWords.forEach((item) =>
 	{
 		container.append(`<div class="row">
-									<div class="col-sm-1">${item.frequency}</div>
-									<div class="col-sm-3" class="srt-english">
+									<div class="col-sm-1"><span class="srt-freq">${item.frequency}</span></div>
+									<div class="col-sm-3 srt-english">
 										<div class="srt-play-btn" onclick="playWord(this, ${item.id}, '${item.source}');"></div>
 										<span class="srt-text">${item.source}</span>
 										<img class="srt-phrases-ico" onclick="showPhrases(this, '${item.id}', '${item.source}')">
@@ -173,7 +173,7 @@ function generateTable(jsonWords)
 									</div>
 									<div class="col-sm-2" onmouseenter="selectRow(this);" onmouseleave="deselectRow(this);">
 										<button onclick="save('${item.source}', this);">Save</button>
-										<button onclick="markLearned('${item.source}', this, ${item.id});">Learned</button>
+										<button class="srt-btn-learned" onclick="markLearned('${item.source}', this, ${item.id});">Learned</button>
 									</div>
 								</div>`);
 	});

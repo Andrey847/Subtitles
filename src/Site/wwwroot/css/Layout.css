@@ -31,15 +31,6 @@
 	margin: 15px;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px)
-{
-	/* Hide captions */
-	.carousel-caption
-	{
-		display: none;
-	}
-}
 
 
 .btn-primary
@@ -122,3 +113,29 @@
 	text-align: center;
 }
 
+
+
+/* mobile features */
+@media screen and (max-width: 802px)
+{
+	/* Hide captions */
+	.carousel-caption
+	{
+		display: none;
+	}
+
+	body
+	{
+		padding-top: 10px;
+	}
+
+	h1
+	{
+		font-size: 2rem;
+	}
+
+	h2
+	{
+		font-size: 1.1rem;
+	}
+}

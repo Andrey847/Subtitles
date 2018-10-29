@@ -42,7 +42,7 @@
 		<span>Movie:</span>
 	</div>
 	<div class="col-sm-3">
-		<select id="cmbMovie" class="form-control" onchange="loadWords();">
+		<select id="cmbMovie" class="form-control" onchange="loadWords(); saveLayout();">
 			<option value="0" selected>[All]</option>
 
 			@foreach (Movie movie in ViewBag.Movies)

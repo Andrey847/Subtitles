@@ -25,12 +25,12 @@ namespace SubtitlesLearn.Site.Controllers
 	/// Main work place.
 	/// </summary>
 	[Authorize]
-    public class WorkPlaceController : Controller
-    {
+	public class WorkPlaceController : Controller
+	{
 		#region Fields
 
 		private readonly ApplicationUserManager _userManager;
-		
+
 		private static IHubContext<NotificationHub> _hubContext = null;
 		private static object _syncHub = new object();
 
@@ -208,7 +208,7 @@ namespace SubtitlesLearn.Site.Controllers
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet("[controller]/AllWords/{movieId}")]
-		public async Task <IActionResult> GetAllWords(int movieId)
+		public async Task<IActionResult> GetAllWords(int movieId)
 		{
 			Customer customer = await _userManager.GetUserAsync(User);
 
@@ -280,6 +280,39 @@ namespace SubtitlesLearn.Site.Controllers
 		private void SrtUploadProgress(object sender, SrtProgressArgs e)
 		{
 			_hubContext.Clients.User(e.CustomerId.ToString()).SendAsync("UploadProgress", e.PercentCompleted);
+		}
+
+		/// <summary>
+		/// Gets layout for the search page.
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		public async Task<JsonResult> GetLayout()
+		{
+			Customer customer = await _userManager.GetUserAsync(User);
+
+			CustomerState state = await UserManager.Instance.GetState(customer.Id);
+
+			return new JsonResult(state.WorkPlace);
+		}
+
+		/// <summary>
+		/// Saves layout to the database.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<JsonResult> SaveLayout([FromBody] object layout)
+		{
+			Customer customer = await _userManager.GetUserAsync(User);
+
+			CustomerState state = new CustomerState();
+			state.CustomerId = customer.Id;
+			state.WorkPlace = layout.ToString();
+
+			await UserManager.Instance.UpdateState(state);
+
+			return new JsonResult("Saved");
 		}
 
 		#endregion Methods

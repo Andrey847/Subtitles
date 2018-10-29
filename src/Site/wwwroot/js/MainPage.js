@@ -41,7 +41,7 @@ $(document).ready(function ()
 {
 	signalConnect(connection);
 
-	loadWords();
+	restoreLayout();
 
 	var wordPlayer = document.getElementById('wordPlayer');
 	wordPlayer.onloadstart = function ()
@@ -90,7 +90,7 @@ function reloadMovies()
 				$('#btnUpload').text('Upload');
 				$('#btnUpload').attr('disabled', null);
 			}
-		});	
+		});
 }
 
 function loadWords()
@@ -100,7 +100,7 @@ function loadWords()
 
 	let selectedMovie = $('#cmbMovie option:selected').val();
 	$('#btnRefresh').removeClass('btn-waiter-hidden');
-	
+
 	$.ajax({
 		type: "GET",
 		url: `/WorkPlace/AllWords/${selectedMovie}`,
@@ -223,7 +223,7 @@ function showPhrases(sender, wordId, word)
 					{
 						phrase += (w == word)
 							? `<span class='srt-searched-word'>${w}</span>`
-							: `<span>${w}</span>`;						
+							: `<span>${w}</span>`;
 					});
 					phraseHtml += `<div class="srt-phrase">${phrase}</div>`;
 				});
@@ -240,7 +240,7 @@ function showPhrases(sender, wordId, word)
 
 				// very strange but transition work with a tiny delay only.
 				setTimeout(() => $('.srt-phrase-container')[0].style.maxHeight = '500px', 1);
-				
+
 			}
 		});
 	}
@@ -258,7 +258,7 @@ function playWord(sender, wordId, word)
 	}
 
 	_currentWordIcon = sender;
-	
+
 	var player = document.getElementById('wordPlayer');
 
 	if (player.src)
@@ -294,7 +294,7 @@ function markLearned(source, sender, wordId)
 	let existingContainer = $('.srt-phrase-container');
 	if (existingContainer.length > 0
 		&& existingContainer.attr('data-val-wordid') == wordId)
-	{		
+	{
 		existingContainer.remove();
 	}
 
@@ -372,7 +372,7 @@ function deleteMovie()
 	if (confirm("Are you sure? All data, linked to this movie, will be removed"))
 	{
 		let selectedMovie = $('#cmbMovie option:selected').val();
-		
+
 		$.ajax({
 			type: "DELETE",
 			url: `/WorkPlace/DeleteMovie/${selectedMovie}`,
@@ -380,13 +380,13 @@ function deleteMovie()
 			{
 				// select [All] movies
 				$('#cmbMovie').val('0');
-				loadWords();	
+				loadWords();
 
 				// do not forget to remove deleted movie.
 				$(`#cmbMovie option[value='${selectedMovie}']`).remove();
 			},
 			error: (e) => { throw e; }
-		});		
+		});
 	}
 }
 
@@ -403,7 +403,7 @@ function setArchiveState(archive)
 			$('#dlgRenameMovie').modal('hide');
 		},
 		error: (e) => { throw e; }
-	});		
+	});
 }
 
 function renameMovieDialog()
@@ -436,9 +436,9 @@ function renameMovie()
 {
 	// validation
 	let newName = $('#txtMovieName').val();
-	
+
 	if (!newName)
-	{	
+	{
 		$('#vldMovieName').text('Please enter name.');
 		$('#vldMovieName').show();
 	}
@@ -467,9 +467,9 @@ function renameMovie()
 					$('#cmbMovie option:selected').text(newName);
 				}
 			},
-			error: (e) =>  { throw e; },
+			error: (e) => { throw e; },
 			complete: () => $('#btnMovieRename').attr('disabled', null)
-		});		
+		});
 	}
 }
 
@@ -486,7 +486,7 @@ function fileChooseClick(evnt)
 function fileDragEnter(ev)
 {
 	ev.preventDefault();
-	$('#dvUploadArea').addClass('drag-highlight');	
+	$('#dvUploadArea').addClass('drag-highlight');
 }
 
 function fileDragLeave(ev)
@@ -509,4 +509,55 @@ function fileDropped(ev)
 function allowDrop(ev)
 {
 	ev.preventDefault();
+}
+
+function saveLayout()
+{
+	var layout =
+	{
+		selectedMovieId: $('#cmbMovie option:selected').val()
+	}
+
+	// simple async save
+	$.ajax({
+		type: 'POST',
+		url: 'WorkPlace/SaveLayout',
+		contentType: 'application/json',
+		data: JSON.stringify(layout),
+		error: (err) =>
+		{
+			throw err;
+		}
+	});
+}
+
+function restoreLayout()
+{
+	// restores layout
+	$.ajax("WorkPlace/GetLayout",
+		{
+			async: false,
+			method: 'GET',
+			success: function (data)
+			{
+				var state = JSON.parse(data);
+
+				if (state && state.selectedMovieId)
+				{
+					// Assign selected movie.
+					$('#cmbMovie').val(state.selectedMovieId);
+
+					loadWords();
+				}
+				else
+				{
+					// just show default selected value.
+					loadWords();
+				}
+			},
+			error: function (err)
+			{
+				throw err;
+			}
+		});
 }

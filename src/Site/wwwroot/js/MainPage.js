@@ -221,9 +221,12 @@ function showPhrases(sender, wordId, word)
 
 					item.value.split(' ').forEach((w) =>
 					{
-						phrase += (w == word)
-							? `<span class='srt-searched-word'>${w}</span>`
-							: `<span>${w}</span>`;
+						if (w) // do not add empty spans.
+						{
+							phrase += (w == word)
+								? `<span class='srt-searched-word'>${w}</span>`
+								: `<span>${w}</span>`;
+						}
 					});
 					phraseHtml += `<div class="srt-phrase">${phrase}</div>`;
 				});

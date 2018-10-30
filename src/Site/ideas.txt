@@ -8,7 +8,9 @@ todo:
 google auth
 
 tune email templates
-fix problem with languages
+fix problem with languages (layout value, + word displaying)
+
+"work policy." Problems with displaying phrase in mobile mode.
 
 ---- Future ToDo -----
 show all texts when exact movie is choosen

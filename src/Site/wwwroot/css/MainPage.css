@@ -51,9 +51,15 @@
 		max-height: 500px;
 	}
 
+.srt-phrase
+{
+	margin-bottom: 0.5em;
+}
+
 .srt-phrase > span
 {
 	margin-right: 0.5em;
+	display: inline-block;
 }
 
 .srt-searched-word
@@ -61,6 +67,14 @@
 	background-color: lightgoldenrodyellow;
 }
 
+#btnRenameMovieMobile
+{
+	float: right;
+	margin-top: 6px;
+	display: none;
+}
+
+#btnRenameMovieMobile,
 #btnRenameMovie
 {
 	float: left;
@@ -74,6 +88,7 @@
 	float: left;
 }
 
+#btnRenameMovieMobile,
 #btnRenameMovie > img
 {
 	content: url(../images/Pixeden/edit.svg);
@@ -208,5 +223,12 @@
 	#dvUploadArea
 	{
 		margin-top: 60px;
+	}
+
+	#btnRenameMovieMobile
+	{
+		display: unset;
+		float: right;
+		margin-top: 6px;
 	}
 }

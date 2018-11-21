@@ -13,7 +13,8 @@ GO
 -- Description:	Returns phrases, related to specific word.
 -- =======================================================
 ALTER PROCEDURE[dbo].[usp_Phrase_Get]
-	@WordId int
+	@WordId int,
+	@MovieId int = NULL
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -23,5 +24,6 @@ BEGIN
 		INNER JOIN PhraseWord pw	
 			ON p.PhraseId = pw.PhraseId
 	WHERE pw.WordId = @WordId
+		AND (@MovieId IS NULL OR p.MovieId = @MovieId)
 END
 GO

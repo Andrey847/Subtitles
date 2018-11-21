@@ -206,11 +206,12 @@ function showPhrases(sender, wordId, word)
 
 		// find parent row. we expand phrases after it
 		let parentRow = $(sender).closest('.row');
+		let selectedMovie = $('#cmbMovie option:selected').val();
 
 		// request for phrases
 		$.ajax({
 			type: 'GET',
-			url: `/WorkPlace/GetPhrases/${wordId}`,
+			url: `/WorkPlace/GetPhrases/${wordId}/${selectedMovie}`,
 			success: (phrases) =>
 			{
 				let phraseHtml = ''

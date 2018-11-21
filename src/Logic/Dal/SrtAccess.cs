@@ -18,12 +18,13 @@ namespace SubtitlesLearn.Logic.Dal
 		/// Updates customer's password.
 		/// </summary>
 		/// <param name="user"></param>
-		internal static async Task<Phrase[]> GetPhrases(int wordId)
+		internal static async Task<Phrase[]> GetPhrases(int wordId, int? movieId)
 		{
 			return (await ExecuteListAsync("dbo.usp_Phrase_Get",
 				(p) =>
 				{
 					p.Add("WordId", SqlDbType.Int).Value = wordId;
+					p.Add("MovieId", SqlDbType.Int).Value = movieId;
 				},
 				(m) =>
 					new Phrase(m["Value"] as string)

@@ -103,10 +103,15 @@ namespace SubtitlesLearn.Site.Controllers
 		/// </summary>
 		/// <param name="wordId"></param>
 		/// <returns></returns>
-		[HttpGet("[controller]/[action]/{wordId}")]
-		public async Task<IActionResult> GetPhrases(int wordId)
+		[HttpGet("[controller]/[action]/{wordId}/{movieId?}")]
+		public async Task<IActionResult> GetPhrases(int wordId, int? movieId)
 		{
-			return new JsonResult(await SrtManager.Instance.GetPhrases(wordId));
+			if (movieId == 0)
+			{
+				movieId = null;
+			}
+
+			return new JsonResult(await SrtManager.Instance.GetPhrases(wordId, movieId));
 		}
 
 		/// <summary>

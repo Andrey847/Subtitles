@@ -188,9 +188,9 @@ namespace SubtitlesLearn.Logic
 		/// </summary>
 		/// <param name="wordId"></param>
 		/// <returns></returns>
-		public async Task<Phrase[]> GetPhrases(int wordId)
+		public async Task<Phrase[]> GetPhrases(int wordId, int? movieId)
 		{
-			return await SrtAccess.GetPhrases(wordId);
+			return await SrtAccess.GetPhrases(wordId, movieId);
 		}
 
 		/// <summary>

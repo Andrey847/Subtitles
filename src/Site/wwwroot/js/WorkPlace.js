@@ -172,8 +172,8 @@ function generateTable(jsonWords)
 										<input type="text" class='form-control' value="${item.translation}"></input>
 									</div>
 									<div class="col-sm-2" onmouseenter="selectRow(this);" onmouseleave="deselectRow(this);">
-										<button onclick="save('${item.source}', this);">Save</button>
-										<button class="srt-btn-learned" onclick="markLearned('${item.source}', this, ${item.id});">Learned</button>
+										<button class="btn btn-sm btn-secondary" onclick="save('${item.source}', this);">Save</button>
+										<button class="btn btn-sm btn-secondary srt-btn-learned" onclick="markLearned('${item.source}', this, ${item.id});">Learned</button>
 									</div>
 								</div>`);
 	});

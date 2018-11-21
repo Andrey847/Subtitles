@@ -56,11 +56,11 @@
 	margin-bottom: 0.5em;
 }
 
-.srt-phrase > span
-{
-	margin-right: 0.5em;
-	display: inline-block;
-}
+	.srt-phrase > span
+	{
+		margin-right: 0.5em;
+		display: inline-block;
+	}
 
 .srt-searched-word
 {
@@ -231,4 +231,18 @@
 		float: right;
 		margin-top: 6px;
 	}
+}
+
+/* for success "blinking" */
+.srt-txt,
+.srt-txt:focus
+{
+	background-color: lightgreen;
+}
+
+.srt-txt-normal,
+.srt-txt-normal:focus
+{
+	background-color: white !important;
+	transition: background-color 500ms linear;
 }

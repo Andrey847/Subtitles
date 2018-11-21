@@ -169,7 +169,7 @@ function generateTable(jsonWords)
 										<img class="srt-phrases-ico" onclick="showPhrases(this, '${item.id}', '${item.source}')">
 									</div>
 									<div class="col-sm-3">
-										<input type="text" class='form-control' value="${item.translation}"></input>
+										<input type="text" class='form-control srt-txt srt-txt-normal' value="${item.translation}" onkeyup="wordSubmit(event, '${item.source}', this);"></input>
 									</div>
 									<div class="col-sm-2" onmouseenter="selectRow(this);" onmouseleave="deselectRow(this);">
 										<button class="btn btn-sm btn-secondary" onclick="save('${item.source}', this);">Save</button>
@@ -177,6 +177,28 @@ function generateTable(jsonWords)
 									</div>
 								</div>`);
 	});
+}
+
+// Blinks control if everything is ok.
+function successBlink(jControl)
+{
+	jControl.removeClass('srt-txt-normal');
+
+	// it is impossible just remove and add class for blinking effect. small delay is required.
+	setTimeout(() =>
+	{
+		jControl.addClass('srt-txt-normal');
+	},
+		10)
+}
+
+function wordSubmit(event, source, sender)
+{
+	if (event.keyCode === 13)
+	{
+		event.preventDefault();
+		save(source, sender);
+	}
 }
 
 function selectRow(sender)
@@ -277,7 +299,8 @@ function playWord(sender, wordId, word)
 
 function save(source, sender)
 {
-	let translation = $(sender).closest('.row').find('input').val();
+	let txtControl = $(sender).closest('.row').find('input');
+	let translation = txtControl.val();
 
 	// simple async save
 	$.ajax({
@@ -288,7 +311,8 @@ function save(source, sender)
 			{
 				"source": source,
 				"translation": translation
-			})
+			}),
+		success: () => successBlink(txtControl)
 	});
 }
 

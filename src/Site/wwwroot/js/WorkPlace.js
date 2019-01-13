@@ -229,6 +229,7 @@ function showPhrases(sender, wordId, word)
 		// find parent row. we expand phrases after it
 		let parentRow = $(sender).closest('.row');
 		let selectedMovie = $('#cmbMovie option:selected').val();
+		word = word.toLowerCase(); // for correct comparing.
 
 		// request for phrases
 		$.ajax({
@@ -246,7 +247,11 @@ function showPhrases(sender, wordId, word)
 					{
 						if (w) // do not add empty spans.
 						{
-							phrase += (w == word)
+							let toCompare = w.toLowerCase()
+								.replace(/[^\w\s-]|_/g, "")
+								.replace(/\s+/g, " ");
+
+							phrase += (toCompare == word)
 								? `<span class='srt-searched-word'>${w}</span>`
 								: `<span>${w}</span>`;
 						}

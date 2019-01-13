@@ -59,8 +59,6 @@ namespace SubtitlesLearn.Site.Controllers
 					{
 						_hubContext = hubContext;
 
-						//UserManager.Instance.SentenceLeftUpdated += SentenceLeftUpdatedHandler;
-						//TtsManager.Instance.Mp3Progress += Mp3ProgressHandler;
 						SrtManager.Instance.SrtUploadProgress += SrtUploadProgress;
 					}
 				}

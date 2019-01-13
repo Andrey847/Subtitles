@@ -16,3 +16,4 @@
 
 #include "dbo.usp_CustomerState_Update.sql"
 #include "dbo.usp_CustomerState_Get.sql"
+#include "dbo.usp_Phrase_Get.sql"

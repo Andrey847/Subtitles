@@ -7,8 +7,12 @@ todo:
 
 google auth
 
+
+] - applause]
 tune email templates
 fix problem with languages (layout value, + word displaying)
+prevent double file loading
+show files in the archive and suggest choose required.
 
 "work policy." Problems with displaying phrase in mobile mode.
 

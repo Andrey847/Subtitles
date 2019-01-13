@@ -3,8 +3,13 @@ const connection = new signalR.HubConnectionBuilder()
 	.withUrl("/NotificationHub")
 	.build();
 
+
+
+
 connection.on("UploadProgress", (percentCompleted) =>
 {
+	
+	initializeNotifications()
 	if (percentCompleted == 100)
 	{
 		// Everything completed. Reload movies and then Remove %  and unblock Upload button

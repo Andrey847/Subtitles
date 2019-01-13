@@ -1,5 +1,6 @@
 @echo on
 
+REM FDD - framework-dependent deployment (FDD) relies on the presence of a shared system-wide version of .NET Core on the target system.	
 REM Set variables in order to run msbuild and other tools.
 CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
 

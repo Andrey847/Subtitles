@@ -5,15 +5,17 @@ class SignalWrapper
 {
 	/**
 	 * Main constructor.
-	 * @param {string} hub
-	 * @param {string} method
-	 * @param {method} action - function to be executed. Possible input parameter is data from SignalR.
+	 * @param {string} hub ( for example, /NotificationHub)
+	 * @param {any} actions this is an array that contains object {method, action}. Where:
+	 * method is signalR method(event). For example UploadProgress.
+	 * action(parameter) is function to be executed. Possible input parameter is data from SignalR.
 	 */
-	constructor(hub, method, action)
+	constructor(hub, actions)
 	{
 		this.hub = hub;
-		this.method = method;
-		this.action = action;
+		this.actions = actions;
+
+		this.init();
 	}
 
 	init()
@@ -25,11 +27,14 @@ class SignalWrapper
 			.withUrl(this.hub)
 			.build();
 
-		this.connection.on(settings.method, () =>
+		this.actions.forEach((a) =>
 		{
-			console.log('Server notification. Reloading data...');
-			settings.action();
-		});
+			this.connection.on(a.method, (p) =>
+			{
+				console.log('Server notification. Reloading data...');
+				a.action(p);
+			});
+		})
 
 		this.connection.start()
 			.then(() =>
@@ -41,7 +46,7 @@ class SignalWrapper
 				else
 				{
 					// to reinitialize screen and controller after disconnection
-					settings.action();
+					this.actions.forEach((a) => a.action());
 				}
 			})
 			.catch(err =>
@@ -64,8 +69,6 @@ class SignalWrapper
 			}, 5000);
 		});
 	}
-
-
 }
 
 

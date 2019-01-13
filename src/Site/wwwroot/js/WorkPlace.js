@@ -1,50 +1,31 @@
-﻿
-const connection = new signalR.HubConnectionBuilder()
-	.withUrl("/NotificationHub")
-	.build();
-
-
-
-
-connection.on("UploadProgress", (percentCompleted) =>
-{
-	
-	initializeNotifications()
-	if (percentCompleted == 100)
-	{
-		// Everything completed. Reload movies and then Remove %  and unblock Upload button
-		reloadMovies();
-	}
-	else
-	{
-		$('#btnUpload').text(`Upload ${percentCompleted}%`);
-
-		// this waiter is shown until first percent changes.
-		$('#imgUploadWaiter').hide();
-	}
-});
-
-function signalConnect(cnt)
-{
-	console.log('SignalR: connecting');
-	cnt.start().catch(err =>
-	{
-		console.error(err.toString());
-
-		// reconnect after 5 seconds.
-		setTimeout(() => signalConnect(cnt), 5000);
-
-		c += 1;
-	});
-}
-
-var _currentWordIcon;
+﻿var _currentWordIcon;
 var _loadingFile;
 var _undoQueue = [];
 
+var _notifications;
+
 $(document).ready(function ()
 {
-	signalConnect(connection);
+	_notifications = new SignalWrapper("/NotificationHub", [
+		{
+			method: "UploadProgress",
+			action: (percentCompleted) =>
+			{				
+				if (percentCompleted == 100)
+				{
+					// Everything completed. Reload movies and then Remove %  and unblock Upload button
+					reloadMovies();
+				}
+				else
+				{
+					$('#btnUpload').text(`Upload ${percentCompleted}%`);
+
+					// this waiter is shown until first percent changes.
+					$('#imgUploadWaiter').hide();
+				}
+			}
+		}]
+	);
 
 	restoreLayout();
 
@@ -422,6 +403,9 @@ function deleteMovie()
 
 				// do not forget to remove deleted movie.
 				$(`#cmbMovie option[value='${selectedMovie}']`).remove();
+
+				// and hide popup
+				$('#dlgRenameMovie').modal('hide');
 			},
 			error: (e) => { throw e; }
 		});

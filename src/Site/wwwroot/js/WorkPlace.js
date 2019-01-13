@@ -457,7 +457,7 @@ function renameMovieDialog()
 		// archive/unarchive buttons
 		$('#btnArchiveMovie').hide();
 		$('#btnUnArchiveMovie').hide();
-		if (isArchived)
+		if (isArchived && isArchived !== "false")
 		{
 			$('#btnUnArchiveMovie').show();
 		}

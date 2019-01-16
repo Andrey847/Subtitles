@@ -36,39 +36,59 @@
 
 			<input id="flUpload" type="file" onchange="uploadSrt(event.currentTarget.files);" />
 			<img id="imgUploadWaiter" class="srt-waiter" style="display: none;" />
-
-			<div id="btnRenameMovieMobile" title="Rename movie" onclick="renameMovieDialog();" class="div-btn">
-				<img />
-			</div>
+			
 		</div>
 
 	</div>
 	<div class="col-sm-1">
 		<span id="lblSpanMovie">Movie:</span>
 	</div>
-	<div class="col-sm-3">
-		<select id="cmbMovie" class="form-control" onchange="loadWords(); saveLayout();">
-			<option value="0" selected>[All]</option>
-
-			@foreach (Movie movie in ViewBag.Movies)
-			{
-				@if (movie.IsArchived)
+	<div class="col-sm-4">
+		<div class="input-group">
+			<select class="custom-select" id="cmbMovie" onchange="loadWords(); saveLayout();">
+				<option value="0" selected>[All]</option>
+				@foreach (Movie movie in ViewBag.Movies)
 				{
-					<option value="@movie.Id" data-val-isArchived="true">[Archived] @movie.Name</option>
+					@if (movie.IsArchived)
+					{
+						<option value="@movie.Id" data-val-isArchived="true">[Archived] @movie.Name</option>
+					}
+					else
+					{
+						<option value="@movie.Id">@movie.Name</option>
+					}
 				}
-				else
-				{
-					<option value="@movie.Id">@movie.Name</option>
-				}
-			}
-		</select>
-	</div>
-
-	<div class="col-sm-1">
-		<div id="btnRenameMovie" title="Rename movie" onclick="renameMovieDialog();" class="div-btn">
-			<img />
+			</select>
+			<div class="input-group-append">
+				<button class="btn btn-outline-secondary" type="button" id="btnRenameMovie" onclick="renameMovieDialog();">
+					<img />
+				</button>
+			</div>
 		</div>
 	</div>
+	@*<div class="col-sm-3">
+			<select id="cmbMovie" class="form-control" onchange="loadWords(); saveLayout();">
+				<option value="0" selected>[All]</option>
+
+				@foreach (Movie movie in ViewBag.Movies)
+				{
+					@if (movie.IsArchived)
+					{
+						<option value="@movie.Id" data-val-isArchived="true">[Archived] @movie.Name</option>
+					}
+					else
+					{
+						<option value="@movie.Id">@movie.Name</option>
+					}
+				}
+			</select>
+		</div>
+
+		<div class="col-sm-1">
+			<div id="btnRenameMovie" title="Rename movie" onclick="renameMovieDialog();" class="div-btn">
+				<img />
+			</div>
+		</div>*@
 </div>
 <hr />
 <div class="container" id="dvWords"></div>

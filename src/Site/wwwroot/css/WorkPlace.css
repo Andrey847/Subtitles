@@ -67,33 +67,16 @@
 	background-color: lightgoldenrodyellow;
 }
 
-#btnRenameMovieMobile
-{
-	float: right;
-	margin-top: 6px;
-	display: none;
-}
-
-#btnRenameMovieMobile,
-#btnRenameMovie
-{
-	float: left;
-	width: 32px;
-	height: 32px;
-	padding: 2px;
-}
-
 #btnDeleteMovie
 {
 	float: left;
 }
 
-#btnRenameMovieMobile,
 #btnRenameMovie > img
 {
 	content: url(../images/Pixeden/edit.svg);
-	width: 24px;
-	height: 24px;
+	width: 20px;
+	height: 20px;
 }
 
 .srt-file
@@ -189,11 +172,6 @@
 /* mobile features */
 @media screen and (max-width: 802px)
 {
-	#btnRenameMovie
-	{
-		display: none;
-	}
-
 	.srt-freq
 	{
 		display: none;
@@ -215,21 +193,9 @@
 		display: none;
 	}
 
-	#cmbMovie
-	{
-		margin-top: 0.5em;
-	}
-
 	#dvUploadArea
 	{
 		margin-top: 60px;
-	}
-
-	#btnRenameMovieMobile
-	{
-		display: unset;
-		float: right;
-		margin-top: 6px;
 	}
 }
 

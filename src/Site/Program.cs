@@ -14,10 +14,10 @@ namespace SubtitlesLearn.Site
 	{
 		public static void Main(string[] args)
 		{
-			BuildWebHost(args).Run();
+			RunWebHost(args);
 		}
 
-		public static IWebHost BuildWebHost(string[] args)
+		public static void RunWebHost(string[] args)
 		{
 			bool isService = true;
 			if (Debugger.IsAttached || args.Contains("--console"))
@@ -25,19 +25,19 @@ namespace SubtitlesLearn.Site
 				isService = false;
 			}
 
-			var pathToContentRoot = Directory.GetCurrentDirectory();
+			string pathToContentRoot = Directory.GetCurrentDirectory();
 			if (isService)
 			{
-				var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
+				string pathToExe = Process.GetCurrentProcess().MainModule.FileName;
 				pathToContentRoot = Path.GetDirectoryName(pathToExe);
 			}
 
-			var config = new ConfigurationBuilder()
-			.SetBasePath(pathToContentRoot)
-			.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-			.Build();
+			IConfigurationRoot config = new ConfigurationBuilder()
+				.SetBasePath(pathToContentRoot)
+				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				.Build();
 
-			return WebHost.CreateDefaultBuilder(args)
+			IWebHost host = WebHost.CreateDefaultBuilder(args)
 				.UseStartup<Startup>()
 				.UseUrls(config.GetChildren().ToArray().Where(item => item.Key == "server.urls").First().Value)
 				.UseConfiguration(config)
@@ -47,6 +47,15 @@ namespace SubtitlesLearn.Site
 					options.Authentication.AllowAnonymous = true;
 				})
 				.Build();
+
+			if (isService)
+			{
+				host.RunAsCustomService();
+			}
+			else
+			{
+				host.Run();
+			}
 		}
 	}
 }

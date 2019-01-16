@@ -1,5 +1,7 @@
 @echo on
 
+REM "Self-contained deployment" EXE file.
+
 REM Set variables in order to run msbuild and other tools.
 CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
 

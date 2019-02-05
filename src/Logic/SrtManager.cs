@@ -154,17 +154,21 @@ namespace SubtitlesLearn.Logic
 
 			phrase.Value = sentence.Trim();
 
-			sentence = sentence.Replace(".", string.Empty)
-				.Replace("?", string.Empty)
-				.Replace("!", string.Empty)
-				.Replace("'s", string.Empty)
-				.Replace("\"", string.Empty)
-				.Replace(",", string.Empty)
-				.Replace(":", string.Empty)
-				.Replace("[", string.Empty)
-				.Replace("]", string.Empty)
-				.Replace("(", string.Empty)
-				.Replace(")", string.Empty);
+			const string space = " ";
+
+			sentence = sentence
+				.Replace(".", space)
+				.Replace("?", space)
+				.Replace("!", space)
+				.Replace("'s", space)
+				.Replace("\"", space)
+				.Replace(",", space)
+				.Replace(":", space)
+				.Replace("[", space)
+				.Replace("]", space)
+				.Replace("(", space)
+				.Replace(")", space)
+				.Replace(";", space);
 
 			string[] words = sentence.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 

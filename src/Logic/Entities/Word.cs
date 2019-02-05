@@ -43,6 +43,6 @@ namespace SubtitlesLearn.Logic.Entities
 		/// <summary>
 		/// Phrases which contain this word.
 		/// </summary>
-		public List<Phrase> Phrases { get; set; } = new List<Phrase>();
-    }
+		public List<Phrase> Phrases { get; set; } = new List<Phrase>();		
+	}
 }

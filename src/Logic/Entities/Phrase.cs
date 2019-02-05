@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
@@ -8,6 +9,7 @@ namespace SubtitlesLearn.Logic.Entities
 	/// <summary>
 	/// Initial phrase from subtitles.
 	/// </summary>
+	[DebuggerDisplay("{Value}")]
 	public class Phrase
 	{
 		#region Constrants
@@ -96,10 +98,11 @@ namespace SubtitlesLearn.Logic.Entities
 		{
 			bool result = false;
 			Phrase another = obj as Phrase;
-
+			
 			if (obj != null)
 			{
-				result = obj.Equals(this);
+				result = another.Value.Equals(this.Value)
+					&& another.TimeFrom == this.TimeFrom;
 			}
 
 			return result;

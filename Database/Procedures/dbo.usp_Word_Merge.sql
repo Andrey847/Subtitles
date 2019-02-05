@@ -43,7 +43,7 @@ BEGIN
 	DECLARE @WordId int = (SELECT WordId FROM [dbo].[Word] WHERE Source = @Source);
 
 	-- And save phrases (only new)
-	SELECT R.c.value('Value[1]', 'nvarchar(500)') Phrase,
+	SELECT DISTINCT R.c.value('Value[1]', 'nvarchar(500)') Phrase,
 			R.c.value('TimeFromSql[1]', 'time(7)') AS TimeFrom,
 			R.c.value('TimeToSql[1]', 'time(7)') AS TimeTo,
 			R.c.value('OrderNumber[1]', 'int') AS OrderNumber

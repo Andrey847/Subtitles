@@ -130,7 +130,7 @@ namespace SubtitlesLearn.Logic
 							.Select(item => new Word()
 							{
 								Source = item.Key,
-								Phrases = new List<Phrase>(item.SelectMany(jtem => jtem.Phrases))
+								Phrases = new List<Phrase>(item.SelectMany(jtem => jtem.Phrases).Distinct())
 							})
 							.ToArray();
 
@@ -243,7 +243,7 @@ namespace SubtitlesLearn.Logic
 			}
 
 			return response;
-		}		
+		}
 
 		/// <summary>
 		/// Removes movie.

@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace SubtitlesLearn.Site
 {
@@ -12,6 +14,8 @@ namespace SubtitlesLearn.Site
 	/// </summary>
 	public class Program
 	{
+
+
 		public static void Main(string[] args)
 		{
 			RunWebHost(args);
@@ -41,6 +45,7 @@ namespace SubtitlesLearn.Site
 				.UseStartup<Startup>()
 				.UseUrls(config.GetChildren().ToArray().Where(item => item.Key == "server.urls").First().Value)
 				.UseConfiguration(config)
+				.UseContentRoot(pathToContentRoot)
 				.UseHttpSys(options =>
 				{
 					options.Authentication.Schemes = Microsoft.AspNetCore.Server.HttpSys.AuthenticationSchemes.None;

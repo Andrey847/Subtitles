@@ -5,6 +5,7 @@
     <AssemblyName>SubtitlesLearn.Site</AssemblyName>
     <SelfContained>false</SelfContained>
     <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>

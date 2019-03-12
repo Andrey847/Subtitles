@@ -171,8 +171,8 @@ namespace SubtitlesLearn.Logic.Dal
 				}
 				else
 				{
-					// nothing to read. just create the object.
-					result = new T();
+					// nothing to read. just return null;
+					result = null;
 				}
 
 				conn.Close();

@@ -45,9 +45,6 @@ namespace SubtitlesLearn.Logic
 			if (string.IsNullOrWhiteSpace(user.Email))
 				throw new ArgumentException("Email is empty");
 
-			if (string.IsNullOrWhiteSpace(user.PasswordHash))
-				throw new ArgumentException("Password hash is empty.");
-
 			await UserAccess.CreateUser(user);
 
 			if (!user.IsConfirmed)
@@ -78,6 +75,8 @@ namespace SubtitlesLearn.Logic
 		/// <returns></returns>
 		public async Task<Customer> GetUser(string email)
 		{
+			email = UnifyGmail(email);
+
 			return await UserAccess.GetUser(email: email);
 		}
 

@@ -24,14 +24,14 @@ namespace SubtitlesLearn.Site.Services.Identity
 		/// <param name="user"></param>
 		/// <param name="cancellationToken"></param>
 		/// <returns></returns>
-		public Task<IdentityResult> CreateAsync(Customer user, CancellationToken cancellationToken)
+		public async Task<IdentityResult> CreateAsync(Customer user, CancellationToken cancellationToken)
 		{
 			IdentityResult result;
 
 			// check by guest id and login email separately
-			if (UserManager.Instance.GetUser(user.Email) == null)
+			if (await UserManager.Instance.GetUser(user.Email) == null)
 			{
-				UserManager.Instance.CreateUser(user);
+				await UserManager.Instance.CreateUser(user);
 				result = IdentityResult.Success;
 			}
 			else
@@ -39,7 +39,7 @@ namespace SubtitlesLearn.Site.Services.Identity
 				result = IdentityResult.Failed(new IdentityError() { Description = "User already exists." });
 			}
 
-			return Task.FromResult(result);
+			return result;
 		}
 
 		/// <summary>
@@ -149,10 +149,10 @@ namespace SubtitlesLearn.Site.Services.Identity
 		/// <param name="user"></param>
 		/// <param name="cancellationToken"></param>
 		/// <returns></returns>
-		public Task<IdentityResult> UpdateAsync(Customer user, CancellationToken cancellationToken)
+		public async Task<IdentityResult> UpdateAsync(Customer user, CancellationToken cancellationToken)
 		{
-			UserManager.Instance.CreateUser(user);
-			return Task.FromResult(IdentityResult.Success);
+			await UserManager.Instance.CreateUser(user);
+			return IdentityResult.Success;
 		}
 
 		#endregion IUserStore implementation

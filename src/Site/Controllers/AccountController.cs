@@ -149,6 +149,8 @@ namespace SubtitlesLearn.Site.Controllers
 				if (!string.IsNullOrEmpty(model.Email)
 				&& !string.IsNullOrEmpty(model.Password))
 				{
+					model.Email = UserManager.Instance.UnifyGmail(model.Email);
+
 					// This doesn't count login failures towards account lockout
 					// To enable password failures to trigger account lockout, set lockoutOnFailure: true
 					var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, lockoutOnFailure: false);
@@ -319,7 +321,7 @@ namespace SubtitlesLearn.Site.Controllers
 			{
 				Customer user = new Customer
 				{
-					Email = model.Email,
+					Email = UserManager.Instance.UnifyGmail(model.Email),
 					IsConfirmed = false
 				};
 				var result = await _userManager.CreateAsync(user, model.Password);
@@ -359,9 +361,13 @@ namespace SubtitlesLearn.Site.Controllers
 			try
 			{
 				AuthToken token = await GoogleAuthManager.Instance.GetToken(code);
+				await LogManager.Instance.LogDebug("Google auth callback", $"Token = {token.AccessToken}");
 
 				UserInfo info = await GoogleAuthManager.Instance.GetUserInfo(token.AccessToken);
+				info.Email = UserManager.Instance.UnifyGmail(info.Email);
 
+				await LogManager.Instance.LogDebug("Google auth callback info", $"Email: {info.Email}, Name: {info.Name}");
+				
 				// now - login.
 				Customer customer = await UserManager.Instance.GetUser(info.Email);
 
@@ -369,7 +375,7 @@ namespace SubtitlesLearn.Site.Controllers
 				{
 					// create new login
 					customer = new Customer();
-					customer.Email = UserManager.Instance.UnifyGmail(info.Email);
+					customer.Email = info.Email;
 					customer.IsConfirmed = true;
 
 					await _userManager.CreateAsync(customer);

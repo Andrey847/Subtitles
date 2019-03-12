@@ -37,7 +37,7 @@ namespace SubtitlesLearn.Logic.Dal
 				(p) =>
 				{
 					p.Add(nameof(Customer.Email), SqlDbType.NVarChar).Value = user.Email;
-					p.Add(nameof(Customer.PasswordHash), SqlDbType.NVarChar).Value = user.PasswordHash;
+					p.Add(nameof(Customer.PasswordHash), SqlDbType.NVarChar).Value = string.IsNullOrEmpty(user.PasswordHash) ? DBNull.Value : (object)user.PasswordHash;
 				});
 		}
 
@@ -58,7 +58,7 @@ namespace SubtitlesLearn.Logic.Dal
 					Customer c = new Customer()
 					{
 						Email = (string)m["Email"],
-						PasswordHash = (string)m["PasswordHash"],
+						PasswordHash = m["PasswordHash"] as string,
 						Name = (string)m["Name"],
 						IsBlocked = Convert.ToBoolean(m["IsBlocked"]),
 						IsConfirmed = Convert.ToBoolean(m["IsConfirmed"]),

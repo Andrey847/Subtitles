@@ -59,6 +59,9 @@ namespace SubtitlesLearn.Site
 				= SoundManager.Instance.Log
 				= LogManager.Instance;
 
+			// Google auth settings
+			Configuration.GetSection("GoogleAuth").Bind(GoogleAuthManager.Instance.Settings);
+
 			UserManager.Instance.EmailNotifier = EmailManager.Instance;
 			LogManager.Instance.LogInfo("Application started").GetAwaiter().GetResult();
 		}

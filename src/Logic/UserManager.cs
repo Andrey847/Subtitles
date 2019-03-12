@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using SubtitlesLearn.Logic.Dal;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Infrastructure;
+using SubtitlesLearn.Logic.Infrastructure.GoogleAuth;
 
 namespace SubtitlesLearn.Logic
 {
@@ -48,7 +49,7 @@ namespace SubtitlesLearn.Logic
 				throw new ArgumentException("Password hash is empty.");
 
 			await UserAccess.CreateUser(user);
-			
+
 			if (!user.IsConfirmed)
 			{
 				// For non-google users send the confirmation notification to activate account.
@@ -114,14 +115,14 @@ namespace SubtitlesLearn.Logic
 		public async Task<bool> RestorePassword(RestorePasswordRequest request)
 		{
 			await Log.LogInfo("Restore password request", $"Email = {request.Email}");
-			
+
 			string code = await UserAccess.GetRestoreCode(request.Email);
 			bool result;
 
 			if (string.IsNullOrEmpty(code))
 			{
 				result = false;
-				await Log.LogInfo("Unable to create restore code", $"Email = {request.Email}");				
+				await Log.LogInfo("Unable to create restore code", $"Email = {request.Email}");
 			}
 			else
 			{
@@ -198,6 +199,24 @@ namespace SubtitlesLearn.Logic
 		public async Task<CustomerState> GetState(int customerId)
 		{
 			return await UserAccess.GetCustomerState(customerId);
+		}
+
+		/// <summary>
+		/// Makes gmail email unified. As gmail allows dots inside and it will be the same email address.
+		/// </summary>
+		/// <param name="email"></param>
+		/// <returns></returns>
+		public string UnifyGmail(string email)
+		{
+			email = email.ToLower();
+			string cleared = email.Replace(".", string.Empty);
+
+			if (cleared.EndsWith("@gmailcom"))
+			{
+				email = cleared.Split('@')[0] + "@gmail.com";
+			}
+
+			return email;
 		}
 
 		#endregion Methods

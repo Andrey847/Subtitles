@@ -7,9 +7,11 @@ using Microsoft.Extensions.Options;
 using SubtitlesLearn.Logic;
 using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Infrastructure;
+using SubtitlesLearn.Logic.Infrastructure.GoogleAuth;
 using SubtitlesLearn.Site.Models;
 using SubtitlesLearn.Site.Services;
 using SubtitlesLearn.Site.Services.Identity;
+using System;
 using System.Threading.Tasks;
 
 namespace SubtitlesLearn.Site.Controllers
@@ -130,8 +132,8 @@ namespace SubtitlesLearn.Site.Controllers
 			await AuthenticationHttpContextExtensions.SignOutAsync(HttpContext);
 
 			ViewData["ReturnUrl"] = returnUrl;
-#warning Place for google auth.
-			//ViewBag.GoogleAuthUrl = GoogleAuthManager.Instance.GetAuthUrl();
+
+			ViewBag.GoogleAuthUrl = GoogleAuthManager.Instance.GetAuthUrl();
 
 			ViewBag.Customer = new Customer();
 
@@ -190,8 +192,7 @@ namespace SubtitlesLearn.Site.Controllers
 			ViewData["ReturnUrl"] = returnUrl;
 			ViewData["RecaptchaSiteKey"] = _recaptchaSettings.SiteKey;
 
-#warning Google auth.
-			//ViewBag.GoogleAuthUrl = GoogleAuthManager.Instance.GetAuthUrl();			
+			ViewBag.GoogleAuthUrl = GoogleAuthManager.Instance.GetAuthUrl();
 
 			return View();
 		}
@@ -343,6 +344,53 @@ namespace SubtitlesLearn.Site.Controllers
 			await LogManager.Instance.LogInfo($"User logged out");
 
 			return RedirectToAction(nameof(HomeController.Index), "Home");
+		}
+
+		/// <summary>
+		/// Google auth callback processing.
+		/// </summary>
+		/// <returns></returns>
+		[AllowAnonymous]
+		[HttpGet("[controller]/signin-google")]
+		public async Task<IActionResult> SigninGoogle([FromQuery] string code)
+		{
+			await LogManager.Instance.LogInfo("Google auth callback", $"Code = {code}");
+
+			try
+			{
+				AuthToken token = await GoogleAuthManager.Instance.GetToken(code);
+
+				UserInfo info = await GoogleAuthManager.Instance.GetUserInfo(token.AccessToken);
+
+				// now - login.
+				Customer customer = await UserManager.Instance.GetUser(info.Email);
+
+				if (customer == null)
+				{
+					// create new login
+					customer = new Customer();
+					customer.Email = UserManager.Instance.UnifyGmail(info.Email);
+					customer.IsConfirmed = true;
+
+					await _userManager.CreateAsync(customer);
+
+					// to get customer Id or next signId doesn't work.
+					customer = await UserManager.Instance.GetUser(info.Email);
+				}
+
+
+				// and sign in now.
+				await _signInManager.SignInAsync(customer, true);
+
+				// the main page
+				return Redirect("/");
+			}
+			catch (Exception ex)
+			{
+				await LogManager.Instance.LogError("Unable to log by google.", ex);
+
+				return RedirectToAction("Login");
+			}
 		}
 
 		#endregion Methods

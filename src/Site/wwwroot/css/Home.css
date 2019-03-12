@@ -22,3 +22,11 @@
 	margin: 1em 2em 1em 2em;
 }
 
+.google-logo
+{
+	content: url(../images/google.svg);
+	width: 24px;
+	height: 24px;
+	float: left;
+	margin-right: 10px;
+}

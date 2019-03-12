@@ -16,6 +16,10 @@ show files in the archive and suggest choose required.
 
 "work policy." Problems with displaying phrase in mobile mode.
 
+but-- in house MD
+improve loading performance
+sort word by freq and then alph
+
 ---- Future ToDo -----
 show all texts when exact movie is choosen
 define subtitles language automatically (and warn about it).

@@ -40,6 +40,7 @@ namespace SubtitlesLearn.Site.Controllers
 			}
 			else
 			{
+				ViewBag.GoogleAuthUrl = GoogleAuthManager.Instance.GetAuthUrl();
 				return View();
 			}
 		}

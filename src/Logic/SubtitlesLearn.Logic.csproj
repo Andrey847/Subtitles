@@ -7,10 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Pastel.Evolution">
+      <HintPath>..\..\..\..\Users\Andrey\Downloads\Pastel.Evolution.7.10.0.65\Pastel.Evolution.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <HintPath>System</HintPath>
     </Reference>

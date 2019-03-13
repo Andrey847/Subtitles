@@ -162,7 +162,8 @@ Watermelon, pickles.";
 
 			// unarchive item
 			await SrtManager.Instance.SetArchiveState(customer.Id, anyId, false);
-			any = (await SrtManager.Instance.GetMovies(customer.Id)).Where(item => item.Id == anyId).First();
+			movies = await SrtManager.Instance.GetMovies(customer.Id);
+			any = movies.Where(item => item.Id == anyId).First();
 			Assert.False(any.IsArchived);
 
 		}

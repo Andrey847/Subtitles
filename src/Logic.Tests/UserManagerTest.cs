@@ -30,15 +30,6 @@ namespace SubtitlesLearn.Logic.Tests
 			await Assert.ThrowsAsync<ArgumentException>(async () => await UserManager.Instance.CreateUser(customer));
 		}
 
-		[Fact]
-		public async Task Validation_Creation_Password()
-		{
-			Customer customer = new Customer();
-			customer.Email = "asdf@mail.ru";
-
-			await Assert.ThrowsAsync<ArgumentException>(async () => await UserManager.Instance.CreateUser(customer));
-		}
-
 		/// <summary>
 		/// Creation - getting user workflow.
 		/// </summary>

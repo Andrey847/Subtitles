@@ -15,7 +15,7 @@ namespace SubtitlesLearn.Logic.Tests
 		/// Main constructor
 		/// </summary>
 		public EmailManagerTest()
-		{			
+		{
 			EmailManager.Instance.GlobalSettings = new GlobalSettings()
 			{
 				BasePath = RootPath
@@ -31,8 +31,8 @@ namespace SubtitlesLearn.Logic.Tests
 				EmailSenderAddress = "",
 				EmailUseSsl = true,
 				EmailUserName = "",
-				 SmtpHost = "smtp.mail.ru",
-				 SmtpPort = 25
+				SmtpHost = "smtp.mail.ru",
+				SmtpPort = 25
 			};
 
 			await EmailManager.Instance.SendSimpleText("ag_a@mail.ru", "Hello for subtitles", "test test");

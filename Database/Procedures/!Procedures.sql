@@ -2,7 +2,7 @@
 #include "Rollout\!Rollout.sql"
 
 #include "dbo.usp_Word_All_Get.sql"
-#include "dbo.usp_Word_Merge.sql"
+#include "dbo.usp_Phrase_Merge.sql"
 #include "dbo.usp_Word_Learned_Set.sql"
 #include "dbo.usp_Word_Sound_Add.sql"
 #include "dbo.usp_Word_Sound_Get.sql"

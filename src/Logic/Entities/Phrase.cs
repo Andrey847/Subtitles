@@ -142,16 +142,7 @@ namespace SubtitlesLearn.Logic.Entities
 			{
 				throw new InvalidOperationException($"Unable to parse {timing}", ex);
 			}
-		}
-
-		/// <summary>
-		/// Clones current phrase.
-		/// </summary>
-		/// <returns></returns>
-		public Phrase Clone()
-		{
-			return (Phrase)this.MemberwiseClone();
-		}
+		}		
 
 		#endregion Methods
 	}

@@ -65,9 +65,9 @@ namespace SubtitlesLearn.Logic
 		/// </summary>
 		/// <param name="srtContent"></param>
 		/// <returns></returns>
-		public Word[] GetWords(string srtContent)
+		public UploadPhrase[] GetUploadPhrases(string srtContent)
 		{
-			List<Word> result = new List<Word>();
+			List<UploadPhrase> result = new List<UploadPhrase>();
 			int orderNumber = 0;
 
 			using (StringReader reader = new StringReader(srtContent))
@@ -76,7 +76,7 @@ namespace SubtitlesLearn.Logic
 				{
 					orderNumber++;
 
-					Phrase phrase = new Phrase();
+					UploadPhrase phrase = new UploadPhrase();
 
 					string number = reader.ReadLine(); // number
 					if (number == null)
@@ -97,10 +97,14 @@ namespace SubtitlesLearn.Logic
 						// it is dialog case. split each line to separate sentence.
 						if (currentLine.StartsWith("-") && !string.IsNullOrEmpty(phrase.Value))
 						{
-							result.AddRange(SplitSentence(phrase));
+							phrase.Words.AddRange(SplitSentence(phrase));
+							result.Add(phrase);
 
-							// To start new phrase
-							phrase = phrase.Clone();
+							// To start new phrase							
+							TimeSpan from = phrase.TimeFrom;
+							TimeSpan to = phrase.TimeTo;
+
+							phrase = new UploadPhrase();
 
 							orderNumber++;
 							phrase.OrderNumber = orderNumber;
@@ -115,7 +119,8 @@ namespace SubtitlesLearn.Logic
 
 					if (!string.IsNullOrEmpty(phrase.Value))
 					{
-						result.AddRange(SplitSentence(phrase));
+						phrase.Words.AddRange(SplitSentence(phrase));
+						result.Add(phrase);
 					}
 
 					if (currentLine == null)
@@ -126,15 +131,10 @@ namespace SubtitlesLearn.Logic
 				}
 			}
 
-			Word[] words = result.GroupBy(item => item.Source)
-							.Select(item => new Word()
-							{
-								Source = item.Key,
-								Phrases = new List<Phrase>(item.SelectMany(jtem => jtem.Phrases).Distinct())
-							})
-							.ToArray();
+			// We do not need phrases without words
+			result.RemoveAll(item => item.Words.Count == 0);
 
-			return words;
+			return result.ToArray();
 		}
 
 		/// <summary>
@@ -142,7 +142,7 @@ namespace SubtitlesLearn.Logic
 		/// </summary>
 		/// <param name="phrase"></param>
 		/// <returns></returns>
-		internal Word[] SplitSentence(Phrase phrase)
+		internal string[] SplitSentence(Phrase phrase)
 		{
 			string sentence = phrase.Value;
 
@@ -172,17 +172,15 @@ namespace SubtitlesLearn.Logic
 
 			string[] words = sentence.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
-			List<Word> result = new List<Word>();
+			List<string> result = new List<string>();
 
 			foreach (string word in words)
 			{
 				if (word.Length > 2 && !word.Contains("<") && !word.Contains(">") && !word.Contains("'"))
 				{
-					result.Add(new Word() { Source = word });
+					result.Add(word);
 				}
-			}
-
-			result.ForEach(item => item.Phrases.Add(phrase));
+			}		
 
 			return result.ToArray();
 		}
@@ -202,9 +200,9 @@ namespace SubtitlesLearn.Logic
 		/// </summary>
 		/// <param name="customerId"></param>
 		/// <returns></returns>
-		public async Task<Movie[]> GetMovies(int customerId)
+		public async Task<Movie[]> GetMovies(int customerId, bool showArchived, string languageCode = "eng")
 		{
-			return await SrtAccess.GetMovies(customerId);
+			return await SrtAccess.GetMovies(customerId, showArchived, languageCode);
 		}
 
 		/// <summary>
@@ -221,23 +219,21 @@ namespace SubtitlesLearn.Logic
 
 			ImportReponse response = new ImportReponse();
 			string srt = Encoding.UTF8.GetString(srtFile.ToArray());
-			Word[] words = GetWords(srt);
+			UploadPhrase[] phrases = GetUploadPhrases(srt);
 
 			int currentPercentage = -1;
 
-			// check each word with DB.
-			foreach (Word word in words)
+			// Upload each phrase to DB.
+			for (int i = 0; i < phrases.Length; i++)
 			{
-				word.CustomerId = customerId;
-				bool isAdded = await SrtAccess.ImportWord(word, fileName);
+				UploadPhrase phrase = phrases[i];
 
-				if (isAdded)
-				{
-					response.NewWords++;
-				}
-				response.TotalWords++;
+				phrase.CustomerId = customerId;
+				int newWords = await SrtAccess.ImportPhrase(phrase, fileName);
 
-				int percentage = (int)((response.TotalWords / (float)words.Length) * 100);
+				response.NewWords += newWords;				
+
+				int percentage = (int)((i / (float)phrases.Length) * 100);
 
 				if (percentage != currentPercentage)
 				{
@@ -246,8 +242,10 @@ namespace SubtitlesLearn.Logic
 				}
 			}
 
+			OnSrtUploadProgress(customerId, 100);
+
 			return response;
-		}
+		}		
 
 		/// <summary>
 		/// Removes movie.

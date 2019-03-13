@@ -134,8 +134,7 @@ function uploadSrt(files)
 		data: data,
 		success: function (message)
 		{
-			alert(`File imported. Total word: ${message.totalWords},
-new words: ${message.newWords}`);
+			alert(`File imported. New words: ${message.newWords}`);
 		},
 		error: function ()
 		{

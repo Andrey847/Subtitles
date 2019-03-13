@@ -33,18 +33,13 @@ namespace SubtitlesLearn.Logic.Tests
 You're supposed to watch a
 baby for five minutes in a car.";
 
-			Word[] words = SrtManager.Instance.GetWords(srt);
-
-			// 7 words as words with ' are removed (You're for example)
-			Assert.True(words.Length == 7);
+			UploadPhrase[] phrases = SrtManager.Instance.GetUploadPhrases(srt);
 
 			// should be 1 phrase only
-			string[] phrases = words.SelectMany(item => item.Phrases)
-								.Select(item => item.Value)
-								.Distinct()
-								.ToArray();
-
 			Assert.True(phrases.Length == 1);
+
+			// 7 words as words with ' are removed (You're for example)
+			Assert.True(phrases.SelectMany(item => item.Words).Count() == 7);
 		}
 
 		/// <summary>
@@ -58,13 +53,9 @@ baby for five minutes in a car.";
 - Shirley, I can't! Shirley, that's not...
 - A-All right, all right.";
 
-			Word[] words = SrtManager.Instance.GetWords(srt);
-			// should be 2 phrase only
-			string[] phrases = words.SelectMany(item => item.Phrases)
-								.Select(item => item.Value)
-								.Distinct()
-								.ToArray();
+			UploadPhrase[] phrases = SrtManager.Instance.GetUploadPhrases(srt);
 
+			// should be 2 phrase only
 			Assert.True(phrases.Length == 2);
 		}
 
@@ -90,14 +81,10 @@ Watermelon, pickles.
 00:09:25,420 --> 00:09:30,480
 Watermelon, pickles.";
 
-			Word[] words = SrtManager.Instance.GetWords(srt);
-			// should be 1 phrase only
-			string[] phrases = words.SelectMany(item => item.Phrases)
-								.Select(item => item.Value)
-								.Distinct()
-								.ToArray();
+			UploadPhrase[] phrases = SrtManager.Instance.GetUploadPhrases(srt);
 
-			Assert.True(phrases.Length == 1);
+			// should be 1 phrase only			
+			Assert.True(phrases.Length == 4);
 		}
 
 		/// <summary>
@@ -106,7 +93,7 @@ Watermelon, pickles.";
 		[Fact]
 		public void ParseWords_Capitals()
 		{
-			Word[] words = SrtManager.Instance.SplitSentence(new Phrase(" - ERNIE: ♪ I really need you tonight ♪"));
+			string[] words = SrtManager.Instance.SplitSentence(new Phrase(" - ERNIE: ♪ I really need you tonight ♪"));
 			Assert.True(words.Length == 4);
 		}
 
@@ -116,7 +103,7 @@ Watermelon, pickles.";
 		[Fact]
 		public void ParseWords_Aux1()
 		{
-			Word[] words = SrtManager.Instance.SplitSentence(new Phrase(" - [CHEERS AND APPLAUSE]"));
+			string[] words = SrtManager.Instance.SplitSentence(new Phrase(" - [CHEERS AND APPLAUSE]"));
 			Assert.True(words.Length == 0);
 		}
 
@@ -126,7 +113,7 @@ Watermelon, pickles.";
 		[Fact]
 		public void ParseWords_Aux2()
 		{
-			Word[] words = SrtManager.Instance.SplitSentence(new Phrase(" - [CHUCKLING] Yeah."));
+			string[] words = SrtManager.Instance.SplitSentence(new Phrase(" - [CHUCKLING] Yeah."));
 			Assert.True(words.Length == 1);
 		}
 
@@ -146,10 +133,8 @@ Watermelon, pickles.";
 		public async Task SetArchiveState()
 		{
 			Customer customer = await UserManager.Instance.GetUser("ag_a@mail.ru");
-			CustomerSettings s = await UserManager.Instance.GetSettings(customer.Id);
-			bool initialSetting = s.ShowArchivedMovies;
 
-			Movie[] movies = await SrtManager.Instance.GetMovies(customer.Id);
+			Movie[] movies = await SrtManager.Instance.GetMovies(customer.Id, true);
 			Assert.NotEmpty(movies);
 
 			Movie any = movies.Where(item => !item.IsArchived).First();
@@ -157,15 +142,16 @@ Watermelon, pickles.";
 
 			// archive item
 			await SrtManager.Instance.SetArchiveState(customer.Id, any.Id, true);
-			any = (await SrtManager.Instance.GetMovies(customer.Id)).Where(item => item.Id == any.Id).FirstOrDefault();
+			any = (await SrtManager.Instance.GetMovies(customer.Id, true)).Where(item => item.Id == any.Id).FirstOrDefault();
 			Assert.True(any == null || any.IsArchived); // null can be if current user setting is "not show archived"
 
 			// unarchive item
 			await SrtManager.Instance.SetArchiveState(customer.Id, anyId, false);
-			movies = await SrtManager.Instance.GetMovies(customer.Id);
+
+			movies = await SrtManager.Instance.GetMovies(customer.Id, true);
+
 			any = movies.Where(item => item.Id == anyId).First();
 			Assert.False(any.IsArchived);
-
 		}
 
 		/// <summary>

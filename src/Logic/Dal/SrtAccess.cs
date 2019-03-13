@@ -36,12 +36,14 @@ namespace SubtitlesLearn.Logic.Dal
 		/// </summary>
 		/// <param name="customerId"></param>
 		/// <returns></returns>
-		internal static async Task<Movie[]> GetMovies(int customerId)
+		internal static async Task<Movie[]> GetMovies(int customerId, bool showArchivedMovies, string languageCode)
 		{
 			return (await ExecuteListAsync("dbo.usp_Movie_Get",
 				(p) =>
 				{
 					p.Add("CustomerId", SqlDbType.Int).Value = customerId;
+					p.Add("ShowArchivedMovies", SqlDbType.Bit).Value = showArchivedMovies;
+					p.Add("LanguageCode", SqlDbType.NVarChar).Value = languageCode;
 				},
 				(m) =>
 					new Movie()
@@ -77,18 +79,22 @@ namespace SubtitlesLearn.Logic.Dal
 		/// <param name="word"></param>
 		/// <param name="fileName"></param>
 		/// <returns>True if word is new and added to the dictionary.</returns>
-		internal static async Task<bool> ImportWord(Word word, string fileName)
+		internal static async Task<int> ImportPhrase(UploadPhrase phrase, string fileName)
 		{
-			bool isAdded = await ExecuteScalarAsync<bool>("dbo.usp_Word_Merge",
+			int newWords = await ExecuteScalarAsync<int>("dbo.usp_Phrase_Merge",
 				(p) =>
 				{
-					p.Add("CustomerId", SqlDbType.Int).Value = word.CustomerId;
-					p.Add("Source", SqlDbType.NVarChar).Value = word.Source;
+					p.Add("CustomerId", SqlDbType.Int).Value = phrase.CustomerId;
 					p.Add("FileName", SqlDbType.VarChar).Value = fileName;
-					p.Add("Phrases", SqlDbType.Xml).Value = SerializationHelper.Serialize(word.Phrases);
+					p.Add("Value", SqlDbType.NVarChar).Value = phrase.Value;
+					p.Add("TimeFrom", SqlDbType.Time).Value = phrase.TimeFrom;
+					p.Add("TimeTo", SqlDbType.Time).Value = phrase.TimeTo;
+					p.Add("OrderNumber", SqlDbType.Int).Value = phrase.OrderNumber;
+
+					p.Add("Words", SqlDbType.Xml).Value = SerializationHelper.Serialize(phrase.Words);
 				});
 
-			return isAdded;
+			return newWords;
 		}
 
 		/// <summary>

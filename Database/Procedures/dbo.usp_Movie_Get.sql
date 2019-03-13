@@ -13,32 +13,19 @@ GO
 -- Description:	Gets all movies for the customer
 -- =======================================================
 ALTER PROCEDURE[dbo].[usp_Movie_Get]
-	@CustomerId int
+	@CustomerId int,
+	@ShowArchivedMovies bit,
+	@LanguageCode nvarchar(10)
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @ShowArchived bit = 
-	(
-		SELECT cs.Value
-		FROM CustomerSetting cs
-			INNER JOIN dbo.Setting s
-				ON cs.SettingId = s.SettingId
-		WHERE cs.CustomerId = @CustomerId
-			AND s.Code = N'ShowArchivedMovies'
-	)
-
 	DECLARE @LanguageId int = 
 	(
 		SELECT l.LanguageId 
-		FROM dbo.CustomerSetting cs
-			INNER JOIN dbo.Setting s
-				ON cs.SettingId = s.SettingId
-			INNER JOIN dbo.Language l
-				ON cs.Value = l.Code
-		WHERE CustomerId = @CustomerId	
-			AND  s.Code = 'CurrentLanguageCode'
-	)
+		FROM dbo.Language l
+		WHERE l.Code = @LanguageCode
+	);
 
 	SELECT MovieId,
 		Name,
@@ -48,7 +35,7 @@ BEGIN
 		IsArchived
 	FROM dbo.Movie
 	WHERE CustomerId = @CustomerId
-		AND (@ShowArchived = 1 OR IsArchived = 0) -- show all or not archived only.
+		AND (@ShowArchivedMovies = 1 OR IsArchived = 0) -- show all or not archived only.
 		AND LanguageId = @LanguageId
 	ORDER BY Name
 END

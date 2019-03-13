@@ -76,9 +76,10 @@ namespace SubtitlesLearn.Site.Controllers
 		public async Task<IActionResult> Index()
 		{
 			Customer customer = await _userManager.GetUserAsync(User);
+			CustomerSettings settings = await UserManager.Instance.GetSettings(customer.Id);
 
 			ViewBag.CurrentPageType = PageType.WorkPlace;
-			ViewBag.Movies = (await SrtManager.Instance.GetMovies(customer.Id));
+			ViewBag.Movies = (await SrtManager.Instance.GetMovies(customer.Id, settings.ShowArchivedMovies, settings.CurrentLanguageCode));
 
 			return View();
 		}
@@ -91,7 +92,9 @@ namespace SubtitlesLearn.Site.Controllers
 		public async Task<IActionResult> GetMovies()
 		{
 			Customer customer = await _userManager.GetUserAsync(User);
-			Movie[] result = await SrtManager.Instance.GetMovies(customer.Id);
+			CustomerSettings settings = await UserManager.Instance.GetSettings(customer.Id);
+
+			Movie[] result = await SrtManager.Instance.GetMovies(customer.Id, settings.ShowArchivedMovies, settings.CurrentLanguageCode);
 
 			return new JsonResult(result);
 		}

@@ -168,6 +168,17 @@
 	margin-bottom: 3px;
 }
 
+#dvUploadArea
+{
+	border: 2px dashed #0087F7;
+	border-radius: 5px;
+	text-align: center;
+	height: 40px;
+	padding-top:5px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
 
 /* mobile features */
 @media screen and (max-width: 802px)
@@ -195,7 +206,7 @@
 
 	#dvUploadArea
 	{
-		margin-top: 60px;
+		margin-top: 60px;		
 	}
 }
 

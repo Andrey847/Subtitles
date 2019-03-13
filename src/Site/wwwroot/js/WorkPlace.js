@@ -45,6 +45,11 @@ $(document).ready(function ()
 		$(_currentWordIcon).addClass('srt-play-btn').removeClass('srt-wait-btn');
 		wordPlayer.play();
 	};
+
+	$('#dvUploadArea').click(() =>
+	{
+		fileChooseClick(document.getElementById('btnUpload'))
+	});
 });
 
 // Reloads all movies of combobox.
@@ -495,11 +500,9 @@ function renameMovie()
 	}
 }
 
-function fileChooseClick(evnt)
+function fileChooseClick(btn)
 {
-	var jButton = $(evnt.toElement);
-
-	var fileBrowser = jButton.parent().find('input[type="file"]');
+	var fileBrowser = $(btn).parent().find('input[type="file"]');
 
 	// emulate click.
 	fileBrowser.click();

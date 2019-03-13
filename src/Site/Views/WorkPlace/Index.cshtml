@@ -18,11 +18,19 @@
 }
 
 <div class="row">
-	<div class="col-sm-6" id="dvUploadArea"
-		 ondragenter="fileDragEnter(event);"
-		 ondragleave="fileDragLeave(event);"
-		 ondrop="fileDropped(event);"
-		 ondragover="allowDrop(event)">
+	<div class="col-sm-12">
+		<div id="dvUploadArea"
+			 ondragenter="fileDragEnter(event);"
+			 ondragleave="fileDragLeave(event);"
+			 ondrop="fileDropped(event);"
+			 ondragover="allowDrop(event)">
+			Drop srt/zip files here
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-6">
 		<button type="button" class="btn btn-waiter-hidden" id="btnRefresh" onclick="loadWords();">
 			<span>Refresh</span>
 			<img id="imgRefreshWaiter" class="srt-waiter" />
@@ -32,11 +40,11 @@
 		</button>
 		<div class="srt-file">
 
-			<button type="button" id="btnUpload" class="btn" onclick="fileChooseClick(event);" title="">Upload</button>
+			<button type="button" id="btnUpload" class="btn" onclick="fileChooseClick(event.toElement);" title="">Upload</button>
 
 			<input id="flUpload" type="file" onchange="uploadSrt(event.currentTarget.files);" />
 			<img id="imgUploadWaiter" class="srt-waiter" style="display: none;" />
-			
+
 		</div>
 
 	</div>

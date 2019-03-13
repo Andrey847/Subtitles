@@ -7,7 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Logic.Tests
+namespace SubtitlesLearn.Logic.Tests
 {
 	/// <summary>
 	/// Tests for user management.

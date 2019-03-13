@@ -4,7 +4,7 @@ using SubtitlesLearn.Logic.Tests;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Logic.Tests
+namespace SubtitlesLearn.Logic.Tests
 {
 	/// <summary>
 	/// Test for email sending.

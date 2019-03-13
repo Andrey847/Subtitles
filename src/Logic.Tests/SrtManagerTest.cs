@@ -8,7 +8,7 @@ using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Logic.Tests
+namespace SubtitlesLearn.Logic.Tests
 {
 	/// <summary>
 	/// Tests for user management.

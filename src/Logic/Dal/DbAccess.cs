@@ -92,9 +92,7 @@ namespace SubtitlesLearn.Logic.Dal
 
 				conn.Close();
 			}
-		}
-
-	
+		}	
 
 		public static void SaveTranslation(Word word)
 		{

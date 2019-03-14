@@ -14,7 +14,9 @@ GO
 -- =======================================================
 ALTER PROCEDURE [dbo].[usp_Customer_Create]
 	@Email nvarchar(250),
-	@PasswordHash nvarchar(255)
+	@PasswordHash nvarchar(255),
+	@ConfirmationCode nvarchar(50),
+	@IsConfirmed bit
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -39,14 +41,19 @@ BEGIN
 									PasswordHash,
 									IsBlocked,									
 									CustomerRoleId,									
-									IsConfirmed									
+									IsConfirmed	,
+									ConfirmationCode
 									)
 			VALUES (@Email,
 				@Email,
 				@PasswordHash, 
-				0,	-- unblocked				
+				CASE 
+					WHEN @IsConfirmed = 1 THEN 0 	-- unblocked if confirmed
+					ELSE 1							-- and blocked if not.
+				END,
 				@UserRoleId,
-				0);
+				@IsConfirmed,
+				@ConfirmationCode);
 	END
 END
 GO

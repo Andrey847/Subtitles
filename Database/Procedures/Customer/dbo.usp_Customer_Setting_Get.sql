@@ -18,18 +18,18 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	
-	SELECT CustomerId,
+	SELECT @CustomerId AS CustomerId,
 		UnknownWordMax,
 		CurrentLanguageCode,
 		ShowArchivedMovies
 	FROM 
 	(
-		SELECT cs.CustomerId, s.Code, cs.Value
-		FROM dbo.CustomerSetting cs
-			INNER JOIN dbo.Setting s
+		SELECT cs.CustomerId, s.Code, ISNULL(cs.Value, s.DefaultValue) AS Value
+		FROM dbo.Setting s
+			LEFT JOIN dbo.CustomerSetting cs
 				ON cs.SettingId = s.SettingId
-		WHERE cs.CustomerId = @CustomerId
-			AND s.Code IN ('UnknownWordMax', 'CurrentLanguageCode', 'ShowArchivedMovies')
+					AND cs.CustomerId = @CustomerId
+		WHERE s.Code IN ('UnknownWordMax', 'CurrentLanguageCode', 'ShowArchivedMovies')
 	) AS src
 		PIVOT
 		(

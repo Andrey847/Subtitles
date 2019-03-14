@@ -45,12 +45,10 @@ namespace SubtitlesLearn.Logic
 			if (string.IsNullOrWhiteSpace(user.Email))
 				throw new ArgumentException("Email is empty");
 
-			await UserAccess.CreateUser(user);
-
 			if (!user.IsConfirmed)
 			{
 				// For non-google users send the confirmation notification to activate account.
-				user.ConfirmationCode = Guid.NewGuid().ToString();
+				user.ConfirmationCode = Guid.NewGuid().ToString();				
 
 				// Customner is not confirmed. do it!
 				string url = GlobalSettings.GetFullUrl($"/Account/Confirm/{user.ConfirmationCode}");
@@ -63,6 +61,8 @@ namespace SubtitlesLearn.Logic
 
 				await Log.LogInfo("Account confirmation code was sent", $"Email = {user.Email}, code = {user.ConfirmationCode}");
 			}
+
+			await UserAccess.CreateUser(user);
 
 			await Log.LogInfo("User created", $"Email: {user.Email}");
 			await EmailNotifier.NotifyAdmin("New user", user.Email);
@@ -214,6 +214,24 @@ namespace SubtitlesLearn.Logic
 			{
 				email = cleared.Split('@')[0] + "@gmail.com";
 			}
+
+			return email;
+		}
+
+		/// <summary>
+		/// Unblocks customer and returns required state.
+		/// </summary>
+		/// <param name="email"></param>
+		/// <param name="confirmationCode"></param>
+		/// <returns></returns>
+		public async Task<string> Unblock(string confirmationCode)
+		{
+			if (string.IsNullOrWhiteSpace(confirmationCode))
+				throw new ArgumentNullException(nameof(confirmationCode));
+
+			await Log.LogInfo("Verifying confirmation code", $"code: {confirmationCode}");
+
+			string email = await UserAccess.Unblock(confirmationCode);
 
 			return email;
 		}

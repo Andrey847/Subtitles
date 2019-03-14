@@ -38,6 +38,8 @@ namespace SubtitlesLearn.Logic.Dal
 				{
 					p.Add(nameof(Customer.Email), SqlDbType.NVarChar).Value = user.Email;
 					p.Add(nameof(Customer.PasswordHash), SqlDbType.NVarChar).Value = string.IsNullOrEmpty(user.PasswordHash) ? DBNull.Value : (object)user.PasswordHash;
+					p.Add(nameof(Customer.ConfirmationCode), SqlDbType.NVarChar).Value = string.IsNullOrEmpty(user.ConfirmationCode) ? DBNull.Value : (object)user.ConfirmationCode;
+					p.Add(nameof(Customer.IsConfirmed), SqlDbType.Bit).Value = user.IsConfirmed;
 				});
 		}
 
@@ -168,6 +170,21 @@ namespace SubtitlesLearn.Logic.Dal
 				{
 					p.Add("CustomerId", SqlDbType.Int).Value = state.CustomerId;
 					p.Add("WorkPlaceLayout", SqlDbType.NVarChar).Value = state.WorkPlace;
+				});
+		}
+
+		/// <summary>
+		/// Unblocks customer. If success it returns true.
+		/// </summary>
+		/// <param name="email"></param>
+		/// <param name="confirmationCode"></param>
+		/// <returns></returns>
+		internal static async Task<string> Unblock(string confirmationCode)
+		{
+			return await ExecuteScalarAsync<string>("dbo.usp_Customer_Unblock",
+				(p) =>
+				{
+					p.Add("ConfirmationCode", SqlDbType.NVarChar).Value = confirmationCode;
 				});
 		}
 	}

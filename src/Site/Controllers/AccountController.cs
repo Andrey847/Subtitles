@@ -12,6 +12,7 @@ using SubtitlesLearn.Site.Models;
 using SubtitlesLearn.Site.Services;
 using SubtitlesLearn.Site.Services.Identity;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SubtitlesLearn.Site.Controllers
@@ -330,7 +331,11 @@ namespace SubtitlesLearn.Site.Controllers
 					await LogManager.Instance.LogInfo($"User {model.Email} created a new account with password.");
 
 					// Send him to login page with greeting message
-					return RedirectToAction(nameof(AccountController.Login), "AccountController", MSG_GREETING);
+					return Redirect($"/Account/{nameof(AccountController.Login)}/{MSG_GREETING}");
+				}
+				else
+				{
+					ModelState.AddModelError(string.Empty, result.Errors.First().Description);
 				}
 			}
 
@@ -397,6 +402,26 @@ namespace SubtitlesLearn.Site.Controllers
 
 				return RedirectToAction("Login");
 			}
+		}
+
+		/// <summary>
+		/// Confirms account and if success, autologins. 
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		[HttpGet("[controller]/[action]/{code}")]
+		public async Task<IActionResult> Confirm(string code)
+		{
+			string email = await UserManager.Instance.Unblock(code);
+
+			if (!string.IsNullOrWhiteSpace(email))			
+			{
+				// auto login and go to workplace
+				Customer customer = await UserManager.Instance.GetUser(email);
+				await _signInManager.SignInAsync(customer, true);				
+			}
+
+			return Redirect("/");
 		}
 
 		#endregion Methods

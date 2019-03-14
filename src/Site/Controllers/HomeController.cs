@@ -43,7 +43,7 @@ namespace SubtitlesLearn.Site.Controllers
 				ViewBag.GoogleAuthUrl = GoogleAuthManager.Instance.GetAuthUrl();
 				return View();
 			}
-		}
+		}		
 
 		/// <summary>
 		/// Error processing.

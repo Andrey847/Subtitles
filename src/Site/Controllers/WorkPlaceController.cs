@@ -30,6 +30,7 @@ namespace SubtitlesLearn.Site.Controllers
 		#region Fields
 
 		private readonly ApplicationUserManager _userManager;
+		private readonly SignInManager<Customer> _signInManager;
 
 		private static IHubContext<NotificationHub> _hubContext = null;
 		private static object _syncHub = new object();
@@ -46,9 +47,11 @@ namespace SubtitlesLearn.Site.Controllers
 		/// <param name="recaptchaSettings"></param>
 		/// <param name="accessor"></param>
 		public WorkPlaceController(ApplicationUserManager userManager,
+			SignInManager<Customer> signInManager,
 			IHubContext<NotificationHub> hubContext)
 		{
 			_userManager = userManager;
+			_signInManager = signInManager;
 
 			// initialize SignalR context and subscribe on load changes			
 			if (_hubContext == null)
@@ -76,12 +79,23 @@ namespace SubtitlesLearn.Site.Controllers
 		public async Task<IActionResult> Index()
 		{
 			Customer customer = await _userManager.GetUserAsync(User);
-			CustomerSettings settings = await UserManager.Instance.GetSettings(customer.Id);
 
-			ViewBag.CurrentPageType = PageType.WorkPlace;
-			ViewBag.Movies = (await SrtManager.Instance.GetMovies(customer.Id, settings.ShowArchivedMovies, settings.CurrentLanguageCode));
+			if (customer == null)
+			{
+				// it is possible if customer was logged in and then we remove it from system.
+				// so signout and redirect to the root.
+				await _signInManager.SignOutAsync();
+				return Redirect("/");
+			}
+			else
+			{
+				CustomerSettings settings = await UserManager.Instance.GetSettings(customer.Id);
 
-			return View();
+				ViewBag.CurrentPageType = PageType.WorkPlace;
+				ViewBag.Movies = (await SrtManager.Instance.GetMovies(customer.Id, settings.ShowArchivedMovies, settings.CurrentLanguageCode));
+
+				return View();
+			}
 		}
 
 		/// <summary>

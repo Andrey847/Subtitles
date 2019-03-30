@@ -130,7 +130,7 @@ namespace SubtitlesLearn.Logic
 		/// <returns></returns>
 		public async Task<bool> NotifyAdmin(string subject, string body)
 		{
-			return await SendSimpleText(ManagerEmail, $"Sub-Learn: {subject}", body);
+			return await SendSimpleText(Settings.AdminEmail, $"Sub-Learn: {subject}", body);
 		}
 
 		#endregion Methods

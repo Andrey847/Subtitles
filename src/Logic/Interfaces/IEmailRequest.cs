@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Mail;
-using System.Text;
+﻿using System.Net.Mail;
 
 namespace SubtitlesLearn.Logic.Interfaces
 {
@@ -16,21 +13,19 @@ namespace SubtitlesLearn.Logic.Interfaces
 		string ToEmail { get; }
 
 		/// <summary>
-		/// Gets from email.
-		/// </summary>
-		string From { get; }
-
-		/// <summary>
 		/// Gets notification body.
-		/// </summary>
+		/// /// </summary>
 		/// <returns></returns>
-		string GetNotification();
+		/// <remarks>Do not change this property as it is used for handlebars of sendgrid.</remarks>
+		string CommonText { get; set; }
 
 		/// <summary>
 		/// Gets subject.
+		/// 
 		/// </summary>
 		/// <returns></returns>
-		string GetSubject();
+		/// /// <remarks>Do not change this property as it is used for handlebars of sendgrid.</remarks>
+		string CommonSubject { get; set; }		
 
 		/// <summary>
 		/// Gets attachment (optional);

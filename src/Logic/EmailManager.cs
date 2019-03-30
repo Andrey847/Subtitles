@@ -1,7 +1,10 @@
-﻿using SubtitlesLearn.Logic.Entities;
+﻿using SendGrid;
+using SendGrid.Helpers.Mail;
+using SubtitlesLearn.Logic.Entities;
 using SubtitlesLearn.Logic.Infrastructure;
 using SubtitlesLearn.Logic.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -19,12 +22,7 @@ namespace SubtitlesLearn.Logic
 		/// <summary>
 		/// Email settings.
 		/// </summary>
-		public EmailSettings Settings { get; set; }
-
-		/// <summary>
-		/// Email of site manager (or admin).
-		/// </summary>
-		public string ManagerEmail { get; set; }
+		public EmailSettings Settings { get; set; } = new EmailSettings();
 
 		#endregion Properties
 
@@ -55,52 +53,53 @@ namespace SubtitlesLearn.Logic
 		/// <param name="result"></param>
 		public async Task<bool> SendEmail(IEmailRequest request)
 		{
-			bool result = true;
-			SmtpClient smtp = new SmtpClient(Settings.SmtpHost, Settings.SmtpPort);
+			bool result;
 
-			smtp.Credentials = new NetworkCredential(Settings.EmailUserName, Settings.EmailPassword);
-			smtp.EnableSsl = Settings.EmailUseSsl;
+			SendGridClient client = new SendGridClient(Settings.ApiKey);
 
-			MailMessage msg = new MailMessage();
-			msg.From = new MailAddress(Settings.EmailSenderAddress, request.From);
+			EmailAddress from = new EmailAddress(Settings.SenderEmail);
 
+			SendGridMessage msg = MailHelper.CreateSingleTemplateEmail(from, null, Settings.SimpleTemplateId, null);
+			msg.SetGoogleAnalytics(false);
+			msg.Personalizations.Clear();
+
+			Personalization p = new Personalization();
+
+			p.Tos = new List<EmailAddress>();
 			foreach (string email in request.ToEmail.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries))
 			{
-				msg.To.Add(email);
+				EmailAddress to = new EmailAddress(email);
+				p.Tos.Add(to);
 			}
 
-			msg.Body = request.GetNotification();
-			msg.BodyEncoding = Encoding.UTF8;
-			msg.IsBodyHtml = true;
+			p.TemplateData = request;
+			msg.Personalizations.Add(p);
 
-			string subject = request.GetSubject();
+			Response response = await client.SendEmailAsync(msg);
 
-			// Subject limit is 100 chars
-			if (subject.Length > 100)
+			string logDetails = $"To: {request.ToEmail}, Subj: {request.CommonSubject}. ";
+			if (response.StatusCode != HttpStatusCode.Accepted)
 			{
-				subject = subject.Substring(0, 100);
-			}
+				// error! 
+				Dictionary<string, dynamic> body = await response.DeserializeResponseBodyAsync(response.Body);
 
-			msg.Subject = subject;
+				StringBuilder error = new StringBuilder();
 
-			msg.SubjectEncoding = Encoding.UTF8;
+				if (body != null)
+				{
+					foreach (KeyValuePair<string, dynamic> pair in body)
+					{
+						error.AppendLine($"{pair.Key} - {pair.Value}");
+					}
+				}
 
-			Attachment attach = request.GetAttachment();
-
-			if (attach != null)
-			{
-				msg.Attachments.Add(attach);
-			}
-
-			try
-			{
-				await smtp.SendMailAsync(msg);
-				await Log.LogInfo("Email was sent", request.ToString());
-			}
-			catch (Exception ex)
-			{
+				await Log.LogError("Email sending problem", $"{logDetails} Reason: {error.ToString()}");
 				result = false;
-				await Log.LogInfo("Error during email sending", ex.Message + Environment.NewLine + ex.StackTrace + Environment.NewLine + request.ToString());
+			}
+			else
+			{
+				await Log.LogInfo("Email sent", logDetails);
+				result = true;
 			}
 
 			return result;

@@ -8,34 +8,24 @@
 		#region Email
 
 		/// <summary>
-		/// Smtp host.
+		/// Admin email.
 		/// </summary>
-		public string SmtpHost { get; set; }
+		public string AdminEmail { get; set; }	
 
 		/// <summary>
-		/// Smtp port.
+		/// Sendgrid api key.
 		/// </summary>
-		public int SmtpPort { get; set; }
+		public string ApiKey { get; set; }		
 
 		/// <summary>
-		/// Email sender address.
+		/// Template id for simple emails.
 		/// </summary>
-		public string EmailSenderAddress { get; set; }
+		public string SimpleTemplateId { get; set; }
 
 		/// <summary>
-		/// Email user name.
+		/// Sender email address.
 		/// </summary>
-		public string EmailUserName { get; set; }
-
-		/// <summary>
-		/// Email password.
-		/// </summary>
-		public string EmailPassword { get; set; }
-
-		/// <summary>
-		/// Email use ssl.
-		/// </summary>
-		public bool EmailUseSsl { get; set; }		
+		public string SenderEmail { get; set; }
 
 		#endregion Email
 	}

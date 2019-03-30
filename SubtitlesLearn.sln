@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubtitlesLearn.Logic", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubtitlesLearn.Logic.Tests", "src\Logic.Tests\SubtitlesLearn.Logic.Tests.csproj", "{7D77B3EC-C451-4972-B24B-B996F8CEEF1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubtitlesLearn.Database", "Database\SubtitlesLearn.Database.csproj", "{0BAD7EA7-F55E-4A5D-877F-DD3EB330A4D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubtitlesLearn.Database", "Database\SubtitlesLearn.Database.csproj", "{0BAD7EA7-F55E-4A5D-877F-DD3EB330A4D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

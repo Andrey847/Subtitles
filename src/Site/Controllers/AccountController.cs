@@ -311,12 +311,12 @@ namespace SubtitlesLearn.Site.Controllers
 			ViewData["ReturnUrl"] = returnUrl;
 			ViewData["RecaptchaSiteKey"] = _recaptchaSettings.SiteKey;
 
-			bool verified = await CaptchaVerifier.VerifyAsync(_recaptchaSettings, Request);
+			//bool verified = await CaptchaVerifier.VerifyAsync(_recaptchaSettings, Request);
 
-			if (!verified)
-			{
-				ModelState.AddModelError(string.Empty, "Captcha failed");
-			}
+			//if (!verified)
+			//{
+			//	ModelState.AddModelError(string.Empty, "Captcha failed");
+			//}
 
 			if (ModelState.IsValid)
 			{

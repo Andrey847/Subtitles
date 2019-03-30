@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SubtitlesLearn.Logic;
@@ -27,21 +26,15 @@ namespace SubtitlesLearn.Site
 		public Startup(IHostingEnvironment env)
 		{
 			var builder = new ConfigurationBuilder()
-		   .SetBasePath(env.ContentRootPath)
-		   .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-		   .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-		   .AddJsonFile($"personal.json", optional: true, reloadOnChange: true)
-		   .AddEnvironmentVariables();
+			   .SetBasePath(env.ContentRootPath)
+			   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+			   .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+			   .AddJsonFile($"personal.json", optional: false, reloadOnChange: true)
+			   .AddEnvironmentVariables();
 
 			Configuration = builder.Build();
 
 			DbHelper.ConnectionString = Configuration.GetConnectionString("Default");
-
-			// Setup cardcom settings.
-			EmailSettings emailSettings = new EmailSettings();
-			Configuration.GetSection("Email").Bind(emailSettings);
-			EmailManager.Instance.Settings = emailSettings;
-			EmailManager.Instance.ManagerEmail = Configuration["ManagerEmail"];
 
 			EmailManager.Instance.GlobalSettings
 				= UserManager.Instance.GlobalSettings
@@ -61,6 +54,7 @@ namespace SubtitlesLearn.Site
 
 			// Google auth settings
 			Configuration.GetSection("GoogleAuth").Bind(GoogleAuthManager.Instance.Settings);
+			Configuration.GetSection("Email").Bind(EmailManager.Instance.Settings);
 
 			UserManager.Instance.EmailNotifier = EmailManager.Instance;
 			LogManager.Instance.LogInfo("Application started").GetAwaiter().GetResult();

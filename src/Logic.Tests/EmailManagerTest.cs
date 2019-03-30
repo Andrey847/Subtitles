@@ -31,8 +31,8 @@ namespace SubtitlesLearn.Logic.Tests
 			EmailManager.Instance.Settings = new EmailSettings()
 			{
 				AdminEmail = "ag_a@mail.ru",
-				ApiKey = "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",
-				SimpleTemplateId = "d-dfad3dcda8e24a65936d8b9fab92dc9a",
+				ApiKey = "",
+				SimpleTemplateId = "",
 				SenderEmail = "info@subtitleslearn.com"
 			};
 

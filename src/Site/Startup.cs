@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,6 +76,14 @@ namespace SubtitlesLearn.Site
 					);
 			});
 
+			services.Configure<CookiePolicyOptions>(options =>
+			{
+				// This lambda determines whether user consent for non-essential cookies 
+				// is needed for a given request.
+				options.CheckConsentNeeded = context => true;
+				options.MinimumSameSitePolicy = SameSiteMode.None;
+			});
+
 			services.AddOptions();
 			services.Configure<RecaptchaSettings>(Configuration.GetSection("Recaptcha"));
 
@@ -144,17 +153,19 @@ namespace SubtitlesLearn.Site
 				app.UseExceptionHandler("/Home/Error");
 			}
 
-			app.UseStatusCodePagesWithRedirects("/");
-			app.UseAuthentication();
+			app.UseStatusCodePagesWithRedirects("/");			
 
 			app.UseCors("AllowSpecificOrigin");
 
 			app.UseStaticFiles();
+			app.UseCookiePolicy();
 
 			app.UseSignalR(route =>
 			{
 				route.MapHub<NotificationHub>("/NotificationHub");
 			});
+
+			app.UseAuthentication();
 
 			app.UseMvc(routes =>
 			{

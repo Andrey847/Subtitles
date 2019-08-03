@@ -82,6 +82,8 @@
 	@* Contact popup *@
 	@{ await Html.RenderPartialAsync("../Home/Contact"); }
 
+	@{ await Html.RenderPartialAsync("_CookieConsentPartial"); }	
+
 	@RenderSection("Scripts", required: false)
 
 </body>

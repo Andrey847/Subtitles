@@ -1,0 +1,14 @@
+What about cookies?
+
+Last update: 22.04.2019
+
+What are cookies. 
+Cookies are small pieces of text sent by your browser to a website you visit. Cookies are stored in you web browser and allow sites to recognize you and make your next visit easier.
+
+subtitleslearn.com uses cookies when you visit it. Why? 
+
+1. Authentication cookie to store you token after the login. It is used as part of ASP.NET Core framework for authentication functionality.
+
+2. Site analytics cookie. These cookies allow subtitleslearn.com to analyze site usage and improve it functionality.
+
+3. Third-party cookies. In addition to our own cookies, subtitleslearn.com may also use third-parties cookies to report usage statistic of the Site, deliver advertisements on and through the Site, and so on.
